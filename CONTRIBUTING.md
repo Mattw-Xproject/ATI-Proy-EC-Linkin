@@ -36,11 +36,11 @@ Usamos Conventional Commits + referencia a Reto/Caso de Uso.
 - Ámbitos (ejemplos):
 - "DOCKER", "MODELS", "VIEWS", "AUTH", etc.
 
-- Ejemplos:
+Ejemplos:
 
-[Reto 13] UC-01 feat_auth Agregado login con django_auth
-[Reto 12] UC-04 fix_model Corregir relación en tabla Users
-[Reto 10] chore_docker Configuración inicial de Dockerfile
+- [Reto 13] UC-01 feat_auth Agregado login con django_auth
+- [Reto 12] UC-04 fix_model Corregir relación en tabla Users
+- [Reto 10] chore_docker Configuración inicial de Dockerfile
 
 ---
 
