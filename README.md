@@ -15,7 +15,7 @@ Utiliza metodologías ágiles (Scrum) y casos de uso para gestionar perfiles pro
 Tecnologías (Requisitos No funcionales)
 - Backend: Python 3.12 + Django 6.0.1  
 - Base de Datos: SQLite (Entorno de Desarrollo)  
-- Infraestructura:** Docker & Docker Compose  
+- Infraestructura: Docker & Docker Compose  
 - Control de Versiones: Git & GitHub  
 
 ---
@@ -44,4 +44,5 @@ No necesitas instalar Python ni crear entornos virtuales manualmente. Docker se 
 
 - Para correr las pruebas unitarias dentro del contenedor (en otra terminal, mientras el servidor está corriendo):
 sudo docker compose exec web python manage.py test
+
 
