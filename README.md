@@ -1,6 +1,5 @@
-ATI-EC Linking.
-
-[ATI-EC Linking Logo](https://drive.google.com/file/d/1cE1w9WHLHbG8QmHsql6GokdtjXBL_FqM/view?usp=drive_link)
+### [ATI-EC Linking](https://drive.google.com/file/d/1cE1w9WHLHbG8QmHsql6GokdtjXBL_FqM/view?usp=drive_link)
+<img width="360" height="140" alt="banner-ATI-EC-Linking" src="https://github.com/user-attachments/assets/474e10ff-9ae4-4fff-9157-1345dfc53934" />
 
 ![Django](https://img.shields.io/badge/Django-6.0.1-green?style=flat&logo=django)
 ![Docker](https://img.shields.io/badge/Docker-Enabled-blue?style=flat&logo=docker)
@@ -12,7 +11,7 @@ Utiliza metodologías ágiles (Scrum) y casos de uso para gestionar perfiles pro
 
 ---
 
-Tecnologías (Requisitos No funcionales)
+## Tecnologías (Requisitos No funcionales)
 - Backend: Python 3.12 + Django 6.0.1  
 - Base de Datos: SQLite (Entorno de Desarrollo)  
 - Infraestructura: Docker & Docker Compose  
@@ -20,7 +19,7 @@ Tecnologías (Requisitos No funcionales)
 
 ---
 
-Configuración del Entorno (Instalación)
+## Configuración del Entorno (Instalación)
 
 1. Prerrequisitos
 
@@ -28,21 +27,24 @@ Configuración del Entorno (Instalación)
 - Tener instalado [Git](https://git-scm.com/).  
 
 2. Clonar el Repositorio
-
+```bash
 git clone https://github.com/Mattw-Xproject/ATI-Proy-EC-Linkin.git
-cd ati-ec-linking
-
+```
 3. Levantar con Docker (La forma fácil)
 
 No necesitas instalar Python ni crear entornos virtuales manualmente. Docker se encarga de todo.
 
-- Para iniciar el servidor: sudo docker compose up
+- Para iniciar el servidor: ```bash sudo docker compose up ```
 - El sistema estará disponible en: http://localhost:8000
-- Si no levanta o agregaste nuevas librerías: Si la imagen no carga o modificaste el requirements.txt, fuerza la reconstrucción: sudo docker compose up -d --build
-
+- Si no levanta o agregaste nuevas librerías: Si la imagen no carga o modificaste el requirements.txt, fuerza la reconstrucción: 
+```bash
+sudo docker compose up -d --build
+```
 4. Ejecutar Tests
 
 - Para correr las pruebas unitarias dentro del contenedor (en otra terminal, mientras el servidor está corriendo):
+```bash
 sudo docker compose exec web python manage.py test
+```
 
 
