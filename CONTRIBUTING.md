@@ -1,6 +1,6 @@
-Guía de Contribución - ATI-EC Linking
+# Guía de Contribución - ATI-EC Linking
 
-1. Política de Ramas (Branching Model)
+## 1. Política de Ramas (Branching Model)
 
 Para que el CI/CD (GitHub Actions) verifique el código, las ramas DEBEN seguir este formato:
 
@@ -11,11 +11,12 @@ Para que el CI/CD (GitHub Actions) verifique el código, las ramas DEBEN seguir 
 - Hotfix: "fix/descripcion-error"  
   Ejemplo: "fix/corregir-bug-login"
 
-!Nunca hagas push directo a "main" o "develop". Usa Pull Requests.
+> [!IMPORTANT]
+> Nunca hagas push directo a "main" o "develop". Usa Pull Requests.
 
 ---
 
-2. Estándar de Commits
+## 2. Estándar de Commits
 
 Usamos Conventional Commits + referencia a Reto/Caso de Uso.
 
@@ -36,15 +37,14 @@ Usamos Conventional Commits + referencia a Reto/Caso de Uso.
 - Ámbitos (ejemplos):
 - "DOCKER", "MODELS", "VIEWS", "AUTH", etc.
 
-Ejemplos:
-
-- [Reto 13] UC-01 feat_auth Agregado login con django_auth
-- [Reto 12] UC-04 fix_model Corregir relación en tabla Users
-- [Reto 10] chore_docker Configuración inicial de Dockerfile
+> [!TIP]
+> - [Reto 13] UC-01 feat_auth Agregado login con django_auth
+> - [Reto 12] UC-04 fix_model Corregir relación en tabla Users
+> - [Reto 10] chore_docker Configuración inicial de Dockerfile
 
 ---
 
-3. Estilo de Código (PEP8)
+## 3. Estilo de Código (PEP8)
 
 Todo el equipo debe seguir el estándar PEP8 para Python:
 
@@ -70,23 +70,25 @@ Todo el equipo debe seguir el estándar PEP8 para Python:
 
 - Linting: usar Flake8 para detectar errores antes de hacer push.
 
-!Configura tu editor (VSCode recomendado) con Black Formatter y activa “Format on Save” para no perder tiempo corrigiendo manualmente.
+> [!NOTE]
+> Configura tu editor (VSCode recomendado) con Black Formatter y activa “Format on Save” para no perder tiempo corrigiendo manualmente.
 
 ---
 
-4. Checklist antes de hacer commit
-
-- Correr los tests (pytest o manage.py test).
-- Formatear el código con black ..
-- Validar con flake8 ..
+## 4. Checklist antes de hacer commit
+> [!WARNING]
+> - Correr los tests (pytest o manage.py test).
+> - Formatear el código con black ..
+> - Validar con flake8 ..
 - Escribir el commit siguiendo la convención.
 
 ---
 
-5. Documentación y Estilos
+## 5. Documentación y Estilos
 
-- Estilo de código: seguimos PEP8 estrictamente.
+- Estilo de código: seguimos PEP8 estrictamente [La Guía de Estilos en Python.](https://elpythonista.com/pep-8)
 
-- Consulta la Wiki del Proyecto para ver configuración de linters en VSCode.
+- Consulta la [Wiki del Proyecto](https://github.com/Mattw-Xproject/ATI-Proy-EC-Linkin/wiki/Gu%C3%ADa-de-Estilo-Python-(PEP8)) para ver configuración de linters en VSCode.
 
 - Usa la extensión Black Formatter en tu editor para formateo automático.
+
