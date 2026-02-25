@@ -1,11 +1,11 @@
-### [ATI-EC Linking](https://drive.google.com/file/d/1cE1w9WHLHbG8QmHsql6GokdtjXBL_FqM/view?usp=drive_link)
+### [ATI-EC Linking X](https://drive.google.com/file/d/1cE1w9WHLHbG8QmHsql6GokdtjXBL_FqM/view?usp=drive_link)
 <img width="360" height="140" alt="banner-ATI-EC-Linking" src="https://github.com/user-attachments/assets/474e10ff-9ae4-4fff-9157-1345dfc53934" />
 
 ![Django](https://img.shields.io/badge/Django-6.0.1-green?style=flat&logo=django)
 ![Docker](https://img.shields.io/badge/Docker-Enabled-blue?style=flat&logo=docker)
-![Status](https://img.shields.io/badge/Status-Inception-orange)
+![Status](https://img.shields.io/badge/Status-Design-orange)
 
-ATI-EC Linking es una red social desarrollada en Django/SQLite para conectar profesionales de ATI-UCV con empresas.  
+ATI-EC Linking X es una red social desarrollada en Django/SQLite para conectar profesionales de ATI-UCV con empresas.  
 Incluye perfiles personalizados, muro de publicaciones multimedia, chat en tiempo real, sistema de notificaciones y módulo de administración de contenidos.  
 Utiliza metodologías ágiles (Scrum) y casos de uso para gestionar perfiles profesionales y ofertas de empleo, optimizando la inserción laboral.
 
