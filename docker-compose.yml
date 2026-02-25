@@ -1,5 +1,37 @@
 services:
+
+  db:
+    image: alpine:3.21
+    container_name: linkin_db
+    volumes:
+      - bd_data:/data
+    command: sh -c "mkdir -p /data && chmod 777 /data && echo 'Contenedor de base de datos listo' && tail -f /dev/null"
+    healthcheck:
+      test: ["CMD", "test", "-d", "/data"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   web:
     build: .
+    container_name: linkin_web
+    volumes:
+      - bd_data:/data
+    expose:
+      - "8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  apache:
+    build:
+      context: .
+      dockerfile: Dockerfile.apache
+    container_name: linkin_apache
     ports:
-      - "8000:8000"
+      - "80:80"
+    depends_on:
+      - web
+
+volumes:
+  bd_data:
