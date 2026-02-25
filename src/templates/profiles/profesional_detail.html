@@ -175,7 +175,6 @@
     .section-content {
         color: #374151;
         line-height: 1.6;
-        white-space: pre-wrap;
     }
     
     .skill-list {
@@ -206,6 +205,14 @@
         display: flex;
         gap: 1rem;
         margin-bottom: 0.75rem;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    
+    .item-content {
+        display: flex;
+        gap: 1rem;
+        flex: 1;
     }
     
     .item-logo {
@@ -247,6 +254,51 @@
         color: #374151;
         font-size: 14px;
         line-height: 1.6;
+    }
+    
+    .item-actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+    
+    .btn-icon-small {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: transparent;
+        border: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6b7280;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+    
+    .btn-icon-small:hover {
+        background: #f3f4f6;
+        border-color: #d1d5db;
+    }
+    
+    .btn-icon-delete {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: transparent;
+        border: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ef4444;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .btn-icon-delete:hover {
+        background: #fee2e2;
+        border-color: #ef4444;
     }
     
     .contact-links {
@@ -327,7 +379,7 @@
     
     <main class="profile-main">
         
-        <!-- Profile Header Card -->
+        <!-- Profile Header -->
         <section class="card profile-header-card">
             <div class="profile-banner"></div>
             
@@ -340,49 +392,36 @@
                     >
                     {% if is_own_profile %}
                     <button class="avatar-edit-btn" aria-label="{% trans 'Cambiar foto' %}">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                        </svg>
+                        <i class="bi bi-camera"></i>
                     </button>
                     {% endif %}
                 </div>
                 
-                <div class="profile-info">
+                <div>
                     <h1 class="profile-name">{{ profile_user.get_full_name }}</h1>
-                    
                     <p class="profile-headline">
                         {{ profesional.titulo_actual|default:"Profesional en Linking X" }}
                     </p>
-                    
                     {% if profile_user.ubicacion %}
                     <p class="profile-location">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                        </svg>
-                        {{ profile_user.ubicacion }}
+                        <i class="bi bi-geo-alt"></i> {{ profile_user.ubicacion }}
                     </p>
                     {% endif %}
                 </div>
                 
                 <div class="profile-actions">
                     {% if is_own_profile %}
-                        <a href="{% url 'profile_edit' profile_user.id %}" class="btn btn-secondary">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                            </svg>
+                        <a href="#" class="btn btn-secondary">
+                            <i class="bi bi-pencil"></i>
                             {% trans "Editar perfil" %}
                         </a>
                     {% else %}
                         <button class="btn btn-primary">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 5.9c1.16 0 2.1.94 2.1 2.1s-.94 2.1-2.1 2.1S9.9 9.16 9.9 8s.94-2.1 2.1-2.1m0 9c2.97 0 6.1 1.46 6.1 2.1v1.1H5.9V17c0-.64 3.13-2.1 6.1-2.1M12 4C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 9c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4z"/>
-                            </svg>
+                            <i class="bi bi-person-plus"></i>
                             {% trans "Conectar" %}
                         </button>
                         <a href="{% url 'create_conversation' profile_user.id %}" class="btn btn-secondary">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/>
-                            </svg>
+                            <i class="bi bi-chat"></i>
                             {% trans "Mensaje" %}
                         </a>
                     {% endif %}
@@ -390,32 +429,23 @@
             </div>
         </section>
         
-        <!-- About Section -->
+        <!-- About -->
         {% if profesional.descripcion_personal %}
         <section class="card profile-section">
             <div class="section-header">
                 <h2 class="section-title">{% trans "Acerca de" %}</h2>
-                {% if is_own_profile %}
-                <a href="{% url 'profile_edit' profile_user.id %}" class="btn-icon-edit" aria-label="{% trans 'Editar' %}">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                    </svg>
-                </a>
-                {% endif %}
             </div>
             <p class="section-content">{{ profesional.descripcion_personal }}</p>
         </section>
         {% endif %}
         
-        <!-- Experience Section -->
+        <!-- Experience -->
         <section class="card profile-section">
             <div class="section-header">
                 <h2 class="section-title">{% trans "Experiencia" %}</h2>
                 {% if is_own_profile %}
-                <a href="{% url 'add_section' 'experiencia' %}" class="btn-icon-edit" aria-label="{% trans 'Agregar experiencia' %}">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-                    </svg>
+                <a href="{% url 'add_section' 'experiencia' %}" class="btn-icon-edit" aria-label="{% trans 'Agregar' %}">
+                    <i class="bi bi-plus-lg"></i>
                 </a>
                 {% endif %}
             </div>
@@ -424,23 +454,35 @@
                 {% for exp in experiencias %}
                 <div class="experience-item">
                     <div class="item-header">
-                        <div class="item-logo">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
-                            </svg>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-title">{{ exp.cargo }}</div>
-                            <div class="item-subtitle">{{ exp.empresa }} • {{ exp.get_modalidad_display }}</div>
-                            <div class="item-date">
-                                {{ exp.fecha_inicio|date:"M Y" }} - 
-                                {% if exp.trabajo_actual %}
-                                    {% trans "Presente" %}
-                                {% else %}
-                                    {{ exp.fecha_fin|date:"M Y" }}
-                                {% endif %}
+                        <div class="item-content">
+                            <div class="item-logo">
+                                <i class="bi bi-briefcase"></i>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-title">{{ exp.cargo }}</div>
+                                <div class="item-subtitle">{{ exp.empresa }}</div>
+                                <div class="item-date">
+                                    {{ exp.fecha_inicio|date:"M Y" }} - 
+                                    {% if exp.trabajo_actual %}
+                                        {% trans "Presente" %}
+                                    {% else %}
+                                        {{ exp.fecha_fin|date:"M Y" }}
+                                    {% endif %}
+                                    • {{ exp.get_modalidad_display }}
+                                </div>
                             </div>
                         </div>
+                        {% if is_own_profile %}
+                        <div class="item-actions">
+                            <a href="{% url 'edit_section' 'experiencia' exp.id %}" class="btn-icon-small" title="{% trans 'Editar' %}">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                                <button type="submit" class="btn-icon-delete" title="{% trans 'Eliminar' %}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                        {% endif %}
                     </div>
                     {% if exp.descripcion %}
                     <div class="item-description">{{ exp.descripcion }}</div>
@@ -449,24 +491,18 @@
                 {% endfor %}
             {% else %}
                 <p class="empty-state-text">
-                    {% if is_own_profile %}
-                        {% trans "Agrega tu experiencia laboral para destacar" %}
-                    {% else %}
-                        {% trans "Este profesional aún no ha agregado experiencia" %}
-                    {% endif %}
+                    {% trans "No hay experiencia agregada" %}
                 </p>
             {% endif %}
         </section>
         
-        <!-- Education Section -->
+        <!-- Education -->
         <section class="card profile-section">
             <div class="section-header">
                 <h2 class="section-title">{% trans "Educación" %}</h2>
                 {% if is_own_profile %}
-                <a href="{% url 'add_section' 'educacion' %}" class="btn-icon-edit" aria-label="{% trans 'Agregar educación' %}">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-                    </svg>
+                <a href="{% url 'add_section' 'educacion' %}" class="btn-icon-edit" aria-label="{% trans 'Agregar' %}">
+                    <i class="bi bi-plus-lg"></i>
                 </a>
                 {% endif %}
             </div>
@@ -475,46 +511,53 @@
                 {% for edu in educaciones %}
                 <div class="education-item">
                     <div class="item-header">
-                        <div class="item-logo">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
-                            </svg>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-title">{{ edu.institucion }}</div>
-                            <div class="item-subtitle">{{ edu.titulo }} • {{ edu.campo_estudio }}</div>
-                            <div class="item-date">
-                                {{ edu.fecha_inicio|date:"Y" }} - 
-                                {% if edu.en_curso %}
-                                    {% trans "Presente" %}
-                                {% else %}
-                                    {{ edu.fecha_fin|date:"Y" }}
-                                {% endif %}
+                        <div class="item-content">
+                            <div class="item-logo">
+                                <i class="bi bi-mortarboard"></i>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-title">{{ edu.institucion }}</div>
+                                <div class="item-subtitle">{{ edu.titulo }} • {{ edu.campo_estudio }}</div>
+                                <div class="item-date">
+                                    {{ edu.fecha_inicio|date:"Y" }} - 
+                                    {% if edu.en_curso %}
+                                        {% trans "Presente" %}
+                                    {% else %}
+                                        {{ edu.fecha_fin|date:"Y" }}
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
+                        {% if is_own_profile %}
+                        <div class="item-actions">
+                            <a href="{% url 'edit_section' 'educacion' edu.id %}" class="btn-icon-small" title="{% trans 'Editar' %}">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <form method="post" action="{% url 'delete_section' 'educacion' edu.id %}" style="display: inline;" >
+                                {% csrf_token %}
+                                <button type="submit" class="btn-icon-delete" title="{% trans 'Eliminar' %}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
             {% else %}
                 <p class="empty-state-text">
-                    {% if is_own_profile %}
-                        {% trans "Agrega tu formación académica" %}
-                    {% else %}
-                        {% trans "Este profesional aún no ha agregado educación" %}
-                    {% endif %}
+                    {% trans "No hay educación agregada" %}
                 </p>
             {% endif %}
         </section>
         
-        <!-- Skills Section -->
+        <!-- Skills -->
         <section class="card profile-section">
             <div class="section-header">
                 <h2 class="section-title">{% trans "Habilidades" %}</h2>
                 {% if is_own_profile %}
-                <a href="{% url 'add_section' 'habilidad' %}" class="btn-icon-edit" aria-label="{% trans 'Agregar habilidad' %}">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-                    </svg>
+                <a href="{% url 'add_section' 'habilidad' %}" class="btn-icon-edit" aria-label="{% trans 'Agregar' %}">
+                    <i class="bi bi-plus-lg"></i>
                 </a>
                 {% endif %}
             </div>
@@ -527,53 +570,36 @@
                 </div>
             {% else %}
                 <p class="empty-state-text">
-                    {% if is_own_profile %}
-                        {% trans "Agrega tus habilidades técnicas" %}
-                    {% else %}
-                        {% trans "Este profesional aún no ha agregado habilidades" %}
-                    {% endif %}
+                    {% trans "No hay habilidades agregadas" %}
                 </p>
             {% endif %}
         </section>
         
-        <!-- Contact Information -->
+        <!-- Contact Links -->
         {% if profesional.linkedin_url or profesional.github_url or profesional.portfolio_url %}
         <section class="card profile-section">
             <div class="section-header">
                 <h2 class="section-title">{% trans "Enlaces" %}</h2>
-                {% if is_own_profile %}
-                <a href="{% url 'profile_edit' profile_user.id %}" class="btn-icon-edit" aria-label="{% trans 'Editar' %}">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                    </svg>
-                </a>
-                {% endif %}
             </div>
             
             <div class="contact-links">
                 {% if profesional.linkedin_url %}
-                <a href="{{ profesional.linkedin_url }}" target="_blank" rel="noopener noreferrer" class="contact-link">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
-                    </svg>
+                <a href="{{ profesional.linkedin_url }}" target="_blank" class="contact-link">
+                    <i class="bi bi-linkedin"></i>
                     <span>LinkedIn</span>
                 </a>
                 {% endif %}
                 
                 {% if profesional.github_url %}
-                <a href="{{ profesional.github_url }}" target="_blank" rel="noopener noreferrer" class="contact-link">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/>
-                    </svg>
+                <a href="{{ profesional.github_url }}" target="_blank" class="contact-link">
+                    <i class="bi bi-github"></i>
                     <span>GitHub</span>
                 </a>
                 {% endif %}
                 
                 {% if profesional.portfolio_url %}
-                <a href="{{ profesional.portfolio_url }}" target="_blank" rel="noopener noreferrer" class="contact-link">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-                    </svg>
+                <a href="{{ profesional.portfolio_url }}" target="_blank" class="contact-link">
+                    <i class="bi bi-globe"></i>
                     <span>{% trans "Portafolio" %}</span>
                 </a>
                 {% endif %}
@@ -588,12 +614,9 @@
         <section class="card ad-card">
             <div class="ad-label">{% trans "Publicidad" %}</div>
             <div class="ad-placeholder">
-                <span>LOGO</span>
+                <span>ADS</span>
             </div>
             <p class="ad-text">{% trans "Destaca tu perfil profesional" %}</p>
-            <button class="btn btn-secondary" style="width: 100%; font-size: 13px;">
-                {% trans "Más información" %}
-            </button>
         </section>
     </aside>
     

@@ -49,7 +49,20 @@ class Usuario(AbstractUser):
         return self.get_full_name() or self.username
     
     def get_avatar_url(self):
-        """Retorna URL del avatar o placeholder"""
         if self.foto:
             return self.foto.url
-        return '/static/img/placeholder-avatar.png'
+        # Placeholder por defecto
+        return '/static/img/placeholder-profile.png'
+    
+    ##def get_avatar_url(self):
+        """Retorna la URL del avatar del usuario"""
+        if self.foto:
+            return self.foto.url
+
+        # Generar avatar con UI Avatars
+        nombre = self.get_full_name() or self.username or 'U'
+        # Usar solo las iniciales
+        iniciales = ''.join([word[0].upper() for word in nombre.split()[:2]])
+        
+        # URL de UI Avatars con los colores de Linking X
+        return f"https://ui-avatars.com/api/?name={iniciales}&size=512&background=0A66C2&color=fff&bold=true&rounded=true"

@@ -376,3 +376,135 @@ class ExperienciaLaboralForm(forms.ModelForm):
             'trabajo_actual': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
             'descripcion': forms.Textarea(attrs={'class': 'form-input', 'rows': 4}),
         }
+
+class HabilidadForm(forms.ModelForm):
+    class Meta:
+        model = Habilidad
+        fields = ['nombre', 'nivel']
+        widgets = {
+            'nombre': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': _('Ej: Python, Django, React...'),
+            }),
+            'nivel': forms.Select(attrs={
+                'class': 'form-control',
+            }),
+        }
+        labels = {
+            'nombre': _('Habilidad'),
+            'nivel': _('Nivel de dominio'),
+        }
+
+class EducacionForm(forms.ModelForm):
+    class Meta:
+        model = Educacion
+        fields = [
+            'institucion',
+            'titulo',
+            'campo_estudio',
+            'fecha_inicio',
+            'fecha_fin',
+            'en_curso',
+            'descripcion',
+        ]
+        widgets = {
+            'institucion': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': _('Ej: Universidad Central de Venezuela'),
+            }),
+            'titulo': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': _('Ej: Ingeniería en Computación'),
+            }),
+            'campo_estudio': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': _('Ej: Ciencias de la Computación'),
+            }),
+            'fecha_inicio': forms.DateInput(attrs={
+                'class': 'form-control',
+                'type': 'date',
+            }),
+            'fecha_fin': forms.DateInput(attrs={
+                'class': 'form-control',
+                'type': 'date',
+            }),
+            'en_curso': forms.CheckboxInput(attrs={
+                'class': 'form-check-input',
+            }),
+            'descripcion': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 4,
+                'placeholder': _('Describe tu formación académica, logros, proyectos...'),
+            }),
+        }
+        labels = {
+            'institucion': _('Institución educativa'),
+            'titulo': _('Título obtenido'),
+            'campo_estudio': _('Campo de estudio'),
+            'fecha_inicio': _('Fecha de inicio'),
+            'fecha_fin': _('Fecha de finalización'),
+            'en_curso': _('Actualmente estudiando'),
+            'descripcion': _('Descripción (opcional)'),
+        }
+
+class ExperienciaLaboralForm(forms.ModelForm):
+    class Meta:
+        model = ExperienciaLaboral
+        fields = [
+            'empresa',
+            'cargo',
+            'tipo_empleo',
+            'modalidad',
+            'ubicacion',
+            'fecha_inicio',
+            'fecha_fin',
+            'trabajo_actual',
+            'descripcion',
+        ]
+        widgets = {
+            'empresa': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': _('Ej: Tech Solutions CA'),
+            }),
+            'cargo': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': _('Ej: Desarrollador Full Stack'),
+            }),
+            'tipo_empleo': forms.Select(attrs={
+                'class': 'form-control',
+            }),
+            'modalidad': forms.Select(attrs={
+                'class': 'form-control',
+            }),
+            'ubicacion': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': _('Ej: Caracas, Venezuela'),
+            }),
+            'fecha_inicio': forms.DateInput(attrs={
+                'class': 'form-control',
+                'type': 'date',
+            }),
+            'fecha_fin': forms.DateInput(attrs={
+                'class': 'form-control',
+                'type': 'date',
+            }),
+            'trabajo_actual': forms.CheckboxInput(attrs={
+                'class': 'form-check-input',
+            }),
+            'descripcion': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 5,
+                'placeholder': _('Describe tus responsabilidades, logros y proyectos...'),
+            }),
+        }
+        labels = {
+            'empresa': _('Empresa'),
+            'cargo': _('Cargo'),
+            'tipo_empleo': _('Tipo de empleo'),
+            'modalidad': _('Modalidad'),
+            'ubicacion': _('Ubicación'),
+            'fecha_inicio': _('Fecha de inicio'),
+            'fecha_fin': _('Fecha de finalización'),
+            'trabajo_actual': _('Trabajo actual'),
+            'descripcion': _('Descripción'),
+        }

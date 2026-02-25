@@ -16,7 +16,7 @@ from .views import (
     job_apply,
     message_list,
     message_detail,
-    
+    add_section,
 )
 
 urlpatterns = [
@@ -57,5 +57,8 @@ urlpatterns = [
     path('messages/<int:conversation_id>/', message_detail.message_detail, name='message_detail'),
     path('messages/<int:conversation_id>/send/', message_detail.send_message, name='send_message'),
     path('messages/new/<int:user_id>/', message_detail.create_conversation, name='create_conversation'),
-
+    # Section Management
+    path('profile/section/add/<str:section_type>/', add_section.add_section, name='add_section'),
+    path('profile/section/edit/<str:section_type>/<int:section_id>/', add_section.edit_section, name='edit_section'),
+    path('profile/section/delete/<str:section_type>/<int:section_id>/', add_section.delete_section, name='delete_section'),
 ]
