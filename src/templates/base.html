@@ -1,0 +1,186 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta_description %}{% trans 'Linking X - Red profesional para conectar empresas y estudiantes' %}{% endblock %}">
+    <title>{% block title %}Linking X{% endblock %}</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/variables.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Header / Top Navigation -->
+    <header class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top shadow-sm">
+        <div class="container-fluid px-3 px-lg-4">
+            <!-- Back Button (Mobile) -->
+            {% if request.path != '/' and user.is_authenticated %}
+            <button 
+                onclick="history.back()" 
+                class="btn btn-link text-primary p-2 d-lg-none me-2"
+                aria-label="{% trans 'Volver' %}"
+            >
+                <i class="bi bi-arrow-left fs-4"></i>
+            </button>
+            {% endif %}
+            
+            <!-- Logo -->
+            <a href="{% if user.is_authenticated %}{% url 'feed_home' %}{% else %}{% url 'auth_login' %}{% endif %}" class="navbar-brand fw-bold text-primary d-flex align-items-center">
+                <div class="logo-circle me-2" style="width: 40px; height: 40px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: transparent;">
+                    <img src="{% static 'img/logo-icon.png' %}" alt="Linking X Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                </div>
+                <span class="d-none d-sm-inline">Linking X</span>
+            </a>
+            
+            <!-- Search Bar (Desktop - Authenticated) -->
+            {% if user.is_authenticated %}
+            <form class="d-none d-lg-flex flex-grow-1 mx-4" style="max-width: 400px;">
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-0">
+                        <i class="bi bi-search text-muted"></i>
+                    </span>
+                    <input type="search" class="form-control border-0 bg-light" placeholder="{% trans 'Buscar' %}...">
+                </div>
+            </form>
+            {% endif %}
+            
+            <!-- Desktop Navigation -->
+            <div class="d-none d-lg-flex align-items-center gap-1">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'feed_home' %}" class="nav-link-custom {% if 'feed' in request.path or request.path == '/' %}active{% endif %}">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span>{% trans "Inicio" %}</span>
+                    </a>
+                
+                    
+                    <a href="{% url 'job_list' %}" class="nav-link-custom {% if 'job' in request.path %}active{% endif %}">
+                        <i class="bi bi-briefcase-fill"></i>
+                        <span>{% trans "Empleos" %}</span>
+                    </a>
+                    
+                    <!-- Desktop Navigation -->
+                    <a href="{% url 'message_list' %}" class="nav-link-custom {% if 'message' in request.path %}active{% endif %}">
+                        <i class="bi bi-chat-dots-fill"></i>
+                        <span>{% trans "Mensajes" %}</span>
+                    </a>
+                    
+                    <!-- Profile Dropdown -->
+                    <div class="dropdown">
+                        <a href="#" class="nav-link-custom {% if 'profile' in request.path %}active{% endif %}" data-bs-toggle="dropdown" aria-expanded="false" style="display: flex; align-items: center; gap: 4px;">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden; flex-shrink: 0;">
+                                <img src="{{ user.get_avatar_url }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <i class="bi bi-caret-down-fill" style="font-size: 10px;"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'profile_detail' user.id %}">
+                                    <i class="bi bi-person me-2"></i>{% trans "Ver perfil" %}
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="post" action="{% url 'auth_logout' %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        <i class="bi bi-box-arrow-right me-2"></i>{% trans "Cerrar sesión" %}
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <a href="{% url 'auth_login' %}" class="btn btn-outline-primary me-2">
+                        {% trans "Iniciar sesión" %}
+                    </a>
+                    <a href="{% url 'auth_register_role' %}" class="btn btn-primary">
+                        {% trans "Registrarse" %}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="main-content" {% block main_attrs %}{% endblock %}>
+        {% if messages %}
+            <div class="container mt-3">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {% if message.tags == 'success' %}
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                        {% elif message.tags == 'error' %}
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        {% elif message.tags == 'warning' %}
+                            <i class="bi bi-exclamation-circle-fill me-2"></i>
+                        {% else %}
+                            <i class="bi bi-info-circle-fill me-2"></i>
+                        {% endif %}
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Bottom Navigation (Mobile Only) -->
+    {% if user.is_authenticated %}
+    <nav class="bottom-nav d-lg-none">
+        <a href="{% url 'feed_home' %}" class="bottom-nav-item {% if 'feed' in request.path or request.path == '/' %}active{% endif %}">
+            <i class="bi bi-house-door-fill"></i>
+            <span>{% trans "Inicio" %}</span>
+        </a>
+        
+        <a href="{% url 'job_list' %}" class="bottom-nav-item {% if 'job' in request.path %}active{% endif %}">
+            <i class="bi bi-briefcase-fill"></i>
+            <span>{% trans "Empleos" %}</span>
+        </a>
+        
+        <a href="#" class="bottom-nav-item">
+            <i class="bi bi-chat-dots-fill"></i>
+            <span>{% trans "Mensajes" %}</span>
+        </a>
+        
+        <a href="{% url 'profile_detail' user.id %}" class="bottom-nav-item {% if 'profile' in request.path %}active{% endif %}">
+            <i class="bi bi-person-fill"></i>
+            <span>{% trans "Perfil" %}</span>
+        </a>
+    </nav>
+    {% endif %}
+    
+    <!-- Footer (Public Pages) -->
+    {% if not user.is_authenticated %}
+    <footer class="bg-light py-2 mt-5">
+        <div class="container text-center text-muted">
+            <small>© {% now "Y" %} Linking X. {% trans "Todos los derechos reservados." %}</small>
+        </div>
+    </footer>
+    {% endif %}
+    
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

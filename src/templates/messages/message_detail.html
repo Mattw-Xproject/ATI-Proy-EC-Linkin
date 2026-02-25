@@ -1,0 +1,954 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{{ otro_usuario.get_full_name }} - {% trans "Mensajes" %} - Linking X{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* ========== MESSENGER LAYOUT ========== */
+    
+    .messenger-container {
+        position: fixed;
+        top: var(--lx-navbar-height);
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--lx-gray-50);
+        overflow: hidden;
+    }
+    
+    .messenger-layout {
+        display: grid;
+        grid-template-columns: 360px 1fr 360px;
+        height: 100%;
+        background: white;
+    }
+    
+    /* ========== CONVERSATIONS LIST (Left Column) ========== */
+    
+    .conversations-column {
+        border-right: 1px solid var(--lx-gray-200);
+        display: flex;
+        flex-direction: column;
+        background: white;
+    }
+    
+    .conversations-header {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--lx-gray-200);
+    }
+    
+    .conversations-title {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--lx-gray-900);
+    }
+    
+    .conversations-search {
+        position: relative;
+    }
+    
+    .conversations-search input {
+        width: 100%;
+        padding: 10px 16px 10px 40px;
+        border: none;
+        background: var(--lx-gray-100);
+        border-radius: 20px;
+        font-size: 14px;
+        transition: all 0.2s ease;
+    }
+    
+    .conversations-search input:focus {
+        outline: none;
+        background: var(--lx-gray-200);
+    }
+    
+    .conversations-search i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--lx-gray-500);
+    }
+    
+    .conversations-list {
+        flex: 1;
+        overflow-y: auto;
+    }
+    
+    .conversation-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        cursor: pointer;
+        transition: background 0.15s ease;
+        text-decoration: none;
+        color: inherit;
+        border-left: 3px solid transparent;
+    }
+    
+    .conversation-item:hover {
+        background: var(--lx-gray-50);
+    }
+    
+    .conversation-item.active {
+        background: var(--lx-primary-light);
+        border-left-color: var(--lx-primary);
+    }
+    
+    .conversation-avatar {
+        position: relative;
+        flex-shrink: 0;
+    }
+    
+    .conversation-avatar img {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    
+    .conversation-info {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .conversation-name {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--lx-gray-900);
+        margin-bottom: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .conversation-preview {
+        font-size: 13px;
+        color: var(--lx-gray-600);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    /* ========== CHAT AREA (Center Column) ========== */
+    
+    .chat-column {
+        display: flex;
+        flex-direction: column;
+        background: white;
+    }
+    
+    .chat-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 20px;
+        border-bottom: 1px solid var(--lx-gray-200);
+        background: white;
+        z-index: 10;
+    }
+    
+    .chat-header-back {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: var(--lx-gray-700);
+        cursor: pointer;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+    }
+    
+    .chat-header-back:hover {
+        background: var(--lx-gray-100);
+    }
+    
+    .chat-header-avatar {
+        flex-shrink: 0;
+    }
+    
+    .chat-header-avatar img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    
+    .chat-header-info {
+        flex: 1;
+        cursor: pointer;
+        min-width: 0;
+    }
+    
+    .chat-header-name {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--lx-gray-900);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .chat-header-status {
+        font-size: 12px;
+        color: var(--lx-gray-600);
+    }
+    
+    .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+        background: var(--lx-gray-50);
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .messages-date-separator {
+        text-align: center;
+        margin: 16px 0;
+        position: relative;
+    }
+    
+    .messages-date-separator::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: var(--lx-gray-200);
+    }
+    
+    .messages-date-separator span {
+        position: relative;
+        background: var(--lx-gray-50);
+        padding: 0 12px;
+        font-size: 12px;
+        color: var(--lx-gray-600);
+        font-weight: 600;
+    }
+    
+    .message-group {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+    
+    .message-group.sent {
+        flex-direction: row-reverse;
+    }
+    
+    .message-avatar {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        align-self: flex-end;
+        object-fit: cover;
+    }
+    
+    .message-avatar.invisible {
+        visibility: hidden;
+    }
+    
+    .messages-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        max-width: 70%;
+    }
+    
+    .message-group.sent .messages-wrapper {
+        align-items: flex-end;
+    }
+    
+    .message-bubble {
+        padding: 10px 16px;
+        border-radius: 18px;
+        word-wrap: break-word;
+        position: relative;
+        font-size: 15px;
+        line-height: 1.4;
+    }
+    
+    .message-group.received .message-bubble {
+        background: var(--lx-gray-200);
+        color: var(--lx-gray-900);
+        border-bottom-left-radius: 4px;
+    }
+    
+    .message-group.sent .message-bubble {
+        background: var(--lx-primary);
+        color: white;
+        border-bottom-right-radius: 4px;
+    }
+    
+    .message-time {
+        font-size: 11px;
+        color: var(--lx-gray-500);
+        margin-top: 4px;
+        padding: 0 8px;
+    }
+    
+    .chat-input-area {
+        padding: 16px 20px;
+        border-top: 1px solid var(--lx-gray-200);
+        background: white;
+    }
+    
+    .chat-input-wrapper {
+        display: flex;
+        align-items: flex-end;
+        gap: 8px;
+    }
+    
+    .chat-input-actions {
+        display: flex;
+        gap: 4px;
+    }
+    
+    .chat-input-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: var(--lx-primary);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+    }
+    
+    .chat-input-btn:hover {
+        background: var(--lx-primary-light);
+    }
+    
+    .chat-input-field {
+        flex: 1;
+        min-height: 36px;
+        max-height: 120px;
+        padding: 8px 16px;
+        border: none;
+        background: var(--lx-gray-100);
+        border-radius: 18px;
+        resize: none;
+        font-family: inherit;
+        font-size: 15px;
+        line-height: 20px;
+    }
+    
+    .chat-input-field:focus {
+        outline: none;
+        background: var(--lx-gray-200);
+    }
+    
+    .chat-send-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: none;
+        background: var(--lx-primary);
+        color: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+    }
+    
+    .chat-send-btn:hover {
+        background: var(--lx-primary-hover);
+        transform: scale(1.05);
+    }
+    
+    .chat-send-btn:disabled {
+        background: var(--lx-gray-300);
+        cursor: not-allowed;
+        transform: scale(1);
+    }
+    
+    /* ========== PROFILE PANEL (Right Column) ========== */
+    
+    .profile-column {
+        border-left: 1px solid var(--lx-gray-200);
+        display: flex;
+        flex-direction: column;
+        background: white;
+        overflow-y: auto;
+    }
+    
+    .profile-close-header {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--lx-gray-200);
+        display: none;
+    }
+    
+    .profile-close {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: var(--lx-gray-700);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+    
+    .profile-close:hover {
+        background: var(--lx-gray-100);
+    }
+    
+    .profile-header {
+        padding: 24px;
+        text-align: center;
+        border-bottom: 1px solid var(--lx-gray-200);
+    }
+    
+    .profile-header-avatar {
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        margin: 0 auto 16px;
+        display: block;
+        object-fit: cover;
+    }
+    
+    .profile-header-name {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--lx-gray-900);
+        margin-bottom: 8px;
+    }
+    
+    .profile-header-status {
+        font-size: 14px;
+        color: var(--lx-gray-600);
+    }
+    
+    .profile-actions {
+        padding: 16px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        border-bottom: 1px solid var(--lx-gray-200);
+    }
+    
+    .profile-action-btn {
+        padding: 12px 10px;
+        border: none;
+        background: var(--lx-gray-100);
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--lx-gray-700);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+    }
+    
+    .profile-action-btn:hover {
+        background: var(--lx-gray-200);
+        color: var(--lx-gray-900);
+    }
+    
+    .profile-action-btn.danger {
+        color: var(--lx-danger);
+    }
+    
+    .profile-action-btn.danger:hover {
+        background: #FEE;
+    }
+    
+    .profile-action-btn i {
+        font-size: 20px;
+    }
+    
+    .profile-section {
+        padding: 16px;
+        border-bottom: 1px solid var(--lx-gray-200);
+    }
+    
+    .profile-section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+    
+    .profile-section-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--lx-gray-900);
+    }
+    
+    .profile-section-link {
+        font-size: 13px;
+        color: var(--lx-primary);
+        text-decoration: none;
+        font-weight: 600;
+    }
+    
+    .profile-section-link:hover {
+        text-decoration: underline;
+    }
+    
+    .media-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4px;
+    }
+    
+    .media-item {
+        aspect-ratio: 1;
+        border-radius: 8px;
+        overflow: hidden;
+        cursor: pointer;
+        background: var(--lx-gray-100);
+    }
+    
+    .media-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.2s ease;
+    }
+    
+    .media-item:hover img {
+        transform: scale(1.1);
+    }
+    
+    .media-empty {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 2rem 1rem;
+        color: var(--lx-gray-500);
+        font-size: 14px;
+    }
+    
+    /* ========== MOBILE RESPONSIVE ========== */
+    
+    @media (max-width: 991px) {
+        .messenger-container {
+            bottom: var(--lx-bottom-nav-height);
+        }
+        
+        .messenger-layout {
+            grid-template-columns: 1fr;
+        }
+        
+        .conversations-column {
+            display: flex;
+        }
+        
+        .chat-column,
+        .profile-column {
+            display: none;
+        }
+        
+        /* Show chat on mobile */
+        .messenger-layout.show-chat .conversations-column {
+            display: none;
+        }
+        
+        .messenger-layout.show-chat .chat-column {
+            display: flex;
+        }
+        
+        .messenger-layout.show-chat .chat-header-back {
+            display: flex;
+        }
+        
+        /* Show profile on mobile */
+        .messenger-layout.show-profile .conversations-column,
+        .messenger-layout.show-profile .chat-column {
+            display: none;
+        }
+        
+        .messenger-layout.show-profile .profile-column {
+            display: flex;
+        }
+        
+        .messenger-layout.show-profile .profile-close-header {
+            display: block;
+        }
+        
+        .messages-wrapper {
+            max-width: 85%;
+        }
+    }
+    
+    @media (min-width: 992px) {
+        .messenger-layout {
+            grid-template-columns: 360px 1fr 360px;
+        }
+        
+        .conversations-column,
+        .chat-column,
+        .profile-column {
+            display: flex !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="messenger-container">
+    <div class="messenger-layout show-chat" id="messengerLayout">
+        
+        <!-- ========================================
+             CONVERSATIONS LIST (Left Column)
+             ======================================== -->
+        <div class="conversations-column">
+            <div class="conversations-header">
+                <h1 class="conversations-title">{% trans "Mensajes" %}</h1>
+                <div class="conversations-search">
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="{% trans 'Buscar en Mensajes' %}">
+                </div>
+            </div>
+            
+            <div class="conversations-list">
+                <!-- Load other conversations via AJAX or server-side -->
+                <a href="{% url 'message_detail' conversacion.id %}" class="conversation-item active">
+                    <div class="conversation-avatar">
+                        <img src="{{ otro_usuario.get_avatar_url }}" alt="Avatar">
+                    </div>
+                    <div class="conversation-info">
+                        <div class="conversation-name">{{ otro_usuario.get_full_name }}</div>
+                        <div class="conversation-preview">
+                            {% with ultimo=conversacion.get_ultimo_mensaje %}
+                                {% if ultimo %}
+                                    {{ ultimo.contenido|truncatewords:8 }}
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <!-- ========================================
+             CHAT AREA (Center Column)
+             ======================================== -->
+        <div class="chat-column">
+            
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <button class="chat-header-back" onclick="goBackToList()">
+                    <i class="bi bi-arrow-left"></i>
+                </button>
+                
+                <div class="chat-header-avatar">
+                    <img src="{{ otro_usuario.get_avatar_url }}" alt="Avatar">
+                </div>
+                
+                <div class="chat-header-info" onclick="showProfile()">
+                    <div class="chat-header-name">{{ otro_usuario.get_full_name }}</div>
+                    <div class="chat-header-status">
+                        {% if otro_usuario.tipo_usuario == 'profesional' %}
+                            {{ otro_usuario.profesional.titulo_actual|default:"Profesional" }}
+                        {% else %}
+                            {{ otro_usuario.empresa.nombre_empresa }}
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <button class="chat-input-btn" onclick="showProfile()">
+                    <i class="bi bi-info-circle"></i>
+                </button>
+            </div>
+            
+            <!-- Chat Messages -->
+            <div class="chat-messages" id="chatMessages">
+                {% regroup mensajes by fecha_envio|date:"Y-m-d" as mensajes_por_dia %}
+                
+                {% for dia in mensajes_por_dia %}
+                    <div class="messages-date-separator">
+                        <span>
+                            {% if dia.grouper == today|date:"Y-m-d" %}
+                                {% trans "Hoy" %}
+                            {% elif dia.grouper == yesterday|date:"Y-m-d" %}
+                                {% trans "Ayer" %}
+                            {% else %}
+                                {{ dia.list.0.fecha_envio|date:"d M Y" }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    
+                    {% for mensaje in dia.list %}
+                        <div class="message-group {% if mensaje.emisor == user %}sent{% else %}received{% endif %}">
+                            <img 
+                                src="{{ mensaje.emisor.get_avatar_url }}" 
+                                alt="Avatar" 
+                                class="message-avatar"
+                            >
+                            
+                            <div class="messages-wrapper">
+                                <div class="message-bubble">
+                                    {{ mensaje.contenido }}
+                                </div>
+                                <div class="message-time">
+                                    {{ mensaje.fecha_envio|date:"H:i" }}
+                                    {% if mensaje.emisor == user %}
+                                        <i class="bi bi-check-all {% if mensaje.leido %}text-primary{% endif %}"></i>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% empty %}
+                    <div style="text-align: center; padding: 2rem; color: var(--lx-gray-500);">
+                        <i class="bi bi-chat-text" style="font-size: 48px; margin-bottom: 1rem;"></i>
+                        <p>{% trans "No hay mensajes aún" %}</p>
+                        <p style="font-size: 14px;">{% trans "Envía un mensaje para iniciar la conversación" %}</p>
+                    </div>
+                {% endregroup %}
+            </div>
+            
+            <!-- Chat Input -->
+            <div class="chat-input-area">
+                <form id="messageForm" onsubmit="sendMessage(event)">
+                    {% csrf_token %}
+                    <div class="chat-input-wrapper">
+                        <div class="chat-input-actions">
+                            <button type="button" class="chat-input-btn" title="{% trans 'Adjuntar archivo' %}">
+                                <i class="bi bi-plus-circle"></i>
+                            </button>
+                            <button type="button" class="chat-input-btn" title="{% trans 'Adjuntar imagen' %}">
+                                <i class="bi bi-image"></i>
+                            </button>
+                        </div>
+                        
+                        <textarea 
+                            class="chat-input-field" 
+                            id="messageInput"
+                            name="contenido"
+                            placeholder="{% trans 'Escribe un mensaje...' %}"
+                            rows="1"
+                            onkeydown="handleKeyPress(event)"
+                        ></textarea>
+                        
+                        <button type="submit" class="chat-send-btn" id="sendBtn" disabled>
+                            <i class="bi bi-send-fill"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+        
+        <!-- ========================================
+             PROFILE PANEL (Right Column)
+             ======================================== -->
+        <div class="profile-column">
+            
+            <!-- Mobile Close Button -->
+            <div class="profile-close-header">
+                <button class="profile-close" onclick="hideProfile()">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <img src="{{ otro_usuario.get_avatar_url }}" alt="Avatar" class="profile-header-avatar">
+                <div class="profile-header-name">{{ otro_usuario.get_full_name }}</div>
+                <div class="profile-header-status">
+                    {% if otro_usuario.tipo_usuario == 'profesional' %}
+                        {{ otro_usuario.profesional.titulo_actual|default:"Profesional en Linking X" }}
+                    {% else %}
+                        {{ otro_usuario.empresa.tipo_empresa|capfirst }}
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Profile Actions -->
+            <div class="profile-actions">
+                <a href="{% url 'profile_detail' otro_usuario.id %}" class="profile-action-btn">
+                    <i class="bi bi-person-circle"></i>
+                    <span>{% trans "Ver perfil" %}</span>
+                </a>
+                
+                <button class="profile-action-btn danger" onclick="blockUser()">
+                    <i class="bi bi-slash-circle"></i>
+                    <span>{% trans "Bloquear" %}</span>
+                </button>
+            </div>
+            
+            <!-- Shared Media -->
+            <div class="profile-section">
+                <div class="profile-section-header">
+                    <h3 class="profile-section-title">{% trans "Archivos multimedia" %}</h3>
+                    {% if media_compartida %}
+                    <a href="#" class="profile-section-link">{% trans "Ver todos" %}</a>
+                    {% endif %}
+                </div>
+                
+                <div class="media-grid">
+                    {% if media_compartida %}
+                        {% for mensaje in media_compartida %}
+                            {% if mensaje.archivo %}
+                            <div class="media-item">
+                                <img src="{{ mensaje.archivo.url }}" alt="Media">
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="media-empty">
+                            <i class="bi bi-images" style="font-size: 32px; display: block; margin-bottom: 0.5rem; opacity: 0.5;"></i>
+                            {% trans "No hay archivos compartidos" %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Auto-resize textarea
+const messageInput = document.getElementById('messageInput');
+const sendBtn = document.getElementById('sendBtn');
+
+messageInput.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = (this.scrollHeight) + 'px';
+    
+    // Enable/disable send button
+    sendBtn.disabled = !this.value.trim();
+});
+
+// Handle Enter key
+function handleKeyPress(event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        if (!sendBtn.disabled) {
+            document.getElementById('messageForm').dispatchEvent(new Event('submit'));
+        }
+    }
+}
+
+// Send message
+function sendMessage(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    const contenido = formData.get('contenido').trim();
+    
+    if (!contenido) return;
+    
+    // Disable input while sending
+    messageInput.disabled = true;
+    sendBtn.disabled = true;
+    
+    fetch('{% url "send_message" conversacion.id %}', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Add message to chat
+            addMessageToChat(data.mensaje);
+            
+            // Clear input
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+            
+            // Scroll to bottom
+            scrollToBottom();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('{% trans "Error al enviar el mensaje" %}');
+    })
+    .finally(() => {
+        messageInput.disabled = false;
+        messageInput.focus();
+    });
+}
+
+function addMessageToChat(mensaje) {
+    const chatMessages = document.getElementById('chatMessages');
+    const messageHTML = `
+        <div class="message-group sent">
+            <img src="{{ user.get_avatar_url }}" alt="Avatar" class="message-avatar">
+            <div class="messages-wrapper">
+                <div class="message-bubble">${mensaje.contenido}</div>
+                <div class="message-time">
+                    ${new Date().toLocaleTimeString('es', {hour: '2-digit', minute: '2-digit'})}
+                    <i class="bi bi-check"></i>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    chatMessages.insertAdjacentHTML('beforeend', messageHTML);
+}
+
+function scrollToBottom() {
+    const chatMessages = document.getElementById('chatMessages');
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Mobile navigation
+function goBackToList() {
+    window.location.href = '{% url "message_list" %}';
+}
+
+function showProfile() {
+    if (window.innerWidth < 992) {
+        document.getElementById('messengerLayout').classList.add('show-profile');
+    }
+}
+
+function hideProfile() {
+    document.getElementById('messengerLayout').classList.remove('show-profile');
+}
+
+function blockUser() {
+    if (confirm('{% trans "¿Estás seguro de que quieres bloquear a este usuario?" %}')) {
+        // Implement block functionality
+        alert('{% trans "Funcionalidad de bloqueo en desarrollo" %}');
+    }
+}
+
+// Auto-scroll to bottom on load
+window.addEventListener('load', scrollToBottom);
+
+// Handle window resize
+window.addEventListener('resize', function() {
+    if (window.innerWidth >= 992) {
+        document.getElementById('messengerLayout').classList.remove('show-profile');
+    }
+});
+</script>
+{% endblock %}
