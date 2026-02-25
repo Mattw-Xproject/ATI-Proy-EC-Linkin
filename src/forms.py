@@ -455,7 +455,6 @@ class ExperienciaLaboralForm(forms.ModelForm):
             'cargo',
             'tipo_empleo',
             'modalidad',
-            'ubicacion',
             'fecha_inicio',
             'fecha_fin',
             'trabajo_actual',
