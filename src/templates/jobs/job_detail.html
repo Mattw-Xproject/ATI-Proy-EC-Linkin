@@ -1,0 +1,970 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{{ oferta.titulo }} - Linking X{% endblock %}
+
+{% block extra_css %}
+<style>
+    .job-detail-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem;
+    }
+    
+    .job-detail-layout {
+        display: grid;
+        grid-template-columns: 35% 1fr;
+        gap: 1.5rem;
+    }
+    
+    /* Left Sidebar - Similar Jobs */
+    .similar-jobs-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .sidebar-card {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid var(--lx-gray-200);
+        padding: 1.25rem;
+    }
+    
+    .sidebar-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--lx-gray-900);
+        margin-bottom: 1rem;
+    }
+    
+    .similar-job-item {
+        padding: 1rem;
+        border-radius: 6px;
+        border: 1px solid var(--lx-gray-200);
+        margin-bottom: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+    
+    .similar-job-item:hover {
+        border-color: var(--lx-primary);
+        background: var(--lx-gray-50);
+    }
+    
+    .similar-job-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--lx-gray-900);
+        margin-bottom: 0.25rem;
+    }
+    
+    .similar-job-company {
+        font-size: 13px;
+        color: var(--lx-gray-600);
+        margin-bottom: 0.5rem;
+    }
+    
+    .similar-job-meta {
+        font-size: 12px;
+        color: var(--lx-gray-500);
+    }
+    
+    /* Main Content - Job Details */
+    .job-detail-main {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid var(--lx-gray-200);
+    }
+    
+    .job-detail-header {
+        padding: 2rem;
+        border-bottom: 1px solid var(--lx-gray-200);
+    }
+    
+    .job-header-content {
+        display: flex;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .company-logo-large {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 1px solid var(--lx-gray-200);
+    }
+    
+    .job-header-info {
+        flex: 1;
+    }
+    
+    .job-detail-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--lx-gray-900);
+        margin-bottom: 0.5rem;
+    }
+    
+    .job-detail-company {
+        font-size: 18px;
+        color: var(--lx-gray-600);
+        margin-bottom: 1rem;
+    }
+    
+    .job-detail-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        font-size: 14px;
+        color: var(--lx-gray-600);
+    }
+    
+    .job-detail-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .job-detail-meta-item i {
+        color: var(--lx-gray-500);
+    }
+    
+    .job-actions {
+        display: flex;
+        gap: 1rem;
+    }
+    
+    .btn-apply {
+        flex: 1;
+        max-width: 200px;
+    }
+    
+    .btn-save {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--lx-gray-300);
+        background: white;
+        color: var(--lx-gray-600);
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-save:hover {
+        background: var(--lx-gray-100);
+        color: var(--lx-primary);
+    }
+    
+    .btn-save.saved {
+        background: var(--lx-primary-light);
+        color: var(--lx-primary);
+        border-color: var(--lx-primary);
+    }
+    
+    .job-detail-body {
+        padding: 2rem;
+    }
+    
+    .job-section {
+        margin-bottom: 2.5rem;
+    }
+    
+    .job-section:last-child {
+        margin-bottom: 0;
+    }
+    
+    .job-section-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--lx-gray-900);
+        margin-bottom: 1rem;
+    }
+    
+    .job-section-content {
+        font-size: 15px;
+        line-height: 1.7;
+        color: var(--lx-gray-700);
+        white-space: pre-wrap;
+    }
+    
+    .job-requirements-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .job-requirements-list li {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--lx-gray-100);
+        display: flex;
+        align-items: start;
+        gap: 0.75rem;
+    }
+    
+    .job-requirements-list li:last-child {
+        border-bottom: none;
+    }
+    
+    .job-requirements-list li i {
+        color: var(--lx-primary);
+        margin-top: 0.25rem;
+        flex-shrink: 0;
+    }
+    
+    .job-stats {
+        display: flex;
+        gap: 2rem;
+        padding: 1.5rem;
+        background: var(--lx-gray-50);
+        border-radius: 8px;
+        margin-top: 1.5rem;
+    }
+    
+    .job-stat {
+        text-align: center;
+    }
+    
+    .job-stat-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--lx-primary);
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+    
+    .job-stat-label {
+        font-size: 13px;
+        color: var(--lx-gray-600);
+    }
+    
+    /* Application Modal */
+    .application-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        padding: 1rem;
+    }
+    
+    .application-modal.active {
+        display: flex;
+    }
+    
+    .application-modal-content {
+        background: white;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 600px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    
+    .modal-header {
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid var(--lx-gray-200);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .modal-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--lx-gray-900);
+    }
+    
+    .modal-close {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: var(--lx-gray-500);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+    
+    .modal-close:hover {
+        background: var(--lx-gray-100);
+        color: var(--lx-gray-900);
+    }
+    
+    .modal-progress {
+        padding: 0 2rem;
+        margin-top: 1rem;
+    }
+    
+    .progress-bar-container {
+        width: 100%;
+        height: 8px;
+        background: var(--lx-gray-200);
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    
+    .progress-bar-fill {
+        height: 100%;
+        background: var(--lx-primary);
+        border-radius: 4px;
+        transition: width 0.3s ease;
+    }
+    
+    .progress-steps {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.75rem;
+        font-size: 13px;
+        color: var(--lx-gray-600);
+    }
+    
+    .progress-step {
+        font-weight: 500;
+    }
+    
+    .progress-step.active {
+        color: var(--lx-primary);
+        font-weight: 600;
+    }
+    
+    .modal-body {
+        padding: 2rem;
+    }
+    
+    .application-step {
+        display: none;
+    }
+    
+    .application-step.active {
+        display: block;
+    }
+    
+    .form-group-modal {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-label-modal {
+        display: block;
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--lx-gray-700);
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-control-modal {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid var(--lx-gray-300);
+        border-radius: 8px;
+        font-size: 15px;
+        transition: all 0.2s ease;
+    }
+    
+    .form-control-modal:focus {
+        outline: none;
+        border-color: var(--lx-primary);
+        box-shadow: 0 0 0 3px var(--lx-primary-light);
+    }
+    
+    .upload-area {
+        border: 2px dashed var(--lx-gray-300);
+        border-radius: 8px;
+        padding: 3rem 2rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .upload-area:hover {
+        border-color: var(--lx-primary);
+        background: var(--lx-primary-light);
+    }
+    
+    .upload-area.has-file {
+        border-color: var(--lx-primary);
+        background: var(--lx-primary-light);
+    }
+    
+    .upload-icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 1rem;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--lx-primary);
+        font-size: 28px;
+    }
+    
+    .upload-text {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--lx-gray-900);
+        margin-bottom: 0.5rem;
+    }
+    
+    .upload-subtext {
+        font-size: 14px;
+        color: var(--lx-gray-600);
+    }
+    
+    .file-name-display {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: white;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .file-name-display i {
+        color: var(--lx-primary);
+        font-size: 24px;
+    }
+    
+    .modal-footer {
+        padding: 1.5rem 2rem;
+        border-top: 1px solid var(--lx-gray-200);
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 991px) {
+        .job-detail-layout {
+            grid-template-columns: 1fr;
+        }
+        
+        .similar-jobs-sidebar {
+            display: none;
+        }
+        
+        .job-detail-title {
+            font-size: 22px;
+        }
+        
+        .job-actions {
+            flex-direction: column;
+        }
+        
+        .btn-apply {
+            max-width: 100%;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .job-detail-header {
+            padding: 1.5rem;
+        }
+        
+        .job-detail-body {
+            padding: 1.5rem;
+        }
+        
+        .job-header-content {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .company-logo-large {
+            width: 64px;
+            height: 64px;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="job-detail-container">
+    <div class="job-detail-layout">
+        
+        <!-- Left Sidebar - Similar Jobs -->
+        <aside class="similar-jobs-sidebar">
+            <div class="sidebar-card">
+                <h3 class="sidebar-title">
+                    <i class="bi bi-briefcase me-2"></i>
+                    {% trans "Empleos similares" %}
+                </h3>
+                
+                {% for similar_oferta in ofertas_similares %}
+                <a href="{% url 'job_detail' similar_oferta.id %}" class="similar-job-item">
+                    <div class="similar-job-title">{{ similar_oferta.titulo }}</div>
+                    <div class="similar-job-company">{{ similar_oferta.empresa.nombre_empresa }}</div>
+                    <div class="similar-job-meta">
+                        <i class="bi bi-geo-alt me-1"></i>{{ similar_oferta.ubicacion }}
+                        <span class="mx-2">•</span>
+                        {{ similar_oferta.get_tipo_empleo_display }}
+                    </div>
+                </a>
+                {% empty %}
+                <p class="text-muted small">{% trans "No hay empleos similares disponibles" %}</p>
+                {% endfor %}
+            </div>
+        </aside>
+        
+        <!-- Main Content - Job Details -->
+        <main class="job-detail-main">
+            
+            <!-- Job Header -->
+            <div class="job-detail-header">
+                <div class="job-header-content">
+                    <img src="{{ oferta.empresa.user.get_avatar_url }}" alt="Logo" class="company-logo-large">
+                    
+                    <div class="job-header-info">
+                        <h1 class="job-detail-title">{{ oferta.titulo }}</h1>
+                        <div class="job-detail-company">
+                            <a href="{% url 'profile_detail' oferta.empresa.user.id %}" class="text-decoration-none">
+                                {{ oferta.empresa.nombre_empresa }}
+                            </a>
+                        </div>
+                        
+                        <div class="job-detail-meta">
+                            <span class="job-detail-meta-item">
+                                <i class="bi bi-geo-alt"></i>
+                                {{ oferta.ubicacion }}
+                            </span>
+                            <span class="job-detail-meta-item">
+                                <i class="bi bi-briefcase"></i>
+                                {{ oferta.get_tipo_empleo_display }}
+                            </span>
+                            <span class="job-detail-meta-item">
+                                <i class="bi bi-laptop"></i>
+                                {{ oferta.get_modalidad_display }}
+                            </span>
+                            <span class="job-detail-meta-item">
+                                <i class="bi bi-clock"></i>
+                                {{ oferta.fecha_publicacion|timesince }} {% trans "atrás" %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="job-actions">
+                    {% if user.tipo_usuario == 'profesional' %}
+                        {% if ya_postulo %}
+                            <button class="btn btn-success btn-apply" disabled>
+                                <i class="bi bi-check-circle me-2"></i>
+                                {% trans "Ya aplicaste" %}
+                            </button>
+                        {% else %}
+                            <button class="btn btn-primary btn-apply" onclick="openApplicationModal()">
+                                <i class="bi bi-send me-2"></i>
+                                {% trans "Aplicar ahora" %}
+                            </button>
+                        {% endif %}
+
+                        <button class="btn-save {% if guardada %}saved{% endif %}" onclick="toggleSaveJob('{{ oferta.id }}')" id="saveBtn">
+                            <i class="bi {% if guardada %}bi-bookmark-fill{% else %}bi-bookmark{% endif %}"></i>
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Job Body -->
+            <div class="job-detail-body">
+                
+                <!-- Description -->
+                <div class="job-section">
+                    <h2 class="job-section-title">{% trans "Descripción del puesto" %}</h2>
+                    <div class="job-section-content">{{ oferta.descripcion }}</div>
+                </div>
+                
+                <!-- Responsibilities -->
+                {% if oferta.responsabilidades %}
+                <div class="job-section">
+                    <h2 class="job-section-title">{% trans "Responsabilidades" %}</h2>
+                    <div class="job-section-content">{{ oferta.responsabilidades }}</div>
+                </div>
+                {% endif %}
+                
+                <!-- Requirements -->
+                <div class="job-section">
+                    <h2 class="job-section-title">{% trans "Requisitos" %}</h2>
+                    <ul class="job-requirements-list">
+                        {% for req in oferta.requisitos.splitlines %}
+                        <li>
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span>{{ req }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+                <!-- Salary & Benefits -->
+                <div class="job-section">
+                    <h2 class="job-section-title">{% trans "Compensación y beneficios" %}</h2>
+                    <div class="job-section-content">
+                        {% if oferta.mostrar_salario and oferta.salario_min %}
+                            <strong>{% trans "Salario:" %}</strong> {{ oferta.get_rango_salario }}
+                        {% else %}
+                            <strong>{% trans "Salario:" %}</strong> {% trans "A convenir" %}
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Stats -->
+                <div class="job-stats">
+                    <div class="job-stat">
+                        <span class="job-stat-value">{{ oferta.vistas }}</span>
+                        <span class="job-stat-label">{% trans "Vistas" %}</span>
+                    </div>
+                    <div class="job-stat">
+                        <span class="job-stat-value">{{ oferta.postulaciones.count }}</span>
+                        <span class="job-stat-label">{% trans "Aplicantes" %}</span>
+                    </div>
+                    <div class="job-stat">
+                        <span class="job-stat-value">{{ oferta.get_nivel_display }}</span>
+                        <span class="job-stat-label">{% trans "Nivel" %}</span>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </main>
+        
+    </div>
+</div>
+
+<!-- Application Modal -->
+<div class="application-modal" id="applicationModal">
+    <div class="application-modal-content">
+        <form id="applicationForm" method="post" action="{% url 'job_apply' oferta.id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h2 class="modal-title">{% trans "Aplicar a" %} {{ oferta.titulo }}</h2>
+                <button type="button" class="modal-close" onclick="closeApplicationModal()">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="modal-progress">
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progressBar" style="width: 50%;"></div>
+                </div>
+                <div class="progress-steps">
+                    <span class="progress-step active" id="step1Label">{% trans "Información" %}</span>
+                    <span class="progress-step" id="step2Label">{% trans "Currículum" %}</span>
+                </div>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <!-- Step 1: Information -->
+                <div class="application-step active" id="step1">
+                    
+                    <!-- Tech Skills -->
+                    <div class="form-group-modal">
+                        <label class="form-label-modal">
+                            {% trans "Habilidades técnicas" %} *
+                        </label>
+                        <input 
+                            type="text" 
+                            name="habilidades_tecnicas"
+                            class="form-control-modal"
+                            placeholder="{% trans 'Python, Django, React, PostgreSQL...' %}"
+                            required
+                        >
+                        <small class="text-muted">{% trans "Separa las habilidades con comas" %}</small>
+                    </div>
+                    
+                    <!-- Years of Experience -->
+                    <div class="form-group-modal">
+                        <label class="form-label-modal">
+                            {% trans "Años de experiencia" %} *
+                        </label>
+                        <input 
+                            type="number" 
+                            name="anos_experiencia"
+                            class="form-control-modal"
+                            placeholder="0"
+                            min="0"
+                            max="50"
+                            required
+                        >
+                    </div>
+                    
+                    <!-- Skill Level -->
+                    <div class="form-group-modal">
+                        <label class="form-label-modal">
+                            {% trans "Nivel de habilidad" %} *
+                        </label>
+                        <select name="nivel_habilidad" class="form-control-modal" required>
+                            <option value="">{% trans "Selecciona tu nivel" %}</option>
+                            <option value="junior">{% trans "Junior" %}</option>
+                            <option value="mid">{% trans "Mid-level" %}</option>
+                            <option value="senior">{% trans "Senior" %}</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Phone -->
+                    <div class="form-group-modal">
+                        <label class="form-label-modal">
+                            {% trans "Número de teléfono" %} *
+                        </label>
+                        <input 
+                            type="tel" 
+                            name="telefono_contacto"
+                            class="form-control-modal"
+                            placeholder="+58 412 1234567"
+                            required
+                        >
+                    </div>
+                    
+                    <!-- Email -->
+                    <div class="form-group-modal">
+                        <label class="form-label-modal">
+                            {% trans "Email de contacto" %} *
+                        </label>
+                        <input 
+                            type="email" 
+                            name="email_contacto"
+                            class="form-control-modal"
+                            value="{{ user.email }}"
+                            required
+                        >
+                    </div>
+                    
+                </div>
+                
+                <!-- Step 2: Resume Upload -->
+                <div class="application-step" id="step2">
+                    
+                    <div class="text-center mb-4">
+                        <div class="upload-icon">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <h3 class="mb-2">{% trans "Adjunta tu currículum" %}</h3>
+                        <p class="text-muted">{% trans "Sube tu CV actualizado para completar tu aplicación" %}</p>
+                    </div>
+                    
+                    <div class="upload-area" id="uploadArea" onclick="document.getElementById('curriculumInput').click()">
+                        <div class="upload-icon">
+                            <i class="bi bi-cloud-upload"></i>
+                        </div>
+                        <div class="upload-text">{% trans "Haz clic para subir tu CV" %}</div>
+                        <div class="upload-subtext">{% trans "PDF, DOC, DOCX (máx. 5MB)" %}</div>
+                        
+                        <div class="file-name-display d-none" id="fileNameDisplay">
+                            <i class="bi bi-file-earmark-check-fill"></i>
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold" id="fileName"></div>
+                                <small class="text-muted" id="fileSize"></small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <input 
+                        type="file" 
+                        name="curriculum"
+                        id="curriculumInput"
+                        accept=".pdf,.doc,.docx"
+                        style="display: none;"
+                        required
+                        onchange="handleFileSelect(this)"
+                    >
+                    
+                </div>
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeApplicationModal()">
+                    {% trans "Cancelar" %}
+                </button>
+                
+                <div class="ms-auto d-flex gap-2">
+                    <button type="button" class="btn btn-outline-primary" id="backBtn" onclick="previousStep()" style="display: none;">
+                        <i class="bi bi-arrow-left me-2"></i>
+                        {% trans "Atrás" %}
+                    </button>
+                    
+                    <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextStep()">
+                        {% trans "Siguiente" %}
+                        <i class="bi bi-arrow-right ms-2"></i>
+                    </button>
+                    
+                    <button type="submit" class="btn btn-primary" id="submitBtn" style="display: none;">
+                        <i class="bi bi-send me-2"></i>
+                        {% trans "Enviar aplicación" %}
+                    </button>
+                </div>
+            </div>
+            
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let currentStep = 1;
+
+function openApplicationModal() {
+    document.getElementById('applicationModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeApplicationModal() {
+    document.getElementById('applicationModal').classList.remove('active');
+    document.body.style.overflow = 'auto';
+    resetForm();
+}
+
+function resetForm() {
+    currentStep = 1;
+    document.getElementById('step1').classList.add('active');
+    document.getElementById('step2').classList.remove('active');
+    document.getElementById('step1Label').classList.add('active');
+    document.getElementById('step2Label').classList.remove('active');
+    document.getElementById('progressBar').style.width = '50%';
+    document.getElementById('backBtn').style.display = 'none';
+    document.getElementById('nextBtn').style.display = 'block';
+    document.getElementById('submitBtn').style.display = 'none';
+    document.getElementById('applicationForm').reset();
+}
+
+function nextStep() {
+    // Validate step 1 fields
+    const step1 = document.getElementById('step1');
+    const inputs = step1.querySelectorAll('input[required], select[required]');
+    let valid = true;
+    
+    inputs.forEach(input => {
+        if (!input.value) {
+            valid = false;
+            input.classList.add('is-invalid');
+        } else {
+            input.classList.remove('is-invalid');
+        }
+    });
+    
+    if (!valid) {
+        alert('{% trans "Por favor completa todos los campos requeridos" %}');
+        return;
+    }
+    
+    currentStep = 2;
+    document.getElementById('step1').classList.remove('active');
+    document.getElementById('step2').classList.add('active');
+    document.getElementById('step1Label').classList.remove('active');
+    document.getElementById('step2Label').classList.add('active');
+    document.getElementById('progressBar').style.width = '100%';
+    document.getElementById('backBtn').style.display = 'block';
+    document.getElementById('nextBtn').style.display = 'none';
+    document.getElementById('submitBtn').style.display = 'block';
+}
+
+function previousStep() {
+    currentStep = 1;
+    document.getElementById('step1').classList.add('active');
+    document.getElementById('step2').classList.remove('active');
+    document.getElementById('step1Label').classList.add('active');
+    document.getElementById('step2Label').classList.remove('active');
+    document.getElementById('progressBar').style.width = '50%';
+    document.getElementById('backBtn').style.display = 'none';
+    document.getElementById('nextBtn').style.display = 'block';
+    document.getElementById('submitBtn').style.display = 'none';
+}
+
+function handleFileSelect(input) {
+    const file = input.files[0];
+    if (file) {
+        const uploadArea = document.getElementById('uploadArea');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        
+        uploadArea.classList.add('has-file');
+        fileNameDisplay.classList.remove('d-none');
+        fileName.textContent = file.name;
+        fileSize.textContent = formatFileSize(file.size);
+    }
+}
+
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+}
+
+function toggleSaveJob(jobId) {
+    fetch(`/jobs/${jobId}/save/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const btn = document.getElementById('saveBtn');
+            const icon = btn.querySelector('i');
+            
+            if (data.guardada) {
+                btn.classList.add('saved');
+                icon.classList.remove('bi-bookmark');
+                icon.classList.add('bi-bookmark-fill');
+            } else {
+                btn.classList.remove('saved');
+                icon.classList.remove('bi-bookmark-fill');
+                icon.classList.add('bi-bookmark');
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('{% trans "Hubo un error al guardar el empleo" %}');
+    });
+}
+
+// Close modal on ESC key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeApplicationModal();
+    }
+});
+
+// Close modal on background click
+document.getElementById('applicationModal').addEventListener('click', function(event) {
+    if (event.target === this) {
+        closeApplicationModal();
+    }
+});
+</script>
+{% endblock %}
