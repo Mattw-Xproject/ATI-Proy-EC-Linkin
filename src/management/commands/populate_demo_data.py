@@ -69,18 +69,18 @@ class Command(BaseCommand):
         
         profesionales_data = [
             {
-                'email': 'andreinacarolaineve@gmail.com',
+                'email': 'dannygonzalez.exe@gmail.com',
                 'password': 'demo123',
-                'first_name': 'andreina',
-                'last_name': 'velasquez',
+                'first_name': 'Mateo',
+                'last_name': 'Gonzalez',
                 'ubicacion': 'Caracas, Venezuela',
                 'cedula': '28309031',
                 'fecha_nacimiento': '2000-03-15',
-                'genero': 'femenino',
+                'genero': 'masculino',
                 'titulo_actual': 'Desarrolladora Full Stack',
                 'descripcion_personal': 'Apasionada por crear soluciones tecnológicas innovadoras. 5 años de experiencia en desarrollo web con Python y React.',
-                'linkedin_url': 'https://linkedin.com/in/andreina',
-                'github_url': 'https://github.com/andreina',
+                'linkedin_url': 'https://linkedin.com/in/matt',
+                'github_url': 'https://github.com/matt',
                 'habilidades': [
                     ('Python', 'avanzado'),
                     ('Django', 'avanzado'),
@@ -141,7 +141,7 @@ class Command(BaseCommand):
                 }
             },
             {
-                'email': 'andreina.velasquez@gmail.com',
+                'email': 'andreina.ve@gmail.com',
                 'password': 'demo123',
                 'first_name': 'andreina',
                 'last_name': 'Velasquez',
@@ -341,7 +341,7 @@ class Command(BaseCommand):
             },
             {
                 'contenido': 'Acabo de completar un curso de Machine Learning en Coursera. Los modelos predictivos son fascinantes. ¿Recomendaciones de proyectos para practicar? 📊🤖',
-                'usuario': 'andreina.velasquez@gmail.com',
+                'usuario': 'andreina.ve@gmail.com',
             },
             {
                 'contenido': 'El trabajo remoto ha cambiado mi vida profesional. Mayor productividad, mejor balance vida-trabajo, y más tiempo con mi familia. ¿Cuál ha sido su experiencia? 🏠💼',
@@ -357,7 +357,7 @@ class Command(BaseCommand):
             },
             {
                 'contenido': '¿Sabían que Python sigue siendo el lenguaje #1 para Data Science? Su ecosistema de librerías es incomparable: Pandas, NumPy, Scikit-learn, TensorFlow... 🐍📈',
-                'usuario': 'andreina.velasquez@gmail.com',
+                'usuario': 'andreina.ve@gmail.com',
             },
         ]
         
@@ -597,7 +597,7 @@ Proactividad y gandreinas de aprender''',
             )
             
             # Conversación entre profesional y empresa
-            andreina = Usuario.objects.get(email='andreina.velasquez@gmail.com')
+            andreina = Usuario.objects.get(email='andreina.ve@gmail.com')
             empresa = Usuario.objects.get(email='contacto@dataanalitycs.com')
             
             conv2 = Conversacion.objects.create(
@@ -638,9 +638,9 @@ Proactividad y gandreinas de aprender''',
         self.stdout.write('Password: admin123\n')
         
         self.stdout.write(self.style.WARNING('PROFESIONALES:'))
-        self.stdout.write('Email: andreina.ve@gmail.com | Password: demo123')
+        self.stdout.write('Email: dannygonzalez.exe@gmail.com | Password: demo123')
         self.stdout.write('Email: nicole.llerena@gmail.com | Password: demo123')
-        self.stdout.write('Email: andreina.velasquez@gmail.com | Password: demo123\n')
+        self.stdout.write('Email: andreina.ve@gmail.com | Password: demo123\n')
         
         self.stdout.write(self.style.WARNING('EMPRESAS:'))
         self.stdout.write('Email: rh@techsolutions.com | Password: demo123')

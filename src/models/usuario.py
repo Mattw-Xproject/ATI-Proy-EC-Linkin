@@ -48,13 +48,13 @@ class Usuario(AbstractUser):
     def __str__(self):
         return self.get_full_name() or self.username
     
-    def get_avatar_url(self):
+    #def get_avatar_url(self):
         if self.foto:
             return self.foto.url
         # Placeholder por defecto
-        return '/static/img/placeholder-profile.png'
+        return '/static/img/placeholder-avatar.png'
     
-    ##def get_avatar_url(self):
+    def get_avatar_url(self):
         """Retorna la URL del avatar del usuario"""
         if self.foto:
             return self.foto.url
@@ -65,4 +65,5 @@ class Usuario(AbstractUser):
         iniciales = ''.join([word[0].upper() for word in nombre.split()[:2]])
         
         # URL de UI Avatars con los colores de Linking X
-        return f"https://ui-avatars.com/api/?name={iniciales}&size=512&background=0A66C2&color=fff&bold=true&rounded=true"
+        return f"https://ui-avatars.com/api/?name={iniciales}&size=128&background=0A66C2&color=fff&bold=true&rounded=true"
+    

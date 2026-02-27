@@ -6,30 +6,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{% block meta_description %}{% trans 'Linking X - Red profesional para conectar empresas y estudiantes' %}{% endblock %}">
-    <title>{% block title %}Linking X{% endblock %}</title>
+    <title>{% block title %} ATI-Linking X{% endblock %}</title>
     
-    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/variables.css' %}">
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
     
+    <style>
+        /* =========================================================
+           Diseño flotante estilo wireframes (Solo Escritorio)
+           ========================================================= */
+        @media (min-width: 992px) {
+            body {
+                background-color: #f4f6f8; /* Fondo general casi blanco */
+                position: relative;
+            }
+            
+            /* Franja azul en el top que corta el header */
+            .top-blue-bg {
+                position: absolute;
+                top: -30px; /* Ajusta para que se vea un poco por debajo del header */
+                left: 0;
+                width: 100%;
+                height: 70px;
+                background-color: #0A66C2; /* Color azul representativo */
+                z-index: -1;
+            }
+
+            /* Separar el header de los bordes */
+            .header-floating {
+                margin: 24px auto 0 !important;
+                max-width: 1400px;
+                width: calc(100% - 48px);
+                border-radius: 12px;
+                border: none !important;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+                /*top: 24px !important; /* Mantiene el sticky-top pero flotando */
+            }
+
+            /* Márgenes para el contenido principal */
+            .main-floating {
+                max-width: 1400px;
+                width: calc(100% - 48px);
+                margin: 32px auto !important;
+                min-height: calc(100vh - 220px);
+            }
+
+            /* Separar el footer de los bordes */
+            .footer-floating {
+                max-width: 1400px;
+                width: calc(100% - 48px);
+                margin: 0 auto 24px auto !important;
+                border-radius: 12px;
+                background-color: white !important;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            }
+        }
+    </style>
+
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Header / Top Navigation -->
-    <header class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top shadow-sm">
+    <div class="top-blue-bg d-none d-lg-block"></div>
+
+    <header class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top shadow-sm header-floating">
         <div class="container-fluid px-3 px-lg-4">
-            <!-- Back Button (Mobile) -->
             {% if request.path != '/' and user.is_authenticated %}
             <button 
                 onclick="history.back()" 
@@ -40,7 +88,6 @@
             </button>
             {% endif %}
             
-            <!-- Logo -->
             <a href="{% if user.is_authenticated %}{% url 'feed_home' %}{% else %}{% url 'auth_login' %}{% endif %}" class="navbar-brand fw-bold text-primary d-flex align-items-center">
                 <div class="logo-circle me-2" style="width: 40px; height: 40px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: transparent;">
                     <img src="{% static 'img/logo-icon.png' %}" alt="Linking X Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;">
@@ -48,7 +95,6 @@
                 <span class="d-none d-sm-inline">Linking X</span>
             </a>
             
-            <!-- Search Bar (Desktop - Authenticated) -->
             {% if user.is_authenticated %}
             <form class="d-none d-lg-flex flex-grow-1 mx-4" style="max-width: 400px;">
                 <div class="input-group">
@@ -60,7 +106,6 @@
             </form>
             {% endif %}
             
-            <!-- Desktop Navigation -->
             <div class="d-none d-lg-flex align-items-center gap-1">
                 {% if user.is_authenticated %}
                     <a href="{% url 'feed_home' %}" class="nav-link-custom {% if 'feed' in request.path or request.path == '/' %}active{% endif %}">
@@ -74,13 +119,11 @@
                         <span>{% trans "Empleos" %}</span>
                     </a>
                     
-                    <!-- Desktop Navigation -->
                     <a href="{% url 'message_list' %}" class="nav-link-custom {% if 'message' in request.path %}active{% endif %}">
                         <i class="bi bi-chat-dots-fill"></i>
                         <span>{% trans "Mensajes" %}</span>
                     </a>
                     
-                    <!-- Profile Dropdown -->
                     <div class="dropdown">
                         <a href="#" class="nav-link-custom {% if 'profile' in request.path %}active{% endif %}" data-bs-toggle="dropdown" aria-expanded="false" style="display: flex; align-items: center; gap: 4px;">
                             <div style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden; flex-shrink: 0;">
@@ -117,8 +160,7 @@
         </div>
     </header>
     
-    <!-- Main Content -->
-    <main class="main-content" {% block main_attrs %}{% endblock %}>
+    <main class="main-content main-floating" {% block main_attrs %}{% endblock %}>
         {% if messages %}
             <div class="container mt-3">
                 {% for message in messages %}
@@ -142,7 +184,6 @@
         {% block content %}{% endblock %}
     </main>
     
-    <!-- Bottom Navigation (Mobile Only) -->
     {% if user.is_authenticated %}
     <nav class="bottom-nav d-lg-none">
         <a href="{% url 'feed_home' %}" class="bottom-nav-item {% if 'feed' in request.path or request.path == '/' %}active{% endif %}">
@@ -167,19 +208,16 @@
     </nav>
     {% endif %}
     
-    <!-- Footer (Public Pages) -->
     {% if not user.is_authenticated %}
-    <footer class="bg-light py-2 mt-5">
+    <footer class="bg-light py-2 mt-5 footer-floating">
         <div class="container text-center text-muted">
             <small>© {% now "Y" %} Linking X. {% trans "Todos los derechos reservados." %}</small>
         </div>
     </footer>
     {% endif %}
     
-    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Custom JS -->
     <script src="{% static 'js/main.js' %}"></script>
     {% block extra_js %}{% endblock %}
 </body>
