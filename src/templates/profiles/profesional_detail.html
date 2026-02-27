@@ -1,0 +1,624 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{{ profile_user.get_full_name }} - Linking X{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile-layout {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem;
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 1.5rem;
+    }
+    
+    .profile-main {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .card {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        overflow: hidden;
+    }
+    
+    .profile-header-card {
+        position: relative;
+    }
+    
+    .profile-banner {
+        height: 120px;
+        background: linear-gradient(135deg, #0A66C2, #004182);
+    }
+    
+    .profile-header-content {
+        padding: 0 1.5rem 1.5rem;
+        position: relative;
+    }
+    
+    .profile-avatar-wrapper {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        margin-top: -60px;
+        margin-bottom: 1rem;
+    }
+    
+    .profile-avatar-large {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 4px solid white;
+        object-fit: cover;
+    }
+    
+    .avatar-edit-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: white;
+        border: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #6b7280;
+    }
+    
+    .avatar-edit-btn:hover {
+        background: #f3f4f6;
+    }
+    
+    .profile-name {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .profile-headline {
+        font-size: 16px;
+        color: #6b7280;
+        margin-bottom: 0.5rem;
+    }
+    
+    .profile-location {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        color: #6b7280;
+        font-size: 14px;
+        margin-bottom: 0.5rem;
+    }
+    
+    .profile-actions {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1rem;
+    }
+    
+    .btn {
+        padding: 0.5rem 1.5rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 14px;
+        border: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+    
+    .btn-primary {
+        background: #0A66C2;
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: #004182;
+    }
+    
+    .btn-secondary {
+        background: white;
+        color: #0A66C2;
+        border: 1px solid #0A66C2;
+    }
+    
+    .btn-secondary:hover {
+        background: #E7F3FF;
+    }
+    
+    .profile-section {
+        padding: 1.5rem;
+    }
+    
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .section-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #111827;
+    }
+    
+    .btn-icon-edit {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: transparent;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6b7280;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    
+    .btn-icon-edit:hover {
+        background: #f3f4f6;
+    }
+    
+    .section-content {
+        color: #374151;
+        line-height: 1.6;
+    }
+    
+    .skill-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .skill-tag {
+        background: #E7F3FF;
+        color: #0A66C2;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    
+    .experience-item, .education-item {
+        padding: 1rem 0;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .experience-item:last-child, .education-item:last-child {
+        border-bottom: none;
+    }
+    
+    .item-header {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 0.75rem;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    
+    .item-content {
+        display: flex;
+        gap: 1rem;
+        flex: 1;
+    }
+    
+    .item-logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 4px;
+        background: #f3f4f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #9ca3af;
+        flex-shrink: 0;
+    }
+    
+    .item-info {
+        flex: 1;
+    }
+    
+    .item-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 0.25rem;
+    }
+    
+    .item-subtitle {
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 0.25rem;
+    }
+    
+    .item-date {
+        font-size: 13px;
+        color: #9ca3af;
+    }
+    
+    .item-description {
+        margin-top: 0.75rem;
+        color: #374151;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+    
+    .item-actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+    
+    .btn-icon-small {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: transparent;
+        border: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6b7280;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+    
+    .btn-icon-small:hover {
+        background: #f3f4f6;
+        border-color: #d1d5db;
+    }
+    
+    .btn-icon-delete {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: transparent;
+        border: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ef4444;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .btn-icon-delete:hover {
+        background: #fee2e2;
+        border-color: #ef4444;
+    }
+    
+    .contact-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .contact-link {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: #0A66C2;
+        text-decoration: none;
+        font-size: 14px;
+    }
+    
+    .contact-link:hover {
+        text-decoration: underline;
+    }
+    
+    .empty-state-text {
+        color: #9ca3af;
+        text-align: center;
+        padding: 2rem;
+        font-size: 14px;
+    }
+    
+    .profile-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .ad-card {
+        padding: 1rem;
+    }
+    
+    .ad-label {
+        font-size: 12px;
+        color: #9ca3af;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    
+    .ad-placeholder {
+        background: #f3f4f6;
+        height: 120px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        color: #9ca3af;
+    }
+    
+    .ad-text {
+        text-align: center;
+        font-size: 14px;
+        margin-bottom: 1rem;
+        color: #6b7280;
+    }
+    
+    @media (max-width: 991px) {
+        .profile-layout {
+            grid-template-columns: 1fr;
+        }
+        
+        .profile-sidebar {
+            display: none;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-layout">
+    
+    <main class="profile-main">
+        
+        <!-- Profile Header -->
+        <section class="card profile-header-card">
+            <div class="profile-banner"></div>
+            
+            <div class="profile-header-content">
+                <div class="profile-avatar-wrapper">
+                    <img 
+                        class="profile-avatar-large" 
+                        src="{{ profile_user.get_avatar_url }}" 
+                        alt="{{ profile_user.get_full_name }}"
+                    >
+                    {% if is_own_profile %}
+                    <button class="avatar-edit-btn" aria-label="{% trans 'Cambiar foto' %}">
+                        <i class="bi bi-camera"></i>
+                    </button>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <h1 class="profile-name">{{ profile_user.get_full_name }}</h1>
+                    <p class="profile-headline">
+                        {{ profesional.titulo_actual|default:"Profesional en Linking X" }}
+                    </p>
+                    {% if profile_user.ubicacion %}
+                    <p class="profile-location">
+                        <i class="bi bi-geo-alt"></i> {{ profile_user.ubicacion }}
+                    </p>
+                    {% endif %}
+                </div>
+                
+                <div class="profile-actions">
+                    {% if is_own_profile %}
+                        <a href="#" class="btn btn-secondary">
+                            <i class="bi bi-pencil"></i>
+                            {% trans "Editar perfil" %}
+                        </a>
+                    {% else %}
+                        <button class="btn btn-primary">
+                            <i class="bi bi-person-plus"></i>
+                            {% trans "Conectar" %}
+                        </button>
+                        <a href="{% url 'create_conversation' profile_user.id %}" class="btn btn-secondary">
+                            <i class="bi bi-chat"></i>
+                            {% trans "Mensaje" %}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+        
+        <!-- About -->
+        {% if profesional.descripcion_personal %}
+        <section class="card profile-section">
+            <div class="section-header">
+                <h2 class="section-title">{% trans "Acerca de" %}</h2>
+            </div>
+            <p class="section-content">{{ profesional.descripcion_personal }}</p>
+        </section>
+        {% endif %}
+        
+        <!-- Experience -->
+        <section class="card profile-section">
+            <div class="section-header">
+                <h2 class="section-title">{% trans "Experiencia" %}</h2>
+                {% if is_own_profile %}
+                <a href="{% url 'add_section' 'experiencia' %}" class="btn-icon-edit" aria-label="{% trans 'Agregar' %}">
+                    <i class="bi bi-plus-lg"></i>
+                </a>
+                {% endif %}
+            </div>
+            
+            {% if experiencias %}
+                {% for exp in experiencias %}
+                <div class="experience-item">
+                    <div class="item-header">
+                        <div class="item-content">
+                            <div class="item-logo">
+                                <i class="bi bi-briefcase"></i>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-title">{{ exp.cargo }}</div>
+                                <div class="item-subtitle">{{ exp.empresa }}</div>
+                                <div class="item-date">
+                                    {{ exp.fecha_inicio|date:"M Y" }} - 
+                                    {% if exp.trabajo_actual %}
+                                        {% trans "Presente" %}
+                                    {% else %}
+                                        {{ exp.fecha_fin|date:"M Y" }}
+                                    {% endif %}
+                                    • {{ exp.get_modalidad_display }}
+                                </div>
+                            </div>
+                        </div>
+                        {% if is_own_profile %}
+                        <div class="item-actions">
+                            <a href="{% url 'edit_section' 'experiencia' exp.id %}" class="btn-icon-small" title="{% trans 'Editar' %}">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                                <button type="submit" class="btn-icon-delete" title="{% trans 'Eliminar' %}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% if exp.descripcion %}
+                    <div class="item-description">{{ exp.descripcion }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="empty-state-text">
+                    {% trans "No hay experiencia agregada" %}
+                </p>
+            {% endif %}
+        </section>
+        
+        <!-- Education -->
+        <section class="card profile-section">
+            <div class="section-header">
+                <h2 class="section-title">{% trans "Educación" %}</h2>
+                {% if is_own_profile %}
+                <a href="{% url 'add_section' 'educacion' %}" class="btn-icon-edit" aria-label="{% trans 'Agregar' %}">
+                    <i class="bi bi-plus-lg"></i>
+                </a>
+                {% endif %}
+            </div>
+            
+            {% if educaciones %}
+                {% for edu in educaciones %}
+                <div class="education-item">
+                    <div class="item-header">
+                        <div class="item-content">
+                            <div class="item-logo">
+                                <i class="bi bi-mortarboard"></i>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-title">{{ edu.institucion }}</div>
+                                <div class="item-subtitle">{{ edu.titulo }} • {{ edu.campo_estudio }}</div>
+                                <div class="item-date">
+                                    {{ edu.fecha_inicio|date:"Y" }} - 
+                                    {% if edu.en_curso %}
+                                        {% trans "Presente" %}
+                                    {% else %}
+                                        {{ edu.fecha_fin|date:"Y" }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% if is_own_profile %}
+                        <div class="item-actions">
+                            <a href="{% url 'edit_section' 'educacion' edu.id %}" class="btn-icon-small" title="{% trans 'Editar' %}">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <form method="post" action="{% url 'delete_section' 'educacion' edu.id %}" style="display: inline;" >
+                                {% csrf_token %}
+                                <button type="submit" class="btn-icon-delete" title="{% trans 'Eliminar' %}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="empty-state-text">
+                    {% trans "No hay educación agregada" %}
+                </p>
+            {% endif %}
+        </section>
+        
+        <!-- Skills -->
+        <section class="card profile-section">
+            <div class="section-header">
+                <h2 class="section-title">{% trans "Habilidades" %}</h2>
+                {% if is_own_profile %}
+                <a href="{% url 'add_section' 'habilidad' %}" class="btn-icon-edit" aria-label="{% trans 'Agregar' %}">
+                    <i class="bi bi-plus-lg"></i>
+                </a>
+                {% endif %}
+            </div>
+            
+            {% if habilidades %}
+                <div class="skill-list">
+                    {% for habilidad in habilidades %}
+                    <span class="skill-tag">{{ habilidad.nombre }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty-state-text">
+                    {% trans "No hay habilidades agregadas" %}
+                </p>
+            {% endif %}
+        </section>
+        
+        <!-- Contact Links -->
+        {% if profesional.linkedin_url or profesional.github_url or profesional.portfolio_url %}
+        <section class="card profile-section">
+            <div class="section-header">
+                <h2 class="section-title">{% trans "Enlaces" %}</h2>
+            </div>
+            
+            <div class="contact-links">
+                {% if profesional.linkedin_url %}
+                <a href="{{ profesional.linkedin_url }}" target="_blank" class="contact-link">
+                    <i class="bi bi-linkedin"></i>
+                    <span>LinkedIn</span>
+                </a>
+                {% endif %}
+                
+                {% if profesional.github_url %}
+                <a href="{{ profesional.github_url }}" target="_blank" class="contact-link">
+                    <i class="bi bi-github"></i>
+                    <span>GitHub</span>
+                </a>
+                {% endif %}
+                
+                {% if profesional.portfolio_url %}
+                <a href="{{ profesional.portfolio_url }}" target="_blank" class="contact-link">
+                    <i class="bi bi-globe"></i>
+                    <span>{% trans "Portafolio" %}</span>
+                </a>
+                {% endif %}
+            </div>
+        </section>
+        {% endif %}
+        
+    </main>
+    
+    <!-- Sidebar -->
+    <aside class="profile-sidebar">
+        <section class="card ad-card">
+            <div class="ad-label">{% trans "Publicidad" %}</div>
+            <div class="ad-placeholder">
+                <span>ADS</span>
+            </div>
+            <p class="ad-text">{% trans "Destaca tu perfil profesional" %}</p>
+        </section>
+    </aside>
+    
+</div>
+{% endblock %}

@@ -1,0 +1,284 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Mis Ofertas - Linking X" %}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .jobs-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem;
+    }
+    
+    .jobs-layout {
+        display: grid;
+        grid-template-columns: 40% 1fr;
+        gap: 1.5rem;
+    }
+    
+    /* Left Column - Job Listings */
+    .jobs-list-column {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid var(--lx-gray-200);
+        max-height: calc(100vh - 120px);
+        overflow-y: auto;
+    }
+    
+    .jobs-list-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--lx-gray-200);
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 10;
+    }
+    
+    .jobs-list-header h2 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .job-list-item {
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid var(--lx-gray-200);
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .job-list-item:hover {
+        background: var(--lx-gray-50);
+    }
+    
+    .job-list-item.active {
+        background: var(--lx-primary-light);
+        border-left: 3px solid var(--lx-primary);
+    }
+    
+    .job-item-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--lx-gray-900);
+        margin-bottom: 0.5rem;
+    }
+    
+    .job-item-meta {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 13px;
+        color: var(--lx-gray-600);
+        margin-bottom: 0.5rem;
+    }
+    
+    .job-item-stats {
+        display: flex;
+        gap: 1.5rem;
+        font-size: 13px;
+    }
+    
+    .job-item-stat {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        color: var(--lx-gray-600);
+    }
+    
+    .job-item-stat strong {
+        color: var(--lx-primary);
+    }
+    
+    /* Right Column - Job Details */
+    .job-detail-column {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid var(--lx-gray-200);
+        padding: 2rem;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+    }
+    
+    .empty-state i {
+        font-size: 64px;
+        color: var(--lx-gray-300);
+        margin-bottom: 1rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 991px) {
+        .jobs-layout {
+            grid-template-columns: 1fr;
+        }
+        
+        .job-detail-column {
+            display: none;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="jobs-container">
+    
+    <!-- Header with Stats -->
+    <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="h3">{% trans "Gestión de Ofertas" %}</h1>
+            <button class="btn btn-primary">
+                <i class="bi bi-plus-circle me-2"></i>
+                {% trans "Nueva oferta" %}
+            </button>
+        </div>
+        
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <div class="text-muted small">{% trans "Ofertas activas" %}</div>
+                                <h3 class="mb-0">{{ ofertas_activas.count }}</h3>
+                            </div>
+                            <i class="bi bi-briefcase-fill text-primary" style="font-size: 2rem;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <div class="text-muted small">{% trans "Total postulaciones" %}</div>
+                                <h3 class="mb-0">{{ total_postulaciones }}</h3>
+                            </div>
+                            <i class="bi bi-people-fill text-success" style="font-size: 2rem;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <div class="text-muted small">{% trans "Ofertas cerradas" %}</div>
+                                <h3 class="mb-0">{{ ofertas_inactivas.count }}</h3>
+                            </div>
+                            <i class="bi bi-archive-fill text-muted" style="font-size: 2rem;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="jobs-layout">
+        
+        <!-- Left Column - Jobs List -->
+        <div class="jobs-list-column">
+            <div class="jobs-list-header">
+                <h2>{% trans "Mis Ofertas" %}</h2>
+                <div class="btn-group w-100" role="group">
+                    <input type="radio" class="btn-check" name="jobStatus" id="activeJobs" checked>
+                    <label class="btn btn-outline-primary" for="activeJobs">
+                        {% trans "Activas" %} ({{ ofertas_activas.count }})
+                    </label>
+                    
+                    <input type="radio" class="btn-check" name="jobStatus" id="inactiveJobs">
+                    <label class="btn btn-outline-primary" for="inactiveJobs">
+                        {% trans "Inactivas" %} ({{ ofertas_inactivas.count }})
+                    </label>
+                </div>
+            </div>
+            
+            <div id="activeJobsList">
+                {% for oferta in ofertas_activas %}
+                <div class="job-list-item" onclick="selectJob('{{ oferta.id }}')">
+                    <div class="job-item-title">{{ oferta.titulo }}</div>
+                    <div class="job-item-meta">
+                        <span><i class="bi bi-geo-alt me-1"></i>{{ oferta.ubicacion }}</span>
+                        <span><i class="bi bi-clock me-1"></i>{{ oferta.fecha_publicacion|timesince }}</span>
+                    </div>
+                    <div class="job-item-stats">
+                        <div class="job-item-stat">
+                            <i class="bi bi-eye"></i>
+                            <strong>{{ oferta.vistas }}</strong> {% trans "vistas" %}
+                        </div>
+                        <div class="job-item-stat">
+                            <i class="bi bi-person"></i>
+                            <strong>{{ oferta.postulaciones_count }}</strong> {% trans "aplicantes" %}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="empty-state">
+                    <i class="bi bi-inbox"></i>
+                    <p class="text-muted">{% trans "No tienes ofertas activas" %}</p>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div id="inactiveJobsList" style="display: none;">
+                {% for oferta in ofertas_inactivas %}
+                <div class="job-list-item">
+                    <div class="job-item-title">{{ oferta.titulo }}</div>
+                    <div class="job-item-meta">
+                        <span><i class="bi bi-geo-alt me-1"></i>{{ oferta.ubicacion }}</span>
+                        <span><i class="bi bi-clock me-1"></i>{{ oferta.fecha_publicacion|date:"d M Y" }}</span>
+                    </div>
+                    <div class="job-item-stats">
+                        <div class="job-item-stat">
+                            <strong>{{ oferta.postulaciones_count }}</strong> {% trans "aplicantes totales" %}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="empty-state">
+                    <i class="bi bi-archive"></i>
+                    <p class="text-muted">{% trans "No tienes ofertas inactivas" %}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Right Column - Job Details -->
+        <div class="job-detail-column">
+            <div class="empty-state">
+                <i class="bi bi-arrow-left-circle"></i>
+                <h5>{% trans "Selecciona una oferta" %}</h5>
+                <p class="text-muted">{% trans "Selecciona una oferta de la izquierda para ver los detalles y gestionar postulaciones" %}</p>
+            </div>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Toggle between active and inactive jobs
+document.getElementById('activeJobs').addEventListener('change', function() {
+    document.getElementById('activeJobsList').style.display = 'block';
+    document.getElementById('inactiveJobsList').style.display = 'none';
+});
+
+document.getElementById('inactiveJobs').addEventListener('change', function() {
+    document.getElementById('activeJobsList').style.display = 'none';
+    document.getElementById('inactiveJobsList').style.display = 'block';
+});
+
+function selectJob(jobId) {
+    // Redirect to job detail or load via AJAX
+    window.location.href = '/jobs/' + jobId + '/';
+}
+</script>
+{% endblock %}

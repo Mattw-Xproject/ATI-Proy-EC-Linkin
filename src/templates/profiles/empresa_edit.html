@@ -1,0 +1,363 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Editar Perfil" %} - Linking X{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+<style>
+    .edit-container {
+        min-height: calc(100vh - var(--header-height));
+        padding: var(--space-6) var(--space-4);
+        padding-bottom: calc(var(--nav-height) + var(--space-6));
+    }
+    
+    .edit-card {
+        background: var(--color-white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-8);
+    }
+    
+    .avatar-upload {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-4);
+        padding: var(--space-6);
+        background: var(--color-gray-100);
+        border-radius: var(--radius-md);
+        margin-bottom: var(--space-6);
+    }
+    
+    .avatar-preview {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid var(--color-white);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .file-input-wrapper {
+        position: relative;
+    }
+    
+    .file-input-wrapper input[type="file"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    
+    .file-input-label {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        padding: 10px 20px;
+        background: var(--color-primary-700);
+        color: var(--color-white);
+        border-radius: var(--radius-full);
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.2s ease;
+    }
+    
+    .file-input-label:hover {
+        background: var(--color-info-600);
+    }
+</style>
+{% endblock %}
+
+{% block main_attrs %}class="edit-container"{% endblock %}
+
+{% block content %}
+<div class="edit-card">
+    
+    <!-- Header -->
+    <div class="text-center mb-6">
+        <h1 class="h2 mb-2">{% trans "Editar Perfil de Empresa" %}</h1>
+        <p style="color: var(--color-gray-600); font-size: 14px;">
+            {% trans "Actualiza la información de tu empresa" %}
+        </p>
+    </div>
+    
+    <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        
+        <!-- Logo Upload Section -->
+        <div class="avatar-upload">
+            <img 
+                id="avatar-preview" 
+                class="avatar-preview" 
+                src="{{ profile_user.get_avatar_url }}" 
+                alt="{% trans 'Vista previa de logo' %}"
+            >
+            <div class="file-input-wrapper">
+                <input 
+                    type="file" 
+                    name="foto" 
+                    id="foto-input" 
+                    accept="image/*"
+                    onchange="previewAvatar(this)"
+                >
+                <label for="foto-input" class="file-input-label">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                    </svg>
+                    {% trans "Cambiar logo" %}
+                </label>
+            </div>
+            <p style="font-size: 12px; color: var(--color-gray-600); text-align: center;">
+                {% trans "JPG, PNG o GIF. Tamaño máximo 5MB." %}
+            </p>
+        </div>
+        
+        <!-- Company Overview Section -->
+        <div class="form-section">
+            <h2 class="form-section-title">{% trans "Información general" %}</h2>
+            
+            <!-- Location -->
+            <div class="form-group">
+                <label for="id_ubicacion" class="form-label">
+                    {% trans "Ubicación" %}
+                </label>
+                <div class="form-input-wrapper {% if form.ubicacion.errors %}error{% endif %}">
+                    <input 
+                        type="text" 
+                        name="ubicacion" 
+                        id="id_ubicacion"
+                        class="form-input"
+                        value="{{ form.ubicacion.value|default:'' }}"
+                        placeholder="{% trans 'Caracas, Venezuela' %}"
+                    >
+                </div>
+                {% if form.ubicacion.errors %}
+                    <span class="form-error">{{ form.ubicacion.errors.0 }}</span>
+                {% endif %}
+            </div>
+            
+            <!-- Sector -->
+            <div class="form-group">
+                <label for="{{ form.sector.id_for_label }}" class="form-label">
+                    {{ form.sector.label }}
+                </label>
+                <div class="form-input-wrapper {% if form.sector.errors %}error{% endif %}">
+                    {{ form.sector }}
+                </div>
+                {% if form.sector.errors %}
+                    <span class="form-error">{{ form.sector.errors.0 }}</span>
+                {% endif %}
+            </div>
+            
+            <div class="form-grid-2">
+                <!-- Company Size -->
+                <div class="form-group">
+                    <label for="{{ form.tamano.id_for_label }}" class="form-label">
+                        {{ form.tamano.label }}
+                    </label>
+                    <div class="form-input-wrapper {% if form.tamano.errors %}error{% endif %}">
+                        {{ form.tamano }}
+                    </div>
+                    {% if form.tamano.errors %}
+                        <span class="form-error">{{ form.tamano.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                
+                <!-- Foundation Year -->
+                <div class="form-group">
+                    <label for="{{ form.ano_fundacion.id_for_label }}" class="form-label">
+                        {{ form.ano_fundacion.label }}
+                    </label>
+                    <div class="form-input-wrapper {% if form.ano_fundacion.errors %}error{% endif %}">
+                        {{ form.ano_fundacion }}
+                    </div>
+                    {% if form.ano_fundacion.errors %}
+                        <span class="form-error">{{ form.ano_fundacion.errors.0 }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- About Section -->
+        <div class="form-section">
+            <h2 class="form-section-title">{% trans "Acerca de la empresa" %}</h2>
+            
+            <!-- Brief Description -->
+            <div class="form-group">
+                <label for="{{ form.descripcion_breve.id_for_label }}" class="form-label">
+                    {{ form.descripcion_breve.label }}
+                </label>
+                <div class="form-input-wrapper {% if form.descripcion_breve.errors %}error{% endif %}">
+                    {{ form.descripcion_breve }}
+                </div>
+                {% if form.descripcion_breve.errors %}
+                    <span class="form-error">{{ form.descripcion_breve.errors.0 }}</span>
+                {% endif %}
+                <span class="form-helper">
+                    {% trans "Descripción corta que aparecerá en las búsquedas." %}
+                </span>
+            </div>
+            
+            <!-- Full Description -->
+            <div class="form-group">
+                <label for="{{ form.descripcion_completa.id_for_label }}" class="form-label">
+                    {{ form.descripcion_completa.label }}
+                </label>
+                <div class="form-input-wrapper {% if form.descripcion_completa.errors %}error{% endif %}">
+                    {{ form.descripcion_completa }}
+                </div>
+                {% if form.descripcion_completa.errors %}
+                    <span class="form-error">{{ form.descripcion_completa.errors.0 }}</span>
+                {% endif %}
+                <span class="form-helper">
+                    {% trans "Cuéntale al mundo sobre tu empresa, misión, visión y valores." %}
+                </span>
+            </div>
+        </div>
+        
+        <!-- Contact Information Section -->
+        <div class="form-section">
+            <h2 class="form-section-title">{% trans "Información de contacto" %}</h2>
+            
+            <!-- Website -->
+            <div class="form-group">
+                <label for="{{ form.sitio_web.id_for_label }}" class="form-label">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 4px;">
+                        <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/>
+                    </svg>
+                    {{ form.sitio_web.label }}
+                </label>
+                <div class="form-input-wrapper {% if form.sitio_web.errors %}error{% endif %}">
+                    {{ form.sitio_web }}
+                </div>
+                {% if form.sitio_web.errors %}
+                    <span class="form-error">{{ form.sitio_web.errors.0 }}</span>
+                {% endif %}
+            </div>
+            
+            <div class="form-grid-2">
+                <!-- Phone -->
+                <div class="form-group">
+                    <label for="{{ form.telefono.id_for_label }}" class="form-label">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 4px;">
+                            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                        </svg>
+                        {{ form.telefono.label }}
+                    </label>
+                    <div class="form-input-wrapper {% if form.telefono.errors %}error{% endif %}">
+                        {{ form.telefono }}
+                    </div>
+                    {% if form.telefono.errors %}
+                        <span class="form-error">{{ form.telefono.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="{{ form.email_contacto.id_for_label }}" class="form-label">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 4px;">
+                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        </svg>
+                        {{ form.email_contacto.label }}
+                    </label>
+                    <div class="form-input-wrapper {% if form.email_contacto.errors %}error{% endif %}">
+                        {{ form.email_contacto }}
+                    </div>
+                    {% if form.email_contacto.errors %}
+                        <span class="form-error">{{ form.email_contacto.errors.0 }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Social Media Section -->
+        <div class="form-section">
+            <h2 class="form-section-title">{% trans "Redes sociales" %}</h2>
+            
+            <!-- LinkedIn -->
+            <div class="form-group">
+                <label for="{{ form.linkedin_url.id_for_label }}" class="form-label">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="#0077B5" style="vertical-align: middle; margin-right: 4px;">
+                        <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+                    </svg>
+                    {{ form.linkedin_url.label }}
+                </label>
+                <div class="form-input-wrapper {% if form.linkedin_url.errors %}error{% endif %}">
+                    {{ form.linkedin_url }}
+                </div>
+                {% if form.linkedin_url.errors %}
+                    <span class="form-error">{{ form.linkedin_url.errors.0 }}</span>
+                {% endif %}
+            </div>
+            
+            <!-- Facebook -->
+            <div class="form-group">
+                <label for="{{ form.facebook_url.id_for_label }}" class="form-label">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="#1877F2" style="vertical-align: middle; margin-right: 4px;">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                    {{ form.facebook_url.label }}
+                </label>
+                <div class="form-input-wrapper {% if form.facebook_url.errors %}error{% endif %}">
+                    {{ form.facebook_url }}
+                </div>
+                {% if form.facebook_url.errors %}
+                    <span class="form-error">{{ form.facebook_url.errors.0 }}</span>
+                {% endif %}
+            </div>
+            
+            <!-- Instagram -->
+            <div class="form-group">
+                <label for="{{ form.instagram_url.id_for_label }}" class="form-label">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="#E4405F" style="vertical-align: middle; margin-right: 4px;">
+                        <path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/>
+                    </svg>
+                    {{ form.instagram_url.label }}
+                </label>
+                <div class="form-input-wrapper {% if form.instagram_url.errors %}error{% endif %}">
+                    {{ form.instagram_url }}
+                </div>
+                {% if form.instagram_url.errors %}
+                    <span class="form-error">{{ form.instagram_url.errors.0 }}</span>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="form-actions">
+            <a href="{% url 'profile_detail' profile_user.id %}" class="btn btn-secondary">
+                {% trans "Cancelar" %}
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                </svg>
+                {% trans "Guardar cambios" %}
+            </button>
+        </div>
+        
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function previewAvatar(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            document.getElementById('avatar-preview').src = e.target.result;
+        };
+        
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
+{% endblock %}
