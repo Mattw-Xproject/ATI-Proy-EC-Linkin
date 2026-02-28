@@ -107,6 +107,121 @@
                 box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
             }
         }
+        /* Media Query para dispositivos móviles (menos de 768px) */
+@media (max-width: 767.98px) {
+    /* Aumentar el tamaño general de los botones */
+    .btn {
+        padding: 12px 20px; /* Más espacio interno para que sea fácil de tocar */
+        font-size: 16px;    /* Fuente un poco más grande */
+        font-weight: 600;   /* Texto más legible */
+        border-radius: 10px; /* Bordes un poco más redondeados para móvil */
+        width: 100%;        /* Opcional: hace que los botones ocupen todo el ancho */
+        margin-bottom: 0.5rem; /* Separación entre botones si están apilados */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Si tienes iconos dentro de los botones, hazlos un poco más grandes */
+    .btn i {
+        font-size: 1rem;
+        margin-right: 8px;
+    }
+}
+/* ✅ Ajustes específicos para Mobile (Menos de 768px) */
+@media (max-width: 767.98px) {
+    /* Si tu sticky bar tiene una clase específica como .mobile-navbar */
+    .sticky-bottom-nav {
+        height: 75px !important; /* Aumentamos la altura total de la barra */
+        padding-bottom: env(safe-area-inset-bottom); /* Respetar "notch" en iPhone */
+    }
+
+    /* Aumentar el tamaño de los enlaces/botones internos */
+    .sticky-bottom-nav .nav-link, 
+    .sticky-bottom-nav button {
+        padding: 12px 5px !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px !important; /* Texto un poco más legible */
+        min-width: 60px;
+    }
+
+    /* Aumentar específicamente el tamaño del icono */
+    .sticky-bottom-nav i, 
+    .sticky-bottom-nav .bi {
+        font-size: 1.6rem !important; /* Íconos mucho más grandes */
+        margin-bottom: 4px;
+    }
+
+    /* Si tienes un botón central de "Acción" (como el de Nueva Oferta) */
+    .btn-mobile-principal {
+        width: 55px;
+        height: 55px;
+        border-radius: 50% !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: -20px; /* Efecto flotante hacia arriba */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+}
+/* Estilos para la barra de navegación inferior en Mobile */
+.bottom-navbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px; /* Aumentamos la altura de 56px a 70px */
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    z-index: 999;
+    /* Soporte para el área segura de los marcos de los teléfonos (Notch inferior) */
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-navbar a {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #6b7280; /* Color gris suave para inactivos */
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+/* Aumentamos significativamente el tamaño del icono */
+.bottom-navbar a i {
+    font-size: 1.75rem; /* Aproximadamente 28px */
+    transition: transform 0.2s ease;
+}
+
+/* Estado activo: Color más vibrante y un ligero efecto de escala */
+.bottom-navbar a.active {
+    color: #0A66C2; /* El azul de LinkedIn/LinkingX */
+}
+
+.bottom-navbar a.active i {
+    transform: scale(1.1); /* Efecto visual de resaltado */
+}
+
+/* Evitar que el contenido de la página quede oculto detrás de la barra */
+body {
+    padding-bottom: 80px; 
+}
+
+@media (min-width: 992px) {
+    body {
+        padding-bottom: 0;
+    }
+}
     </style>
 
     {% block extra_css %}{% endblock %}
