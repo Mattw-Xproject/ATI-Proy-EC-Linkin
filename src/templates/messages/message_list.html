@@ -6,29 +6,58 @@
 
 {% block extra_css %}
 <style>
-    /* ========== MESSENGER LAYOUT ========== */
     
+
+    /* Contenedor principal fijo */
     .messenger-container {
         position: fixed;
-        top: var(--lx-navbar-height);
+        top: 56px; /* Altura del header mobile aprox */
         left: 0;
         right: 0;
-        bottom: 0;
-        background: var(--lx-gray-50);
-        overflow: hidden;
+        bottom: 82px; /* IMPORTANTE: Espacio para la barra inferior en mobile */
+        background: #f9fafb;
+        z-index: 1000;
     }
     
+    /* En desktop, ajustamos top y bottom */
+    @media (min-width: 992px) {
+        .messenger-container {
+            position: relative; /* Ya no fixed en desktop para respetar el layout flotante */
+            top: 0;
+            bottom: 0;
+            height: calc(100vh - 220px); /* Altura calculada dentro del main flotante */
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+    }
+
     .messenger-layout {
         display: grid;
         grid-template-columns: 360px 1fr 360px;
         height: 100%;
         background: white;
     }
+
+    /* ... (resto de tus estilos css internos igual) ... */
+
+    /* ========== MOBILE RESPONSIVE ========== */
+    @media (max-width: 991px) {
+        .messenger-layout {
+            grid-template-columns: 1fr;
+        }
+        
+        /* Ocultar columnas no activas en mobile */
+        .messenger-layout .empty-chat {
+            display: none; /* Ocultar paneles vacíos por defecto en mobile */
+        }
+    }
+
     
     /* ========== CONVERSATIONS LIST (Left Column) ========== */
     
     .conversations-column {
-        border-right: 1px solid var(--lx-gray-200);
+        border-right: 1px solid #e5e7eb;
         display: flex;
         flex-direction: column;
         background: white;
@@ -36,14 +65,44 @@
     
     .conversations-header {
         padding: 1rem 1.25rem;
-        border-bottom: 1px solid var(--lx-gray-200);
+        border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .conversations-title-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
     }
     
     .conversations-title {
         font-size: 24px;
         font-weight: 700;
-        margin-bottom: 1rem;
-        color: var(--lx-gray-900);
+        color: #111827;
+    }
+    
+    .header-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .header-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: #6b7280;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+    }
+    
+    .header-btn:hover {
+        background: #f3f4f6;
+        color: #0A66C2;
     }
     
     .conversations-search {
@@ -54,15 +113,15 @@
         width: 100%;
         padding: 10px 16px 10px 40px;
         border: none;
-        background: var(--lx-gray-100);
+        background: #f3f4f6;
         border-radius: 20px;
         font-size: 14px;
-        transition: all 0.2s ease;
+        transition: all 0.2s;
     }
     
     .conversations-search input:focus {
         outline: none;
-        background: var(--lx-gray-200);
+        background: #e5e7eb;
     }
     
     .conversations-search i {
@@ -70,7 +129,7 @@
         left: 14px;
         top: 50%;
         transform: translateY(-50%);
-        color: var(--lx-gray-500);
+        color: #9ca3af;
     }
     
     .conversations-list {
@@ -84,19 +143,19 @@
         gap: 12px;
         padding: 12px 16px;
         cursor: pointer;
-        transition: background 0.15s ease;
+        transition: background 0.15s;
         text-decoration: none;
         color: inherit;
         border-left: 3px solid transparent;
     }
     
     .conversation-item:hover {
-        background: var(--lx-gray-50);
+        background: #f9fafb;
     }
     
     .conversation-item.active {
-        background: var(--lx-primary-light);
-        border-left-color: var(--lx-primary);
+        background: #E7F3FF;
+        border-left-color: #0A66C2;
     }
     
     .conversation-avatar {
@@ -130,7 +189,7 @@
     .conversation-name {
         font-size: 15px;
         font-weight: 600;
-        color: var(--lx-gray-900);
+        color: #111827;
         margin-bottom: 2px;
         white-space: nowrap;
         overflow: hidden;
@@ -139,14 +198,14 @@
     
     .conversation-preview {
         font-size: 13px;
-        color: var(--lx-gray-600);
+        color: #6b7280;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
     
     .conversation-preview.unread {
-        color: var(--lx-gray-900);
+        color: #111827;
         font-weight: 600;
     }
     
@@ -159,11 +218,11 @@
     
     .conversation-time {
         font-size: 12px;
-        color: var(--lx-gray-500);
+        color: #9ca3af;
     }
     
     .unread-badge {
-        background: var(--lx-primary);
+        background: #0A66C2;
         color: white;
         font-size: 11px;
         font-weight: 700;
@@ -171,293 +230,6 @@
         border-radius: 12px;
         min-width: 20px;
         text-align: center;
-    }
-    
-    /* ========== CHAT AREA (Center Column) ========== */
-    
-    .chat-column {
-        display: flex;
-        flex-direction: column;
-        background: white;
-    }
-    
-    .chat-header {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 12px 20px;
-        border-bottom: 1px solid var(--lx-gray-200);
-        background: white;
-        z-index: 10;
-    }
-    
-    .chat-header-avatar img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-    }
-    
-    .chat-header-info {
-        flex: 1;
-        cursor: pointer;
-    }
-    
-    .chat-header-name {
-        font-size: 15px;
-        font-weight: 600;
-        color: var(--lx-gray-900);
-    }
-    
-    .chat-header-status {
-        font-size: 12px;
-        color: var(--lx-gray-600);
-    }
-    
-    .chat-messages {
-        flex: 1;
-        overflow-y: auto;
-        padding: 20px;
-        background: var(--lx-gray-50);
-    }
-    
-    .message-group {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 12px;
-    }
-    
-    .message-group.sent {
-        flex-direction: row-reverse;
-    }
-    
-    .message-avatar {
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        flex-shrink: 0;
-        align-self: flex-end;
-    }
-    
-    .message-avatar.invisible {
-        visibility: hidden;
-    }
-    
-    .messages-wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        max-width: 70%;
-    }
-    
-    .message-group.sent .messages-wrapper {
-        align-items: flex-end;
-    }
-    
-    .message-bubble {
-        padding: 10px 16px;
-        border-radius: 18px;
-        word-wrap: break-word;
-        position: relative;
-    }
-    
-    .message-group.received .message-bubble {
-        background: var(--lx-gray-200);
-        color: var(--lx-gray-900);
-    }
-    
-    .message-group.sent .message-bubble {
-        background: var(--lx-primary);
-        color: white;
-    }
-    
-    .message-time {
-        font-size: 11px;
-        color: var(--lx-gray-500);
-        margin-top: 4px;
-        padding: 0 8px;
-    }
-    
-    .chat-input-area {
-        padding: 16px 20px;
-        border-top: 1px solid var(--lx-gray-200);
-        background: white;
-    }
-    
-    .chat-input-wrapper {
-        display: flex;
-        align-items: flex-end;
-        gap: 8px;
-    }
-    
-    .chat-input-actions {
-        display: flex;
-        gap: 4px;
-    }
-    
-    .chat-input-btn {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        border: none;
-        background: transparent;
-        color: var(--lx-primary);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-    }
-    
-    .chat-input-btn:hover {
-        background: var(--lx-primary-light);
-    }
-    
-    .chat-input-field {
-        flex: 1;
-        min-height: 36px;
-        max-height: 120px;
-        padding: 8px 16px;
-        border: none;
-        background: var(--lx-gray-100);
-        border-radius: 18px;
-        resize: none;
-        font-family: inherit;
-        font-size: 15px;
-        line-height: 20px;
-    }
-    
-    .chat-input-field:focus {
-        outline: none;
-        background: var(--lx-gray-200);
-    }
-    
-    .chat-send-btn {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        border: none;
-        background: var(--lx-primary);
-        color: white;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-    }
-    
-    .chat-send-btn:hover {
-        background: var(--lx-primary-hover);
-        transform: scale(1.05);
-    }
-    
-    .chat-send-btn:disabled {
-        background: var(--lx-gray-300);
-        cursor: not-allowed;
-        transform: scale(1);
-    }
-    
-    /* ========== PROFILE PANEL (Right Column) ========== */
-    
-    .profile-column {
-        border-left: 1px solid var(--lx-gray-200);
-        display: flex;
-        flex-direction: column;
-        background: white;
-        overflow-y: auto;
-    }
-    
-    .profile-header {
-        padding: 24px;
-        text-align: center;
-        border-bottom: 1px solid var(--lx-gray-200);
-    }
-    
-    .profile-header-avatar {
-        width: 96px;
-        height: 96px;
-        border-radius: 50%;
-        margin: 0 auto 16px;
-        display: block;
-    }
-    
-    .profile-header-name {
-        font-size: 18px;
-        font-weight: 700;
-        color: var(--lx-gray-900);
-        margin-bottom: 8px;
-    }
-    
-    .profile-header-status {
-        font-size: 14px;
-        color: var(--lx-gray-600);
-    }
-    
-    .profile-actions {
-        padding: 16px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-        border-bottom: 1px solid var(--lx-gray-200);
-    }
-    
-    .profile-action-btn {
-        padding: 10px;
-        border: none;
-        background: var(--lx-gray-100);
-        border-radius: 8px;
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--lx-gray-700);
-        cursor: pointer;
-        transition: all 0.2s ease;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-    }
-    
-    .profile-action-btn:hover {
-        background: var(--lx-gray-200);
-    }
-    
-    .profile-action-btn i {
-        font-size: 20px;
-    }
-    
-    .profile-section {
-        padding: 16px;
-        border-bottom: 1px solid var(--lx-gray-200);
-    }
-    
-    .profile-section-title {
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--lx-gray-900);
-        margin-bottom: 12px;
-    }
-    
-    .media-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 4px;
-    }
-    
-    .media-item {
-        aspect-ratio: 1;
-        border-radius: 8px;
-        overflow: hidden;
-        cursor: pointer;
-    }
-    
-    .media-item img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.2s ease;
-    }
-    
-    .media-item:hover img {
-        transform: scale(1.1);
     }
     
     /* ========== EMPTY STATES ========== */
@@ -468,7 +240,7 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        color: var(--lx-gray-400);
+        color: #9ca3af;
     }
     
     .empty-chat i {
@@ -479,7 +251,12 @@
     .empty-chat h3 {
         font-size: 20px;
         font-weight: 600;
-        color: var(--lx-gray-600);
+        color: #6b7280;
+    }
+    
+    .empty-chat p {
+        color: #9ca3af;
+        margin-top: 0.5rem;
     }
     
     /* ========== MOBILE RESPONSIVE ========== */
@@ -487,70 +264,6 @@
     @media (max-width: 991px) {
         .messenger-layout {
             grid-template-columns: 1fr;
-        }
-        
-        .chat-column,
-        .profile-column {
-            display: none;
-        }
-        
-        .messenger-layout.show-chat .conversations-column {
-            display: none;
-        }
-        
-        .messenger-layout.show-chat .chat-column {
-            display: flex;
-        }
-        
-        .messenger-layout.show-profile .conversations-column,
-        .messenger-layout.show-profile .chat-column {
-            display: none;
-        }
-        
-        .messenger-layout.show-profile .profile-column {
-            display: flex;
-        }
-        
-        .chat-header-back {
-            display: flex !important;
-        }
-        
-        .profile-close {
-            display: flex !important;
-        }
-    }
-    
-    .chat-header-back,
-    .profile-close {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        border: none;
-        background: transparent;
-        color: var(--lx-gray-700);
-        cursor: pointer;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-    }
-    
-    .chat-header-back:hover,
-    .profile-close:hover {
-        background: var(--lx-gray-100);
-    }
-    
-    @media (min-width: 992px) {
-        .conversations-column {
-            display: flex !important;
-        }
-        
-        .chat-column {
-            display: flex !important;
-        }
-        
-        .profile-column {
-            display: flex !important;
         }
     }
 </style>
@@ -565,7 +278,17 @@
              ======================================== -->
         <div class="conversations-column">
             <div class="conversations-header">
-                <h1 class="conversations-title">{% trans "Mensajes" %}</h1>
+                <div class="conversations-title-row">
+                    <h1 class="conversations-title">{% trans "Mensajes" %}</h1>
+                    <div class="header-actions">
+                        <button type="button" class="header-btn" title="{% trans 'Nuevo mensaje' %}" onclick="alert('Funcionalidad próximamente')">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                        <button type="button" class="header-btn" title="{% trans 'Opciones' %}" onclick="alert('Funcionalidad próximamente')">
+                            <i class="bi bi-three-dots"></i>
+                        </button>
+                    </div>
+                </div>
                 <div class="conversations-search">
                     <i class="bi bi-search"></i>
                     <input type="text" placeholder="{% trans 'Buscar en Mensajes' %}" id="searchInput">
@@ -574,10 +297,9 @@
             
             <div class="conversations-list" id="conversationsList">
                 {% for conv_data in conversaciones_data %}
-                <a href="#" class="conversation-item" onclick="selectConversation('{{ conv_data.conversacion.id }}'); return false;">
+                <a href="{% url 'message_detail' conv_data.conversacion.id %}" class="conversation-item">
                     <div class="conversation-avatar">
                         <img src="{{ conv_data.otro_usuario.get_avatar_url }}" alt="Avatar">
-                        <!-- <div class="online-indicator"></div> -->
                     </div>
                     
                     <div class="conversation-info">
@@ -613,22 +335,18 @@
         <!-- ========================================
              CHAT AREA (Center Column)
              ======================================== -->
-        <div class="chat-column">
-            <div class="empty-chat">
-                <i class="bi bi-chat-left-text"></i>
-                <h3>{% trans "Selecciona un mensaje" %}</h3>
-                <p>{% trans "Elige una conversación para comenzar a chatear" %}</p>
-            </div>
+        <div class="empty-chat">
+            <i class="bi bi-chat-left-text"></i>
+            <h3>{% trans "Selecciona un mensaje" %}</h3>
+            <p>{% trans "Elige una conversación para comenzar a chatear" %}</p>
         </div>
         
         <!-- ========================================
              PROFILE PANEL (Right Column)
              ======================================== -->
-        <div class="profile-column">
-            <div class="empty-chat">
-                <i class="bi bi-person-circle"></i>
-                <h3>{% trans "Información del contacto" %}</h3>
-            </div>
+        <div class="empty-chat">
+            <i class="bi bi-person-circle"></i>
+            <h3>{% trans "Información del contacto" %}</h3>
         </div>
         
     </div>
@@ -637,11 +355,6 @@
 
 {% block extra_js %}
 <script>
-function selectConversation(conversationId) {
-    // Redirect to conversation detail
-    window.location.href = `/messages/${conversationId}/`;
-}
-
 // Search functionality
 document.getElementById('searchInput').addEventListener('input', function(e) {
     const searchTerm = e.target.value.toLowerCase();

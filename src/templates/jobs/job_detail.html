@@ -566,9 +566,62 @@
                     </div>
                 </div>
                 
+                <!-- Banner de Estado (solo para empresas dueñas) -->
+                {% if user.tipo_usuario == 'empresa' and user.empresa == oferta.empresa %}
+                    {% if not oferta.activa %}
+                    <div style="padding: 1rem 2rem; background: #FEF3C7; border-bottom: 1px solid #FDE68A; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <i class="bi bi-pause-circle" style="font-size: 24px; color: #92400E;"></i>
+                            <div>
+                                <h4 style="margin: 0; font-size: 14px; font-weight: 600; color: #92400E;">
+                                    {% trans "Oferta pausada" %}
+                                </h4>
+                                <p style="margin: 0; font-size: 13px; color: #78350F;">
+                                    {% trans "Esta oferta no es visible para profesionales" %}
+                                </p>
+                            </div>
+                        </div>
+                        <form method="post" action="{% url 'toggle_job_status' oferta.id %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-play-circle me-2"></i>
+                                {% trans "Activar" %}
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                {% endif %}
                 <!-- Action Buttons -->
                 <div class="job-actions">
-                    {% if user.tipo_usuario == 'profesional' %}
+                    {% if user.tipo_usuario == 'empresa' and user.empresa == oferta.empresa %}
+                        <!-- Botones para la empresa dueña de la oferta -->
+                        <a href="{% url 'job_applicants' oferta.id %}" class="btn btn-primary btn-apply">
+                            <i class="bi bi-people me-2"></i>
+                            {% trans "Ver postulantes" %} ({{ oferta.postulaciones.count }})
+                        </a>
+                        
+                        <a href="{% url 'edit_job' oferta.id %}" class="btn btn-secondary">
+                            <i class="bi bi-pencil me-2"></i>
+                            {% trans "Editar" %}
+                        </a>
+                        
+                        <form method="post" action="{% url 'toggle_job_status' oferta.id %}" style="display: inline;">
+                            {% csrf_token %}
+                            {% if oferta.activa %}
+                                <button type="submit" class="btn btn-outline-danger">
+                                    <i class="bi bi-pause-circle me-2"></i>
+                                    {% trans "Pausar" %}
+                                </button>
+                            {% else %}
+                                <button type="submit" class="btn btn-outline-success">
+                                    <i class="bi bi-play-circle me-2"></i>
+                                    {% trans "Activar" %}
+                                </button>
+                            {% endif %}
+                        </form>
+                        
+                    {% elif user.tipo_usuario == 'profesional' %}
+                        <!-- Botones para profesionales -->
                         {% if ya_postulo %}
                             <button class="btn btn-success btn-apply" disabled>
                                 <i class="bi bi-check-circle me-2"></i>

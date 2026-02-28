@@ -42,6 +42,12 @@ class Postulacion(models.Model):
         verbose_name=_("Habilidades técnicas"),
         help_text=_("Lista de habilidades separadas por comas")
     )
+    @property
+    def habilidades_list(self):
+        """Retorna las habilidades como lista"""
+        if self.habilidades_tecnicas:
+            return [h.strip() for h in self.habilidades_tecnicas.split(',') if h.strip()]
+        return []
     
     anos_experiencia = models.PositiveIntegerField(
         verbose_name=_("Años de experiencia")

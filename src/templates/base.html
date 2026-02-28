@@ -2,45 +2,83 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{% block meta_description %}{% trans 'Linking X - Red profesional para conectar empresas y estudiantes' %}{% endblock %}">
     <title>{% block title %} ATI-Linking X{% endblock %}</title>
-    
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
     <link rel="stylesheet" href="{% static 'css/variables.css' %}">
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
-    
+
     <style>
+        /* Estilos Base para Mobile (Default) */
+        body {
+            background-color: #f4f6f8;
+            padding-bottom: 82px; /* Espacio para la barra inferior en mobile por defecto */
+        }
+
+        .bottom-navbar {
+            width: 100%;
+            height: 82px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            background-color: white;
+            z-index: 1050; /* Z-index alto para estar sobre todo */
+            border-top: 1px solid #e5e7eb;
+            box-shadow: 0 -1px 3px rgba(0,0,0,0.05);
+        }
+
+        .navbar-links a {
+            color: #666;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 1.5rem;
+        }
+
+        .navbar-links a.active {
+            color: #0A66C2;
+        }
+
         /* =========================================================
-           Diseño flotante estilo wireframes (Solo Escritorio)
+           Diseño de Escritorio (min-width: 992px)
            ========================================================= */
         @media (min-width: 992px) {
             body {
-                background-color: #f4f6f8; /* Fondo general casi blanco */
+                padding-bottom: 0; /* Sin padding bottom en desktop */
                 position: relative;
             }
-            
-            /* Franja azul en el top que corta el header */
+
+            /* Ocultar barra inferior en desktop */
+            .bottom-navbar {
+                display: none !important;
+            }
+
+            /* Franja azul */
             .top-blue-bg {
                 position: absolute;
-                top: -30px; /* Ajusta para que se vea un poco por debajo del header */
+
+                top: -30px;
                 left: 0;
                 width: 100%;
-                height: 70px;
-                background-color: #0A66C2; /* Color azul representativo */
+                height: 70px; /* Ajustado para cubrir header */
+                background-color: #0A66C2;
                 z-index: -1;
             }
 
-            /* Separar el header de los bordes */
+            /* Header flotante */
             .header-floating {
                 margin: 24px auto 0 !important;
                 max-width: 1400px;
@@ -48,10 +86,10 @@
                 border-radius: 12px;
                 border: none !important;
                 box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
-                /*top: 24px !important; /* Mantiene el sticky-top pero flotando */
+                top: 24px !important; 
             }
 
-            /* Márgenes para el contenido principal */
+            /* Main flotante */
             .main-floating {
                 max-width: 1400px;
                 width: calc(100% - 48px);
@@ -59,7 +97,7 @@
                 min-height: calc(100vh - 220px);
             }
 
-            /* Separar el footer de los bordes */
+            /* Footer flotante */
             .footer-floating {
                 max-width: 1400px;
                 width: calc(100% - 48px);
@@ -69,33 +107,162 @@
                 box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
             }
         }
+        /* Media Query para dispositivos móviles (menos de 768px) */
+@media (max-width: 767.98px) {
+    /* Aumentar el tamaño general de los botones */
+    .btn {
+        padding: 12px 20px; /* Más espacio interno para que sea fácil de tocar */
+        font-size: 16px;    /* Fuente un poco más grande */
+        font-weight: 600;   /* Texto más legible */
+        border-radius: 10px; /* Bordes un poco más redondeados para móvil */
+        width: 100%;        /* Opcional: hace que los botones ocupen todo el ancho */
+        margin-bottom: 0.5rem; /* Separación entre botones si están apilados */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Si tienes iconos dentro de los botones, hazlos un poco más grandes */
+    .btn i {
+        font-size: 1rem;
+        margin-right: 8px;
+    }
+}
+/* ✅ Ajustes específicos para Mobile (Menos de 768px) */
+@media (max-width: 767.98px) {
+    /* Si tu sticky bar tiene una clase específica como .mobile-navbar */
+    .sticky-bottom-nav {
+        height: 75px !important; /* Aumentamos la altura total de la barra */
+        padding-bottom: env(safe-area-inset-bottom); /* Respetar "notch" en iPhone */
+    }
+
+    /* Aumentar el tamaño de los enlaces/botones internos */
+    .sticky-bottom-nav .nav-link, 
+    .sticky-bottom-nav button {
+        padding: 12px 5px !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px !important; /* Texto un poco más legible */
+        min-width: 60px;
+    }
+
+    /* Aumentar específicamente el tamaño del icono */
+    .sticky-bottom-nav i, 
+    .sticky-bottom-nav .bi {
+        font-size: 1.6rem !important; /* Íconos mucho más grandes */
+        margin-bottom: 4px;
+    }
+
+    /* Si tienes un botón central de "Acción" (como el de Nueva Oferta) */
+    .btn-mobile-principal {
+        width: 55px;
+        height: 55px;
+        border-radius: 50% !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: -20px; /* Efecto flotante hacia arriba */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+}
+/* Estilos para la barra de navegación inferior en Mobile */
+.bottom-navbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px; /* Aumentamos la altura de 56px a 70px */
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    z-index: 999;
+    /* Soporte para el área segura de los marcos de los teléfonos (Notch inferior) */
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-navbar a {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #6b7280; /* Color gris suave para inactivos */
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+/* Aumentamos significativamente el tamaño del icono */
+.bottom-navbar a i {
+    font-size: 1.75rem; /* Aproximadamente 28px */
+    transition: transform 0.2s ease;
+}
+
+/* Estado activo: Color más vibrante y un ligero efecto de escala */
+.bottom-navbar a.active {
+    color: #0A66C2; /* El azul de LinkedIn/LinkingX */
+}
+
+.bottom-navbar a.active i {
+    transform: scale(1.1); /* Efecto visual de resaltado */
+}
+
+/* Evitar que el contenido de la página quede oculto detrás de la barra */
+body {
+    padding-bottom: 80px; 
+}
+
+@media (min-width: 992px) {
+    body {
+        padding-bottom: 0;
+    }
+}
     </style>
 
     {% block extra_css %}{% endblock %}
 </head>
-<body>
-    <div class="top-blue-bg d-none d-lg-block"></div>
+
+<body {% block body_attrs %}{% endblock %}> <div class="top-blue-bg d-none d-lg-block"></div>
+    
+    <div class="bottom-navbar d-lg-none">
+        
+        
+        <a href="{% url 'message_list' %}" class="{% if 'message' in request.path %}active{% endif %}">
+            <i class="bi bi-chat-dots-fill"></i>
+        </a>
+        <a href="{% url 'job_list' %}" class="{% if 'job' in request.path %}active{% endif %}">
+            <i class="bi bi-briefcase-fill"></i>
+        </a>
+        <a href="{% url 'profile_detail' user.id %}" class="{% if 'profile' in request.path %}active{% endif %}">
+            <i class="bi bi-person-fill"></i>
+        </a>
+    </div>
 
     <header class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top shadow-sm header-floating">
         <div class="container-fluid px-3 px-lg-4">
-            {% if request.path != '/' and user.is_authenticated %}
-            <button 
-                onclick="history.back()" 
-                class="btn btn-link text-primary p-2 d-lg-none me-2"
-                aria-label="{% trans 'Volver' %}"
-            >
+             {% if request.path != '/' and user.is_authenticated %}
+            <button onclick="history.back()" class="btn btn-link text-primary p-2 d-lg-none me-2"
+                aria-label="{% trans 'Volver' %}">
                 <i class="bi bi-arrow-left fs-4"></i>
             </button>
             {% endif %}
-            
-            <a href="{% if user.is_authenticated %}{% url 'feed_home' %}{% else %}{% url 'auth_login' %}{% endif %}" class="navbar-brand fw-bold text-primary d-flex align-items-center">
-                <div class="logo-circle me-2" style="width: 40px; height: 40px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: transparent;">
-                    <img src="{% static 'img/logo-icon.png' %}" alt="Linking X Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+
+            <a href="{% if user.is_authenticated %}{% url 'feed_home' %}{% else %}{% url 'auth_login' %}{% endif %}"
+                class="navbar-brand fw-bold text-primary d-flex align-items-center">
+                <div class="logo-circle me-2"
+                    style="width: 40px; height: 40px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: transparent;">
+                    <img src="{% static 'img/logo-icon.png' %}" alt="Linking X Logo"
+                        style="max-width: 100%; max-height: 100%; object-fit: contain;">
                 </div>
                 <span class="d-none d-sm-inline">Linking X</span>
             </a>
-            
-            {% if user.is_authenticated %}
+
+             {% if user.is_authenticated %}
             <form class="d-none d-lg-flex flex-grow-1 mx-4" style="max-width: 400px;">
                 <div class="input-group">
                     <span class="input-group-text bg-light border-0">
@@ -105,108 +272,71 @@
                 </div>
             </form>
             {% endif %}
-            
-            <div class="d-none d-lg-flex align-items-center gap-1">
+
+            <div class="d-none d-lg-flex align-items-center gap-1" >
                 {% if user.is_authenticated %}
-                    <a href="{% url 'feed_home' %}" class="nav-link-custom {% if 'feed' in request.path or request.path == '/' %}active{% endif %}">
+                <div class="navbar-links d-flex align-items-center gap-3 me-3">
+                    <a href="{% url 'feed_home' %}"
+                        class="nav-link-custom {% if 'feed' in request.path or request.path == '/' %}active{% endif %}">
                         <i class="bi bi-house-door-fill"></i>
-                        <span>{% trans "Inicio" %}</span>
                     </a>
-                
-                    
-                    <a href="{% url 'job_list' %}" class="nav-link-custom {% if 'job' in request.path %}active{% endif %}">
+
+
+                    <a href="{% url 'job_list' %}"
+                        class="nav-link-custom {% if 'job' in request.path %}active{% endif %}">
                         <i class="bi bi-briefcase-fill"></i>
-                        <span>{% trans "Empleos" %}</span>
                     </a>
-                    
-                    <a href="{% url 'message_list' %}" class="nav-link-custom {% if 'message' in request.path %}active{% endif %}">
+
+                    <a href="{% url 'message_list' %}"
+                        class="nav-link-custom {% if 'message' in request.path %}active{% endif %}">
                         <i class="bi bi-chat-dots-fill"></i>
-                        <span>{% trans "Mensajes" %}</span>
                     </a>
-                    
-                    <div class="dropdown">
-                        <a href="#" class="nav-link-custom {% if 'profile' in request.path %}active{% endif %}" data-bs-toggle="dropdown" aria-expanded="false" style="display: flex; align-items: center; gap: 4px;">
-                            <div style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden; flex-shrink: 0;">
-                                <img src="{{ user.get_avatar_url }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
-                            </div>
-                            <i class="bi bi-caret-down-fill" style="font-size: 10px;"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end shadow">
-                            <li>
-                                <a class="dropdown-item" href="{% url 'profile_detail' user.id %}">
-                                    <i class="bi bi-person me-2"></i>{% trans "Ver perfil" %}
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <form method="post" action="{% url 'auth_logout' %}" class="d-inline">
-                                    {% csrf_token %}
-                                    <button type="submit" class="dropdown-item text-danger">
-                                        <i class="bi bi-box-arrow-right me-2"></i>{% trans "Cerrar sesión" %}
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <a href="#" class="nav-link-custom {% if 'profile' in request.path %}active{% endif %}"
+                        data-bs-toggle="dropdown" aria-expanded="false"
+                        style="display: flex; align-items: center; gap: 4px;">
+                        <div style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden; flex-shrink: 0;">
+                            <img src="{{ user.get_avatar_url }}" alt="Avatar"
+                                style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <i class="bi bi-caret-down-fill" style="font-size: 10px;"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'profile_detail' user.id %}">
+                                <i class="bi bi-person me-2"></i>{% trans "Ver perfil" %}
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <form method="post" action="{% url 'auth_logout' %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="dropdown-item text-danger">
+                                    <i class="bi bi-box-arrow-right me-2"></i>{% trans "Cerrar sesión" %}
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
                 {% else %}
-                    <a href="{% url 'auth_login' %}" class="btn btn-outline-primary me-2">
-                        {% trans "Iniciar sesión" %}
-                    </a>
-                    <a href="{% url 'auth_register_role' %}" class="btn btn-primary">
-                        {% trans "Registrarse" %}
-                    </a>
+                <a href="{% url 'auth_login' %}" class="btn btn-outline-primary me-2">
+                    {% trans "Iniciar sesión" %}
+                </a>
+                <a href="{% url 'auth_register_role' %}" class="btn btn-primary">
+                    {% trans "Registrarse" %}
+                </a>
                 {% endif %}
             </div>
         </div>
     </header>
-    
+
     <main class="main-content main-floating" {% block main_attrs %}{% endblock %}>
-        {% if messages %}
-            <div class="container mt-3">
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                        {% if message.tags == 'success' %}
-                            <i class="bi bi-check-circle-fill me-2"></i>
-                        {% elif message.tags == 'error' %}
-                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                        {% elif message.tags == 'warning' %}
-                            <i class="bi bi-exclamation-circle-fill me-2"></i>
-                        {% else %}
-                            <i class="bi bi-info-circle-fill me-2"></i>
-                        {% endif %}
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-        
         {% block content %}{% endblock %}
     </main>
-    
-    {% if user.is_authenticated %}
-    <nav class="bottom-nav d-lg-none">
-        <a href="{% url 'feed_home' %}" class="bottom-nav-item {% if 'feed' in request.path or request.path == '/' %}active{% endif %}">
-            <i class="bi bi-house-door-fill"></i>
-            <span>{% trans "Inicio" %}</span>
-        </a>
-        
-        <a href="{% url 'job_list' %}" class="bottom-nav-item {% if 'job' in request.path %}active{% endif %}">
-            <i class="bi bi-briefcase-fill"></i>
-            <span>{% trans "Empleos" %}</span>
-        </a>
-        
-        <a href="#" class="bottom-nav-item">
-            <i class="bi bi-chat-dots-fill"></i>
-            <span>{% trans "Mensajes" %}</span>
-        </a>
-        
-        <a href="{% url 'profile_detail' user.id %}" class="bottom-nav-item {% if 'profile' in request.path %}active{% endif %}">
-            <i class="bi bi-person-fill"></i>
-            <span>{% trans "Perfil" %}</span>
-        </a>
-    </nav>
-    {% endif %}
     
     {% if not user.is_authenticated %}
     <footer class="bg-light py-2 mt-5 footer-floating">
@@ -215,9 +345,8 @@
         </div>
     </footer>
     {% endif %}
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
     <script src="{% static 'js/main.js' %}"></script>
     {% block extra_js %}{% endblock %}
 </body>

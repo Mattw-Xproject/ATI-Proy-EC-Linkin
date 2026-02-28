@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import gettext as _
 from django.db.models import Count, Q
@@ -43,7 +43,7 @@ def job_list(request):
         return render(request, 'jobs/job_list_profesional.html', context)
     
     elif user.tipo_usuario == 'empresa':
-        # Vista para empresas: Ver sus propias ofertas
+        # Vista para empresas: Ver sus propias ofertas (activas E inactivas)
         ofertas_activas = user.empresa.ofertas.filter(
             activa=True
         ).annotate(

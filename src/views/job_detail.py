@@ -5,40 +5,54 @@ from django.utils.translation import gettext as _
 from django.db.models import Q
 from src.models import OfertaEmpleo, Postulacion
 
-@login_required
 def job_detail(request, job_id):
     """
     Vista de detalle de una oferta de empleo
     """
-    oferta = get_object_or_404(
-        OfertaEmpleo.objects.select_related('empresa__user'),
-        id=job_id,
-        activa=True
-    )
+    # Para empresas: permitir ver sus propias ofertas (activas o inactivas)
+    # Para profesionales: solo ver ofertas activas de otras empresas
+    if request.user.is_authenticated and request.user.tipo_usuario == 'empresa':
+        # Empresa puede ver sus propias ofertas aunque estén inactivas
+        oferta = get_object_or_404(
+            OfertaEmpleo.objects.select_related('empresa__user'),
+            Q(id=job_id) & (Q(activa=True) | Q(empresa=request.user.empresa))
+        )
+    else:
+        # Profesionales solo ven ofertas activas
+        oferta = get_object_or_404(
+            OfertaEmpleo.objects.select_related('empresa__user'),
+            id=job_id,
+            activa=True
+        )
     
-    # Incrementar vistas
-    oferta.vistas += 1
-    oferta.save(update_fields=['vistas'])
+    # Incrementar vistas solo si NO es la empresa dueña
+    if not (request.user.is_authenticated and 
+            request.user.tipo_usuario == 'empresa' and 
+            oferta.empresa == request.user.empresa):
+        oferta.vistas += 1
+        oferta.save(update_fields=['vistas'])
     
     # Verificar si el usuario ya postuló
     ya_postulo = False
     guardada = False
     
-    if request.user.tipo_usuario == 'profesional':
-        try:
-            postulacion = Postulacion.objects.get(
-                profesional=request.user.profesional,
-                oferta=oferta
-            )
-            ya_postulo = True
-            guardada = postulacion.guardada
-        except Postulacion.DoesNotExist:
-            pass
+    if request.user.is_authenticated and request.user.tipo_usuario == 'profesional':
+        ya_postulo = Postulacion.objects.filter(
+            oferta=oferta,
+            profesional=request.user.profesional
+        ).exists()
+        
+        # Verificar si está guardada
+        guardada = Postulacion.objects.filter(
+            oferta=oferta,
+            profesional=request.user.profesional,
+            guardada=True
+        ).exists()
     
-    # Ofertas similares (misma empresa o mismo nivel)
+    # Ofertas similares (solo activas)
     ofertas_similares = OfertaEmpleo.objects.filter(
-        Q(empresa=oferta.empresa) | Q(nivel=oferta.nivel),
-        activa=True
+        activa=True,
+        nivel=oferta.nivel
     ).exclude(
         id=oferta.id
     ).select_related('empresa__user')[:5]
