@@ -2,6 +2,86 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
 from .models import Usuario, Profesional, Empresa, Habilidad, Educacion, ExperienciaLaboral
+from django import forms
+from django.utils.translation import gettext_lazy as _
+from .models import OfertaEmpleo
+
+class OfertaEmpleoForm(forms.ModelForm):
+    class Meta:
+        model = OfertaEmpleo
+        fields = [
+            'titulo',
+            'descripcion',
+            'requisitos',
+            'responsabilidades',
+            'nivel',
+            'tipo_empleo',
+            'modalidad',
+            'ubicacion',
+            'salario_min',
+            'salario_max',
+            'mostrar_salario',
+        ]
+        widgets = {
+            'titulo': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': _('Ej: Desarrollador Full Stack Senior'),
+            }),
+            'descripcion': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 5,
+                'placeholder': _('Describe el puesto, qué buscan y qué ofrecen...'),
+            }),
+            'requisitos': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 5,
+                'placeholder': _('Lista los requisitos, uno por línea...'),
+            }),
+            'responsabilidades': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 4,
+                'placeholder': _('Describe las responsabilidades del puesto...'),
+            }),
+            'nivel': forms.Select(attrs={
+                'class': 'form-select',
+            }),
+            'tipo_empleo': forms.Select(attrs={
+                'class': 'form-select',
+            }),
+            'modalidad': forms.Select(attrs={
+                'class': 'form-select',
+            }),
+            'ubicacion': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': _('Ej: Caracas, Venezuela (Remoto)'),
+            }),
+            'salario_min': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'placeholder': '1000',
+                'step': '0.01',
+            }),
+            'salario_max': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'placeholder': '3000',
+                'step': '0.01',
+            }),
+            'mostrar_salario': forms.CheckboxInput(attrs={
+                'class': 'form-check-input',
+            }),
+        }
+        labels = {
+            'titulo': _('Título del puesto'),
+            'descripcion': _('Descripción'),
+            'requisitos': _('Requisitos'),
+            'responsabilidades': _('Responsabilidades'),
+            'nivel': _('Nivel de experiencia'),
+            'tipo_empleo': _('Tipo de empleo'),
+            'modalidad': _('Modalidad de trabajo'),
+            'ubicacion': _('Ubicación'),
+            'salario_min': _('Salario mínimo (USD)'),
+            'salario_max': _('Salario máximo (USD)'),
+            'mostrar_salario': _('Mostrar salario públicamente'),
+        }
 
 # ========== AUTHENTICATION FORMS ==========
 

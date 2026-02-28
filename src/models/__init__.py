@@ -26,4 +26,11 @@ __all__ = [
     'Notificacion',
     'Conversacion',
     'Mensaje',
+    'message_list',
+    'message_detail',
+    'job_list',
+    'job_detail',
+    'job_apply',
+    'job_manage',
+    'job_applicants',
 ]

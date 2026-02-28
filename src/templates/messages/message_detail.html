@@ -6,16 +6,13 @@
 
 {% block extra_css %}
 <style>
-    /* ========== MESSENGER LAYOUT ========== */
-    
     .messenger-container {
         position: fixed;
-        top: var(--lx-navbar-height);
+        top: 56px;
         left: 0;
         right: 0;
         bottom: 0;
-        background: var(--lx-gray-50);
-        overflow: hidden;
+        background: #f9fafb;
     }
     
     .messenger-layout {
@@ -28,7 +25,7 @@
     /* ========== CONVERSATIONS LIST (Left Column) ========== */
     
     .conversations-column {
-        border-right: 1px solid var(--lx-gray-200);
+        border-right: 1px solid #e5e7eb;
         display: flex;
         flex-direction: column;
         background: white;
@@ -36,14 +33,44 @@
     
     .conversations-header {
         padding: 1rem 1.25rem;
-        border-bottom: 1px solid var(--lx-gray-200);
+        border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .conversations-title-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
     }
     
     .conversations-title {
         font-size: 24px;
         font-weight: 700;
-        margin-bottom: 1rem;
-        color: var(--lx-gray-900);
+        color: #111827;
+    }
+    
+    .header-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .header-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: #6b7280;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+    }
+    
+    .header-btn:hover {
+        background: #f3f4f6;
+        color: #0A66C2;
     }
     
     .conversations-search {
@@ -54,15 +81,14 @@
         width: 100%;
         padding: 10px 16px 10px 40px;
         border: none;
-        background: var(--lx-gray-100);
+        background: #f3f4f6;
         border-radius: 20px;
         font-size: 14px;
-        transition: all 0.2s ease;
     }
     
     .conversations-search input:focus {
         outline: none;
-        background: var(--lx-gray-200);
+        background: #e5e7eb;
     }
     
     .conversations-search i {
@@ -70,7 +96,7 @@
         left: 14px;
         top: 50%;
         transform: translateY(-50%);
-        color: var(--lx-gray-500);
+        color: #9ca3af;
     }
     
     .conversations-list {
@@ -84,31 +110,27 @@
         gap: 12px;
         padding: 12px 16px;
         cursor: pointer;
-        transition: background 0.15s ease;
+        transition: background 0.15s;
         text-decoration: none;
         color: inherit;
         border-left: 3px solid transparent;
     }
     
     .conversation-item:hover {
-        background: var(--lx-gray-50);
+        background: #f9fafb;
     }
     
     .conversation-item.active {
-        background: var(--lx-primary-light);
-        border-left-color: var(--lx-primary);
+        background: #E7F3FF;
+        border-left-color: #0A66C2;
     }
     
-    .conversation-avatar {
-        position: relative;
-        flex-shrink: 0;
-    }
-    
-    .conversation-avatar img {
-        width: 56px;
-        height: 56px;
+    .conversation-avatar-small {
+        width: 48px;
+        height: 48px;
         border-radius: 50%;
         object-fit: cover;
+        flex-shrink: 0;
     }
     
     .conversation-info {
@@ -117,9 +139,9 @@
     }
     
     .conversation-name {
-        font-size: 15px;
+        font-size: 14px;
         font-weight: 600;
-        color: var(--lx-gray-900);
+        color: #111827;
         margin-bottom: 2px;
         white-space: nowrap;
         overflow: hidden;
@@ -127,11 +149,32 @@
     }
     
     .conversation-preview {
-        font-size: 13px;
-        color: var(--lx-gray-600);
+        font-size: 12px;
+        color: #6b7280;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    
+    .conversation-meta {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 4px;
+    }
+    
+    .conversation-time {
+        font-size: 11px;
+        color: #9ca3af;
+    }
+    
+    .unread-badge {
+        background: #0A66C2;
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 10px;
     }
     
     /* ========== CHAT AREA (Center Column) ========== */
@@ -147,32 +190,8 @@
         align-items: center;
         gap: 12px;
         padding: 12px 20px;
-        border-bottom: 1px solid var(--lx-gray-200);
+        border-bottom: 1px solid #e5e7eb;
         background: white;
-        z-index: 10;
-    }
-    
-    .chat-header-back {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        border: none;
-        background: transparent;
-        color: var(--lx-gray-700);
-        cursor: pointer;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-        flex-shrink: 0;
-    }
-    
-    .chat-header-back:hover {
-        background: var(--lx-gray-100);
-    }
-    
-    .chat-header-avatar {
-        flex-shrink: 0;
     }
     
     .chat-header-avatar img {
@@ -185,54 +204,139 @@
     .chat-header-info {
         flex: 1;
         cursor: pointer;
-        min-width: 0;
     }
     
     .chat-header-name {
         font-size: 15px;
         font-weight: 600;
-        color: var(--lx-gray-900);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        color: #111827;
     }
     
     .chat-header-status {
         font-size: 12px;
-        color: var(--lx-gray-600);
+        color: #6b7280;
+    }
+    
+    .chat-header-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    /* Solicitud Pendiente Banner */
+    .request-banner {
+        padding: 1rem 1.5rem;
+        background: #FEF3C7;
+        border-bottom: 1px solid #FDE68A;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+    
+    .request-banner-info {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .request-banner-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #FCD34D;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #92400E;
+    }
+    
+    .request-banner-text h4 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #92400E;
+        margin: 0 0 0.25rem 0;
+    }
+    
+    .request-banner-text p {
+        font-size: 13px;
+        color: #78350F;
+        margin: 0;
+    }
+    
+    .request-banner-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .btn-accept-request {
+        background: #10B981;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        border: none;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    
+    .btn-accept-request:hover {
+        background: #059669;
+    }
+    
+    .btn-reject-request {
+        background: white;
+        color: #EF4444;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        border: 1px solid #EF4444;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    
+    .btn-reject-request:hover {
+        background: #FEE2E2;
+    }
+    
+    /* Bloqueado Banner */
+    .blocked-banner {
+        padding: 1rem 1.5rem;
+        background: #FEE2E2;
+        border-bottom: 1px solid #FCA5A5;
+        text-align: center;
+    }
+    
+    .blocked-banner h4 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #991B1B;
+        margin: 0 0 0.5rem 0;
+    }
+    
+    .blocked-banner p {
+        font-size: 13px;
+        color: #7F1D1D;
+        margin: 0;
     }
     
     .chat-messages {
         flex: 1;
         overflow-y: auto;
         padding: 20px;
-        background: var(--lx-gray-50);
-        display: flex;
-        flex-direction: column;
+        background: #f9fafb;
     }
     
-    .messages-date-separator {
+    .message-date {
         text-align: center;
-        margin: 16px 0;
-        position: relative;
+        margin: 1.5rem 0;
     }
     
-    .messages-date-separator::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: var(--lx-gray-200);
-    }
-    
-    .messages-date-separator span {
-        position: relative;
-        background: var(--lx-gray-50);
-        padding: 0 12px;
+    .message-date span {
+        background: white;
+        padding: 0.5rem 1rem;
+        border-radius: 12px;
         font-size: 12px;
-        color: var(--lx-gray-600);
+        color: #6b7280;
         font-weight: 600;
     }
     
@@ -247,16 +351,12 @@
     }
     
     .message-avatar {
-        width: 28px;
-        height: 28px;
+        width: 32px;
+        height: 32px;
         border-radius: 50%;
+        object-fit: cover;
         flex-shrink: 0;
         align-self: flex-end;
-        object-fit: cover;
-    }
-    
-    .message-avatar.invisible {
-        visibility: hidden;
     }
     
     .messages-wrapper {
@@ -280,27 +380,25 @@
     }
     
     .message-group.received .message-bubble {
-        background: var(--lx-gray-200);
-        color: var(--lx-gray-900);
-        border-bottom-left-radius: 4px;
+        background: #e5e7eb;
+        color: #111827;
     }
     
     .message-group.sent .message-bubble {
-        background: var(--lx-primary);
+        background: #0A66C2;
         color: white;
-        border-bottom-right-radius: 4px;
     }
     
     .message-time {
         font-size: 11px;
-        color: var(--lx-gray-500);
+        color: #9ca3af;
         margin-top: 4px;
         padding: 0 8px;
     }
     
     .chat-input-area {
         padding: 16px 20px;
-        border-top: 1px solid var(--lx-gray-200);
+        border-top: 1px solid #e5e7eb;
         background: white;
     }
     
@@ -310,28 +408,21 @@
         gap: 8px;
     }
     
-    .chat-input-actions {
-        display: flex;
-        gap: 4px;
-    }
-    
     .chat-input-btn {
         width: 36px;
         height: 36px;
         border-radius: 50%;
         border: none;
         background: transparent;
-        color: var(--lx-primary);
+        color: #0A66C2;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.2s ease;
-        flex-shrink: 0;
     }
     
     .chat-input-btn:hover {
-        background: var(--lx-primary-light);
+        background: #E7F3FF;
     }
     
     .chat-input-field {
@@ -340,7 +431,7 @@
         max-height: 120px;
         padding: 8px 16px;
         border: none;
-        background: var(--lx-gray-100);
+        background: #f3f4f6;
         border-radius: 18px;
         resize: none;
         font-family: inherit;
@@ -350,7 +441,7 @@
     
     .chat-input-field:focus {
         outline: none;
-        background: var(--lx-gray-200);
+        background: #e5e7eb;
     }
     
     .chat-send-btn {
@@ -358,65 +449,37 @@
         height: 36px;
         border-radius: 50%;
         border: none;
-        background: var(--lx-primary);
+        background: #0A66C2;
         color: white;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.2s ease;
-        flex-shrink: 0;
     }
     
     .chat-send-btn:hover {
-        background: var(--lx-primary-hover);
-        transform: scale(1.05);
+        background: #004182;
     }
     
     .chat-send-btn:disabled {
-        background: var(--lx-gray-300);
+        background: #d1d5db;
         cursor: not-allowed;
-        transform: scale(1);
     }
     
     /* ========== PROFILE PANEL (Right Column) ========== */
     
     .profile-column {
-        border-left: 1px solid var(--lx-gray-200);
+        border-left: 1px solid #e5e7eb;
         display: flex;
         flex-direction: column;
         background: white;
         overflow-y: auto;
     }
     
-    .profile-close-header {
-        padding: 12px 16px;
-        border-bottom: 1px solid var(--lx-gray-200);
-        display: none;
-    }
-    
-    .profile-close {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        border: none;
-        background: transparent;
-        color: var(--lx-gray-700);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-    }
-    
-    .profile-close:hover {
-        background: var(--lx-gray-100);
-    }
-    
     .profile-header {
         padding: 24px;
         text-align: center;
-        border-bottom: 1px solid var(--lx-gray-200);
+        border-bottom: 1px solid #e5e7eb;
     }
     
     .profile-header-avatar {
@@ -431,13 +494,13 @@
     .profile-header-name {
         font-size: 18px;
         font-weight: 700;
-        color: var(--lx-gray-900);
+        color: #111827;
         margin-bottom: 8px;
     }
     
     .profile-header-status {
         font-size: 14px;
-        color: var(--lx-gray-600);
+        color: #6b7280;
     }
     
     .profile-actions {
@@ -445,37 +508,35 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 8px;
-        border-bottom: 1px solid var(--lx-gray-200);
+        border-bottom: 1px solid #e5e7eb;
     }
     
     .profile-action-btn {
-        padding: 12px 10px;
+        padding: 12px;
         border: none;
-        background: var(--lx-gray-100);
+        background: #f9fafb;
         border-radius: 8px;
         font-size: 13px;
         font-weight: 600;
-        color: var(--lx-gray-700);
+        color: #374151;
         cursor: pointer;
-        transition: all 0.2s ease;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
         text-decoration: none;
     }
     
     .profile-action-btn:hover {
-        background: var(--lx-gray-200);
-        color: var(--lx-gray-900);
+        background: #e5e7eb;
     }
     
     .profile-action-btn.danger {
-        color: var(--lx-danger);
+        color: #EF4444;
     }
     
     .profile-action-btn.danger:hover {
-        background: #FEE;
+        background: #FEE2E2;
     }
     
     .profile-action-btn i {
@@ -484,126 +545,29 @@
     
     .profile-section {
         padding: 16px;
-        border-bottom: 1px solid var(--lx-gray-200);
-    }
-    
-    .profile-section-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 12px;
+        border-bottom: 1px solid #e5e7eb;
     }
     
     .profile-section-title {
         font-size: 14px;
         font-weight: 600;
-        color: var(--lx-gray-900);
-    }
-    
-    .profile-section-link {
-        font-size: 13px;
-        color: var(--lx-primary);
-        text-decoration: none;
-        font-weight: 600;
-    }
-    
-    .profile-section-link:hover {
-        text-decoration: underline;
-    }
-    
-    .media-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 4px;
-    }
-    
-    .media-item {
-        aspect-ratio: 1;
-        border-radius: 8px;
-        overflow: hidden;
-        cursor: pointer;
-        background: var(--lx-gray-100);
-    }
-    
-    .media-item img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.2s ease;
-    }
-    
-    .media-item:hover img {
-        transform: scale(1.1);
-    }
-    
-    .media-empty {
-        grid-column: 1 / -1;
-        text-align: center;
-        padding: 2rem 1rem;
-        color: var(--lx-gray-500);
-        font-size: 14px;
+        color: #111827;
+        margin-bottom: 12px;
     }
     
     /* ========== MOBILE RESPONSIVE ========== */
     
     @media (max-width: 991px) {
-        .messenger-container {
-            bottom: var(--lx-bottom-nav-height);
-        }
-        
         .messenger-layout {
             grid-template-columns: 1fr;
         }
         
-        .conversations-column {
-            display: flex;
-        }
-        
-        .chat-column,
-        .profile-column {
-            display: none;
-        }
-        
-        /* Show chat on mobile */
-        .messenger-layout.show-chat .conversations-column {
-            display: none;
-        }
-        
-        .messenger-layout.show-chat .chat-column {
-            display: flex;
-        }
-        
-        .messenger-layout.show-chat .chat-header-back {
-            display: flex;
-        }
-        
-        /* Show profile on mobile */
-        .messenger-layout.show-profile .conversations-column,
-        .messenger-layout.show-profile .chat-column {
-            display: none;
-        }
-        
-        .messenger-layout.show-profile .profile-column {
-            display: flex;
-        }
-        
-        .messenger-layout.show-profile .profile-close-header {
-            display: block;
-        }
-        
-        .messages-wrapper {
-            max-width: 85%;
-        }
-    }
-    
-    @media (min-width: 992px) {
-        .messenger-layout {
-            grid-template-columns: 360px 1fr 360px;
-        }
-        
         .conversations-column,
-        .chat-column,
         .profile-column {
+            display: none;
+        }
+        
+        .chat-column {
             display: flex !important;
         }
     }
@@ -612,37 +576,54 @@
 
 {% block content %}
 <div class="messenger-container">
-    <div class="messenger-layout show-chat" id="messengerLayout">
+    <div class="messenger-layout">
         
         <!-- ========================================
              CONVERSATIONS LIST (Left Column)
              ======================================== -->
         <div class="conversations-column">
             <div class="conversations-header">
-                <h1 class="conversations-title">{% trans "Mensajes" %}</h1>
+                <div class="conversations-title-row">
+                    <h1 class="conversations-title">{% trans "Mensajes" %}</h1>
+                    <div class="header-actions">
+                        <button type="button" class="header-btn" title="{% trans 'Nuevo mensaje' %}">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                        <button type="button" class="header-btn" title="{% trans 'Opciones' %}">
+                            <i class="bi bi-three-dots"></i>
+                        </button>
+                    </div>
+                </div>
                 <div class="conversations-search">
                     <i class="bi bi-search"></i>
-                    <input type="text" placeholder="{% trans 'Buscar en Mensajes' %}">
+                    <input type="text" placeholder="{% trans 'Buscar' %}" id="searchInput">
                 </div>
             </div>
             
             <div class="conversations-list">
-                <!-- Load other conversations via AJAX or server-side -->
-                <a href="{% url 'message_detail' conversacion.id %}" class="conversation-item active">
-                    <div class="conversation-avatar">
-                        <img src="{{ otro_usuario.get_avatar_url }}" alt="Avatar">
-                    </div>
+                {% for conv_data in conversaciones_data %}
+                <a href="{% url 'message_detail' conv_data.conversacion.id %}" class="conversation-item {% if conv_data.conversacion.id == conversacion.id %}active{% endif %}">
+                    <img src="{{ conv_data.otro_usuario.get_avatar_url }}" alt="Avatar" class="conversation-avatar-small">
                     <div class="conversation-info">
-                        <div class="conversation-name">{{ otro_usuario.get_full_name }}</div>
+                        <div class="conversation-name">{{ conv_data.otro_usuario.get_full_name }}</div>
                         <div class="conversation-preview">
-                            {% with ultimo=conversacion.get_ultimo_mensaje %}
-                                {% if ultimo %}
-                                    {{ ultimo.contenido|truncatewords:8 }}
-                                {% endif %}
-                            {% endwith %}
+                            {% if conv_data.ultimo_mensaje %}
+                                {{ conv_data.ultimo_mensaje.contenido|truncatewords:6 }}
+                            {% else %}
+                                {% trans "Nueva conversación" %}
+                            {% endif %}
                         </div>
                     </div>
+                    <div class="conversation-meta">
+                        {% if conv_data.ultimo_mensaje %}
+                        <span class="conversation-time">{{ conv_data.ultimo_mensaje.fecha_envio|timesince }}</span>
+                        {% endif %}
+                        {% if conv_data.no_leidos > 0 %}
+                        <span class="unread-badge">{{ conv_data.no_leidos }}</span>
+                        {% endif %}
+                    </div>
                 </a>
+                {% endfor %}
             </div>
         </div>
         
@@ -653,106 +634,123 @@
             
             <!-- Chat Header -->
             <div class="chat-header">
-                <button class="chat-header-back" onclick="goBackToList()">
-                    <i class="bi bi-arrow-left"></i>
-                </button>
-                
                 <div class="chat-header-avatar">
                     <img src="{{ otro_usuario.get_avatar_url }}" alt="Avatar">
                 </div>
-                
-                <div class="chat-header-info" onclick="showProfile()">
+                <div class="chat-header-info" onclick="document.querySelector('.profile-column').scrollIntoView({behavior: 'smooth'})">
                     <div class="chat-header-name">{{ otro_usuario.get_full_name }}</div>
                     <div class="chat-header-status">
-                        {% if otro_usuario.tipo_usuario == 'profesional' %}
-                            {{ otro_usuario.profesional.titulo_actual|default:"Profesional" }}
-                        {% else %}
+                        {% if otro_usuario.tipo_usuario == 'profesional' and otro_usuario.profesional.titulo_actual %}
+                            {{ otro_usuario.profesional.titulo_actual }}
+                        {% elif otro_usuario.tipo_usuario == 'empresa' and otro_usuario.empresa.nombre_empresa %}
                             {{ otro_usuario.empresa.nombre_empresa }}
                         {% endif %}
                     </div>
                 </div>
-                
-                <button class="chat-input-btn" onclick="showProfile()">
-                    <i class="bi bi-info-circle"></i>
-                </button>
+                <div class="chat-header-actions">
+                    <button type="button" class="header-btn">
+                        <i class="bi bi-telephone"></i>
+                    </button>
+                    <button type="button" class="header-btn">
+                        <i class="bi bi-camera-video"></i>
+                    </button>
+                    <button type="button" class="header-btn">
+                        <i class="bi bi-info-circle"></i>
+                    </button>
+                </div>
             </div>
+            
+            <!-- Solicitud Pendiente Banner -->
+            {% if es_solicitud_pendiente %}
+            <div class="request-banner">
+                <div class="request-banner-info">
+                    <div class="request-banner-icon">
+                        <i class="bi bi-envelope-heart"></i>
+                    </div>
+                    <div class="request-banner-text">
+                        <h4>{% trans "Solicitud de mensaje" %}</h4>
+                        <p>{% trans "¿Quieres aceptar esta conversación?" %}</p>
+                    </div>
+                </div>
+                <div class="request-banner-actions">
+                    <form method="post" action="{% url 'accept_conversation' conversacion.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-accept-request">
+                            <i class="bi bi-check-lg me-1"></i> {% trans "Aceptar" %}
+                        </button>
+                    </form>
+                    <form method="post" action="{% url 'reject_conversation' conversacion.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-reject-request">
+                            <i class="bi bi-x-lg me-1"></i> {% trans "Rechazar" %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Bloqueado Banner -->
+            {% if es_bloqueada %}
+            <div class="blocked-banner">
+                <h4><i class="bi bi-slash-circle me-2"></i>{% trans "Conversación bloqueada" %}</h4>
+                <p>
+                    {% if bloqueada_por_mi %}
+                        {% trans "Has bloqueado a este usuario" %}
+                    {% else %}
+                        {% trans "Este usuario te ha bloqueado" %}
+                    {% endif %}
+                </p>
+            </div>
+            {% endif %}
             
             <!-- Chat Messages -->
             <div class="chat-messages" id="chatMessages">
-                {% regroup mensajes by fecha_envio|date:"Y-m-d" as mensajes_por_dia %}
-                
+                {% regroup mensajes by fecha_envio.date as mensajes_por_dia %}
                 {% for dia in mensajes_por_dia %}
-                    <div class="messages-date-separator">
-                        <span>
-                            {% if dia.grouper == today|date:"Y-m-d" %}
-                                {% trans "Hoy" %}
-                            {% elif dia.grouper == yesterday|date:"Y-m-d" %}
-                                {% trans "Ayer" %}
-                            {% else %}
-                                {{ dia.list.0.fecha_envio|date:"d M Y" }}
-                            {% endif %}
-                        </span>
+                    <div class="message-date">
+                        <span>{{ dia.grouper|date:"d M Y" }}</span>
                     </div>
                     
                     {% for mensaje in dia.list %}
-                        <div class="message-group {% if mensaje.emisor == user %}sent{% else %}received{% endif %}">
-                            <img 
-                                src="{{ mensaje.emisor.get_avatar_url }}" 
-                                alt="Avatar" 
-                                class="message-avatar"
-                            >
-                            
-                            <div class="messages-wrapper">
-                                <div class="message-bubble">
-                                    {{ mensaje.contenido }}
-                                </div>
-                                <div class="message-time">
-                                    {{ mensaje.fecha_envio|date:"H:i" }}
-                                    {% if mensaje.emisor == user %}
-                                        <i class="bi bi-check-all {% if mensaje.leido %}text-primary{% endif %}"></i>
-                                    {% endif %}
-                                </div>
-                            </div>
+                    <div class="message-group {% if mensaje.emisor == request.user %}sent{% else %}received{% endif %}">
+                        <img src="{{ mensaje.emisor.get_avatar_url }}" alt="Avatar" class="message-avatar">
+                        <div class="messages-wrapper">
+                            <div class="message-bubble">{{ mensaje.contenido }}</div>
+                            <div class="message-time">{{ mensaje.fecha_envio|date:"H:i" }}</div>
                         </div>
+                    </div>
                     {% endfor %}
                 {% empty %}
-                    <div style="text-align: center; padding: 2rem; color: var(--lx-gray-500);">
-                        <i class="bi bi-chat-text" style="font-size: 48px; margin-bottom: 1rem;"></i>
+                    <div style="text-align: center; padding: 2rem; color: #9ca3af;">
+                        <i class="bi bi-chat-dots" style="font-size: 48px; margin-bottom: 1rem;"></i>
                         <p>{% trans "No hay mensajes aún" %}</p>
-                        <p style="font-size: 14px;">{% trans "Envía un mensaje para iniciar la conversación" %}</p>
                     </div>
-                {% endregroup %}
+                {% endfor %}
             </div>
             
             <!-- Chat Input -->
+            {% if not es_bloqueada and conversacion.estado == 'aceptada' or conversacion.participante_1 == request.user %}
             <div class="chat-input-area">
-                <form id="messageForm" onsubmit="sendMessage(event)">
+                <form id="messageForm" method="post" action="{% url 'send_message' conversacion.id %}">
                     {% csrf_token %}
                     <div class="chat-input-wrapper">
-                        <div class="chat-input-actions">
-                            <button type="button" class="chat-input-btn" title="{% trans 'Adjuntar archivo' %}">
-                                <i class="bi bi-plus-circle"></i>
-                            </button>
-                            <button type="button" class="chat-input-btn" title="{% trans 'Adjuntar imagen' %}">
-                                <i class="bi bi-image"></i>
-                            </button>
-                        </div>
-                        
+                        <button type="button" class="chat-input-btn">
+                            <i class="bi bi-plus-circle"></i>
+                        </button>
                         <textarea 
+                            name="contenido" 
                             class="chat-input-field" 
-                            id="messageInput"
-                            name="contenido"
                             placeholder="{% trans 'Escribe un mensaje...' %}"
+                            id="messageInput"
                             rows="1"
-                            onkeydown="handleKeyPress(event)"
                         ></textarea>
-                        
-                        <button type="submit" class="chat-send-btn" id="sendBtn" disabled>
+                        <button type="submit" class="chat-send-btn" id="sendBtn">
                             <i class="bi bi-send-fill"></i>
                         </button>
                     </div>
                 </form>
             </div>
+            {% endif %}
             
         </div>
         
@@ -760,67 +758,61 @@
              PROFILE PANEL (Right Column)
              ======================================== -->
         <div class="profile-column">
-            
-            <!-- Mobile Close Button -->
-            <div class="profile-close-header">
-                <button class="profile-close" onclick="hideProfile()">
-                    <i class="bi bi-x-lg"></i>
-                </button>
-            </div>
-            
-            <!-- Profile Header -->
             <div class="profile-header">
                 <img src="{{ otro_usuario.get_avatar_url }}" alt="Avatar" class="profile-header-avatar">
                 <div class="profile-header-name">{{ otro_usuario.get_full_name }}</div>
                 <div class="profile-header-status">
                     {% if otro_usuario.tipo_usuario == 'profesional' %}
-                        {{ otro_usuario.profesional.titulo_actual|default:"Profesional en Linking X" }}
-                    {% else %}
-                        {{ otro_usuario.empresa.tipo_empresa|capfirst }}
+                        {{ otro_usuario.profesional.titulo_actual|default:"Profesional" }}
+                    {% elif otro_usuario.tipo_usuario == 'empresa' %}
+                        {{ otro_usuario.empresa.nombre_empresa }}
                     {% endif %}
                 </div>
             </div>
             
-            <!-- Profile Actions -->
             <div class="profile-actions">
                 <a href="{% url 'profile_detail' otro_usuario.id %}" class="profile-action-btn">
-                    <i class="bi bi-person-circle"></i>
+                    <i class="bi bi-person"></i>
                     <span>{% trans "Ver perfil" %}</span>
                 </a>
                 
-                <button class="profile-action-btn danger" onclick="blockUser()">
-                    <i class="bi bi-slash-circle"></i>
-                    <span>{% trans "Bloquear" %}</span>
+                <button type="button" class="profile-action-btn">
+                    <i class="bi bi-bell"></i>
+                    <span>{% trans "Silenciar" %}</span>
                 </button>
-            </div>
-            
-            <!-- Shared Media -->
-            <div class="profile-section">
-                <div class="profile-section-header">
-                    <h3 class="profile-section-title">{% trans "Archivos multimedia" %}</h3>
-                    {% if media_compartida %}
-                    <a href="#" class="profile-section-link">{% trans "Ver todos" %}</a>
-                    {% endif %}
-                </div>
                 
-                <div class="media-grid">
-                    {% if media_compartida %}
-                        {% for mensaje in media_compartida %}
-                            {% if mensaje.archivo %}
-                            <div class="media-item">
-                                <img src="{{ mensaje.archivo.url }}" alt="Media">
-                            </div>
-                            {% endif %}
-                        {% endfor %}
-                    {% else %}
-                        <div class="media-empty">
-                            <i class="bi bi-images" style="font-size: 32px; display: block; margin-bottom: 0.5rem; opacity: 0.5;"></i>
-                            {% trans "No hay archivos compartidos" %}
-                        </div>
-                    {% endif %}
-                </div>
+                <button type="button" class="profile-action-btn">
+                    <i class="bi bi-search"></i>
+                    <span>{% trans "Buscar" %}</span>
+                </button>
+                
+                {% if bloqueada_por_mi %}
+                <form method="post" action="{% url 'unblock_conversation' conversacion.id %}" style="grid-column: span 2;">
+                    {% csrf_token %}
+                    <button type="submit" class="profile-action-btn" style="width: 100%;">
+                        <i class="bi bi-unlock"></i>
+                        <span>{% trans "Desbloquear" %}</span>
+                    </button>
+                </form>
+                {% else %}
+                <form method="post" action="{% url 'block_conversation' conversacion.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="profile-action-btn danger" >
+                        <i class="bi bi-slash-circle"></i>
+                        <span>{% trans "Bloquear" %}</span>
+                    </button>
+                </form>
+                {% endif %}
             </div>
             
+            <div class="profile-section">
+                <div class="profile-section-title">{% trans "Información" %}</div>
+                <p style="font-size: 14px; color: #6b7280;">
+                    {% if otro_usuario.ubicacion %}
+                        <i class="bi bi-geo-alt me-2"></i>{{ otro_usuario.ubicacion }}
+                    {% endif %}
+                </p>
+            </div>
         </div>
         
     </div>
@@ -829,126 +821,53 @@
 
 {% block extra_js %}
 <script>
-// Auto-resize textarea
-const messageInput = document.getElementById('messageInput');
-const sendBtn = document.getElementById('sendBtn');
-
-messageInput.addEventListener('input', function() {
-    this.style.height = 'auto';
-    this.style.height = (this.scrollHeight) + 'px';
-    
-    // Enable/disable send button
-    sendBtn.disabled = !this.value.trim();
+// Auto-scroll to bottom on load
+document.addEventListener('DOMContentLoaded', function() {
+    const chatMessages = document.getElementById('chatMessages');
+    if (chatMessages) {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
 });
 
-// Handle Enter key
-function handleKeyPress(event) {
-    if (event.key === 'Enter' && !event.shiftKey) {
-        event.preventDefault();
-        if (!sendBtn.disabled) {
-            document.getElementById('messageForm').dispatchEvent(new Event('submit'));
-        }
-    }
-}
-
-// Send message
-function sendMessage(event) {
-    event.preventDefault();
+// Handle message form submission
+document.getElementById('messageForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
     
-    const form = event.target;
-    const formData = new FormData(form);
-    const contenido = formData.get('contenido').trim();
+    const formData = new FormData(this);
+    const sendBtn = document.getElementById('sendBtn');
+    const messageInput = document.getElementById('messageInput');
     
-    if (!contenido) return;
-    
-    // Disable input while sending
-    messageInput.disabled = true;
     sendBtn.disabled = true;
     
-    fetch('{% url "send_message" conversacion.id %}', {
+    fetch(this.action, {
         method: 'POST',
+        body: formData,
         headers: {
-            'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
-        },
-        body: formData
+            'X-Requested-With': 'XMLHttpRequest'
+        }
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Add message to chat
-            addMessageToChat(data.mensaje);
-            
-            // Clear input
-            messageInput.value = '';
-            messageInput.style.height = 'auto';
-            
-            // Scroll to bottom
-            scrollToBottom();
+            // Reload page to show new message
+            location.reload();
+        } else {
+            alert(data.error || '{% trans "Error al enviar mensaje" %}');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('{% trans "Error al enviar el mensaje" %}');
+        alert('{% trans "Error al enviar mensaje" %}');
     })
     .finally(() => {
-        messageInput.disabled = false;
-        messageInput.focus();
+        sendBtn.disabled = false;
     });
-}
+});
 
-function addMessageToChat(mensaje) {
-    const chatMessages = document.getElementById('chatMessages');
-    const messageHTML = `
-        <div class="message-group sent">
-            <img src="{{ user.get_avatar_url }}" alt="Avatar" class="message-avatar">
-            <div class="messages-wrapper">
-                <div class="message-bubble">${mensaje.contenido}</div>
-                <div class="message-time">
-                    ${new Date().toLocaleTimeString('es', {hour: '2-digit', minute: '2-digit'})}
-                    <i class="bi bi-check"></i>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    chatMessages.insertAdjacentHTML('beforeend', messageHTML);
-}
-
-function scrollToBottom() {
-    const chatMessages = document.getElementById('chatMessages');
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-// Mobile navigation
-function goBackToList() {
-    window.location.href = '{% url "message_list" %}';
-}
-
-function showProfile() {
-    if (window.innerWidth < 992) {
-        document.getElementById('messengerLayout').classList.add('show-profile');
-    }
-}
-
-function hideProfile() {
-    document.getElementById('messengerLayout').classList.remove('show-profile');
-}
-
-function blockUser() {
-    if (confirm('{% trans "¿Estás seguro de que quieres bloquear a este usuario?" %}')) {
-        // Implement block functionality
-        alert('{% trans "Funcionalidad de bloqueo en desarrollo" %}');
-    }
-}
-
-// Auto-scroll to bottom on load
-window.addEventListener('load', scrollToBottom);
-
-// Handle window resize
-window.addEventListener('resize', function() {
-    if (window.innerWidth >= 992) {
-        document.getElementById('messengerLayout').classList.remove('show-profile');
-    }
+// Auto-expand textarea
+document.getElementById('messageInput')?.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = this.scrollHeight + 'px';
 });
 </script>
 {% endblock %}

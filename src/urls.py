@@ -18,7 +18,8 @@ from .views import (
     message_detail,
     add_section,
 )
-
+from .views import job_applicants
+from .views import job_manage
 urlpatterns = [
     # Authentication
     path('login/', auth_login.login_view, name='auth_login'),
@@ -61,4 +62,24 @@ urlpatterns = [
     path('profile/section/add/<str:section_type>/', add_section.add_section, name='add_section'),
     path('profile/section/edit/<str:section_type>/<int:section_id>/', add_section.edit_section, name='edit_section'),
     path('profile/section/delete/<str:section_type>/<int:section_id>/', add_section.delete_section, name='delete_section'),
+
+# Job Applicants Management
+    path('jobs/<int:job_id>/applicants/', job_applicants.job_applicants, name='job_applicants'),
+    path('jobs/application/<int:application_id>/update-status/', job_applicants.update_application_status, name='update_application_status'),
+
+ # Job Management (Empresas)
+    path('jobs/create/', job_manage.create_job, name='create_job'),
+    path('jobs/<int:job_id>/edit/', job_manage.edit_job, name='edit_job'),
+    path('jobs/<int:job_id>/toggle-status/', job_manage.toggle_job_status, name='toggle_job_status'),
+    path('jobs/<int:job_id>/delete/', job_manage.delete_job, name='delete_job'),
+# ==================== MESSAGES ====================
+    path('messages/', message_list.message_list, name='message_list'),
+    path('messages/<int:conversation_id>/', message_detail.message_detail, name='message_detail'),
+    path('messages/<int:conversation_id>/send/', message_detail.send_message, name='send_message'),
+    path('messages/create/<int:user_id>/', message_detail.create_conversation, name='create_conversation'),
+    
+    # Message Actions
+    path('messages/<int:conversation_id>/accept/', message_detail.accept_conversation, name='accept_conversation'),
+    path('messages/<int:conversation_id>/reject/', message_detail.reject_conversation, name='reject_conversation'),
+    path('messages/<int:conversation_id>/block/', message_detail.block_conversation, name='block_conversation'),
 ]
