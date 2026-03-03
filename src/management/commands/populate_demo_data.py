@@ -1,13 +1,16 @@
+import base64
+import random
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from django.core.files.base import ContentFile
 from datetime import timedelta
 from src.models import (
     Usuario, Profesional, Empresa,
     Publicacion, Comentario,
     Habilidad, Educacion, ExperienciaLaboral,
     OfertaEmpleo, Postulacion,
-    Conversacion, Mensaje
+    Conversacion, Mensaje, Like, Seguidor
 )
 
 Usuario = get_user_model()
@@ -28,7 +31,7 @@ class Command(BaseCommand):
         self.crear_usuarios_empresas()
         
         # Crear contenido
-        self.crear_publicaciones()
+        self.crear_publicaciones_con_media()
         self.crear_ofertas_laborales()
         self.crear_conversaciones()
         
@@ -321,74 +324,139 @@ class Command(BaseCommand):
             
             self.stdout.write(f'✓ Empresa creada: {data["nombre_empresa"]}')
     
-    def crear_publicaciones(self):
-        self.stdout.write('Creando publicaciones...')
+    # ==========================================
+    # NUEVA LÓGICA DE CONTENIDO Y MEDIA
+    # ==========================================
+
+    def get_dummy_image(self):
+        """Genera una imagen azul pequeña en base64 para pruebas"""
+        # GIF 1x1 pixel transparente/azul
+        img_data = base64.b64decode("R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7")
+        return ContentFile(img_data, name='post_demo.jpg')
+
+    def crear_red_seguidores(self):
+        """Crea relaciones de seguimiento para probar las sugerencias"""
+        self.stdout.write('🔗 Creando red de contactos...')
+        users = list(Usuario.objects.all())
         
-        usuarios = Usuario.objects.all()
+        # Hacemos que cada usuario siga a 1 o 2 personas aleatorias, 
+        # dejando otros sin seguir para que aparezcan en sugerencias.
+        for user in users:
+            potential_follows = [u for u in users if u != user]
+            to_follow = random.sample(potential_follows, k=min(2, len(potential_follows)))
+            
+            for target in to_follow:
+                Seguidor.objects.get_or_create(seguidor=user, seguido=target)
+
+    def crear_publicaciones_con_media(self):
+        self.stdout.write('📸 Creando publicaciones con imágenes...')
         
-        publicaciones_data = [
+        # Datos enriquecidos
+        posts_data = [
             {
-                'contenido': '¡Acabo de terminar un proyecto increíble con Django y React! 🚀 Las posibilidades son infinitas cuando combinas estas tecnologías. ¿Alguien más trabajando con este stack?',
-                'usuario': 'andreina.ve@gmail.com',
+                'email': 'andreina.ve@gmail.com',
+                'contenido': 'Analizando datos del mercado tech en Latam. Los gráficos muestran un crecimiento exponencial en Python. 📈🐍',
+                'con_imagen': True
             },
             {
-                'contenido': '¿Buscan un diseñador UX/UI? Estoy disponible para proyectos freelance. Mi enfoque es crear experiencias digitales memorables centradas en el usuario. 💡',
-                'usuario': 'nicole.llerena@gmail.com',
+                'email': 'nicole.llerena@gmail.com',
+                'contenido': 'Nuevo diseño de interfaz para la app de Delivery. ¿Qué opinan de esta paleta de colores? 🎨',
+                'con_imagen': True
             },
             {
-                'contenido': 'Tech Solutions está creciendo y buscamos desarrolladores Python! Si te apasiona la tecnología y quieres formar parte de un equipo dinámico, esta es tu oportunidad. 👨‍💻👩‍💻',
-                'usuario': 'rh@techsolutions.com',
+                'email': 'rh@techsolutions.com',
+                'contenido': '¡Estamos contratando! Únete a nuestro equipo de desarrollo backend. 🚀',
+                'con_imagen': True
             },
             {
-                'contenido': 'Acabo de completar un curso de Machine Learning en Coursera. Los modelos predictivos son fascinantes. ¿Recomendaciones de proyectos para practicar? 📊🤖',
-                'usuario': 'andreina.ve@gmail.com',
+                'email': 'talento@innovatech.com',
+                'contenido': 'Nuestra oficinas centrales en Maracaibo. ¡Listos para la transformación digital!',
+                'con_imagen': False
             },
             {
-                'contenido': 'El trabajo remoto ha cambiado mi vida profesional. Mayor productividad, mejor balance vida-trabajo, y más tiempo con mi familia. ¿Cuál ha sido su experiencia? 🏠💼',
-                'usuario': 'andreina.ve@gmail.com',
-            },
-            {
-                'contenido': 'InnovaTech está buscando talento senior para liderar proyectos de transformación digital. Si tienes experiencia en arquitectura de software y liderazgo de equipos, contáctanos. 🎯',
-                'usuario': 'talento@innovatech.com',
-            },
-            {
-                'contenido': 'El diseño no es solo cómo se ve, es cómo funciona. Steve Jobs tenía razón. Cada pixel importa, cada interacción cuenta. 🎨✨',
-                'usuario': 'nicole.llerena@gmail.com',
-            },
-            {
-                'contenido': '¿Sabían que Python sigue siendo el lenguaje #1 para Data Science? Su ecosistema de librerías es incomparable: Pandas, NumPy, Scikit-learn, TensorFlow... 🐍📈',
-                'usuario': 'andreina.ve@gmail.com',
-            },
+                'email': 'dannygonzalez.exe@gmail.com',
+                'contenido': 'Refactorizando código legacy... a veces la mejor línea de código es la que borras. 💻🔥',
+                'con_imagen': False
+            }
         ]
-        
-        for pub_data in publicaciones_data:
+
+        for p_data in posts_data:
             try:
-                user = Usuario.objects.get(email=pub_data['usuario'])
-                pub = Publicacion.objects.create(
-                    creador=user,
-                    contenido=pub_data['contenido'],
-                    likes_count=0
+                user = Usuario.objects.get(email=p_data['email'])
+                post = Publicacion(
+                    autor=user,
+                    contenido=p_data['contenido'],
+                    fecha_creacion=timezone.now() - timedelta(days=random.randint(0, 5))
                 )
-                # Ajustar fecha para variedad
-                dias_atras = publicaciones_data.index(pub_data)
-                pub.fecha = timezone.now() - timedelta(days=dias_atras)
-                pub.save()
+                
+                if p_data['con_imagen']:
+                    post.imagen = self.get_dummy_image()
+                
+                post.save()
+                
             except Usuario.DoesNotExist:
                 continue
+                
+        self.stdout.write(self.style.SUCCESS(f'✓ {len(posts_data)} publicaciones creadas'))
+
+    def crear_interacciones(self):
+        """Genera Likes y Comentarios anidados"""
+        self.stdout.write('💬 Generando likes y comentarios...')
         
-        # Crear algunos comentarios
-        publicaciones = Publicacion.objects.all()
-        if publicaciones.exists():
-            pub1 = publicaciones.first()
-            user_comentario = Usuario.objects.exclude(email=pub1.creador.email).first()
-            
-            Comentario.objects.create(
-                publicacion=pub1,
-                creador=user_comentario,
-                contenido='¡Excelente! Yo también trabajo con ese stack. ¿Usaste Redux para el state mandreinagement?'
-            )
+        users = list(Usuario.objects.all())
+        posts = Publicacion.objects.all()
         
-        self.stdout.write(self.style.SUCCESS(f'✓ {publicaciones.count()} publicaciones creadas'))
+        comentarios_genericos = [
+            "¡Excelente aporte!",
+            "Totalmente de acuerdo.",
+            "Gracias por compartir.",
+            "Muy interesante punto de vista.",
+            "¿Podrías dar más detalles?",
+            "Me encanta este contenido 👏",
+            "100% recomendado.",
+            "Gran trabajo equipo."
+        ]
+
+        for post in posts:
+            # 1. Crear Likes (entre 0 y todos los usuarios)
+            num_likes = random.randint(0, len(users))
+            likers = random.sample(users, num_likes)
+            for liker in likers:
+                Like.objects.get_or_create(usuario=liker, publicacion=post)
+
+            # 2. Crear Comentarios (Estructura de hilo)
+            # Comentario Raíz (Nivel 0)
+            if users:
+                comentarista = random.choice(users)
+                comentario_raiz = Comentario.objects.create(
+                    publicacion=post,
+                    autor=comentarista,
+                    contenido=random.choice(comentarios_genericos),
+                    nivel=0
+                )
+
+                # Respuesta (Nivel 1) - 50% probabilidad
+                if random.choice([True, False]):
+                    otro_usuario = random.choice(users)
+                    respuesta = Comentario.objects.create(
+                        publicacion=post,
+                        autor=otro_usuario,
+                        contenido=f"@{comentarista.first_name} Tienes mucha razón en eso.",
+                        comentario_padre=comentario_raiz,
+                        # El nivel se calcula solo en el save() del modelo, pero lo pongo explícito
+                    )
+
+                    # Respuesta a la respuesta (Nivel 2) - 30% probabilidad
+                    if random.choice([True, False, False]):
+                        tercer_usuario = random.choice(users)
+                        Comentario.objects.create(
+                            publicacion=post,
+                            autor=tercer_usuario,
+                            contenido="Me sumo al debate, es crucial considerarlo.",
+                            comentario_padre=respuesta
+                        )
+
+        self.stdout.write(self.style.SUCCESS('✓ Interacciones generadas correctamente'))
     
     def crear_ofertas_laborales(self):
         self.stdout.write('Creando ofertas laborales...')

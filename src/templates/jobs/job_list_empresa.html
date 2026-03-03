@@ -14,21 +14,10 @@
     
     .jobs-layout {
         display: grid;
-        grid-template-columns: 1fr 40%;  /* ✅ INVERTIDO: Derecha lista, izquierda detalle */
+        grid-template-columns: 40% 1fr;
         gap: 1.5rem;
     }
     
-    /* ✅ Empty State Card (Izquierda) */
-    .empty-state-card {
-        background: white;
-        border-radius: 8px;
-        border: 1px solid #e5e7eb;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    /* ✅ Jobs List Column (Derecha) */
     .jobs-list-column {
         background: white;
         border-radius: 8px;
@@ -46,7 +35,15 @@
         z-index: 10;
     }
     
-    /* ✅ FIX: Job item ahora es DIV, no link */
+    .empty-state-card {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
     .job-list-item {
         padding: 1.25rem 1.5rem;
         border-bottom: 1px solid #e5e7eb;
@@ -97,42 +94,15 @@
         margin-bottom: 1rem;
     }
     
-    /* ✅ Modal Styles */
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 9999;
-        align-items: center;
-        justify-content: center;
-        padding: 1rem;
-    }
-    
-    .modal.active {
-        display: flex;
-    }
-    
-    .modal-dialog {
-        background: white;
+    /* ===== ESTILOS PARA MODAL DE BOOTSTRAP ===== */
+    .modal-content {
         border-radius: 12px;
-        width: 90%;
-        max-width: 700px;
-        max-height: 90vh;
-        overflow-y: auto;
-        position: relative;
-        z-index: 10000;
+        border: none;
     }
     
     .modal-header {
         padding: 1.5rem 2rem;
         border-bottom: 1px solid #e5e7eb;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
     }
     
     .modal-title {
@@ -140,26 +110,10 @@
         font-weight: 700;
     }
     
-    .modal-close {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        border: none;
-        background: transparent;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #6b7280;
-    }
-    
-    .modal-close:hover {
-        background: #f3f4f6;
-        color: #111827;
-    }
-    
     .modal-body {
         padding: 2rem;
+        max-height: calc(90vh - 140px);
+        overflow-y: auto;
     }
     
     .form-group {
@@ -216,12 +170,8 @@
     .modal-footer {
         padding: 1.5rem 2rem;
         border-top: 1px solid #e5e7eb;
-        display: flex;
-        justify-content: flex-end;
-        gap: 1rem;
     }
     
-    /* ✅ Responsive */
     @media (max-width: 991px) {
         .jobs-layout {
             grid-template-columns: 1fr;
@@ -241,7 +191,7 @@
     <div class="mb-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h1 class="h3">{% trans "Gestión de Ofertas" %}</h1>
-            <button type="button" class="btn btn-primary" onclick="openCreateModal()">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createJobModal">
                 <i class="bi bi-plus-circle me-2"></i>
                 {% trans "Nueva oferta" %}
             </button>
@@ -292,19 +242,9 @@
         </div>
     </div>
     
-    <!-- ✅ LAYOUT CORREGIDO: Empty State Izquierda, Lista Derecha -->
     <div class="jobs-layout">
         
-        <!-- Left Column - Empty State (Selecciona una oferta) -->
-        <div class="empty-state-card">
-            <div class="empty-state">
-                <i class="bi bi-arrow-right-circle"></i>
-                <h5>{% trans "Selecciona una oferta" %}</h5>
-                <p>{% trans "Haz clic en una oferta para ver detalles" %}</p>
-            </div>
-        </div>
-        
-        <!-- Right Column - Jobs List -->
+        <!-- Left Column - Jobs List -->
         <div class="jobs-list-column">
             <div class="jobs-list-header">
                 <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 1rem;">{% trans "Mis Ofertas" %}</h2>
@@ -321,7 +261,6 @@
                 </div>
             </div>
             
-            <!-- ✅ Active Jobs List (DIV con onclick, no <a>) -->
             <div id="activeJobsList">
                 {% for oferta in ofertas_activas %}
                 <div class="job-list-item" onclick="window.location.href='/jobs/{{ oferta.id }}/'">
@@ -342,7 +281,7 @@
                 <div class="empty-state">
                     <i class="bi bi-inbox"></i>
                     <p>{% trans "No tienes ofertas activas" %}</p>
-                    <button type="button" class="btn btn-primary" onclick="openCreateModal()">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createJobModal">
                         {% trans "Crear primera oferta" %}
                     </button>
                 </div>
@@ -371,140 +310,147 @@
                 </div>
                 {% endfor %}
             </div>
-            
-            
+        </div>
+        
+        <!-- Right Column - Empty State -->
+        <div class="empty-state-card">
+            <div class="empty-state">
+                <i class="bi bi-arrow-left-circle"></i>
+                <h5>{% trans "Selecciona una oferta" %}</h5>
+                <p>{% trans "Haz clic en una oferta para ver detalles" %}</p>
+            </div>
         </div>
         
     </div>
 </div>
 
-<!-- ✅ Create Job Modal (CORREGIDO) -->
-<div class="modal" id="createJobModal">
-    <div class="modal-dialog">
-        <form method="post" action="{% url 'create_job' %}">
-            {% csrf_token %}
-            
-            <div class="modal-header">
-                <h2 class="modal-title">{% trans "Nueva Oferta de Empleo" %}</h2>
-                <button type="button" class="modal-close" onclick="closeCreateModal(); return false;">
-                    <i class="bi bi-x-lg"></i>
-                </button>
-            </div>
-            
-            <div class="modal-body">
+<!-- ===== MODAL BOOTSTRAP CREAR OFERTA ===== -->
+<div class="modal fade" id="createJobModal" tabindex="-1" aria-labelledby="createJobModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <form id="createJobForm" method="post" action="{% url 'create_job' %}">
+                {% csrf_token %}
                 
-                <div class="form-group">
-                    <label class="form-label">{% trans "Título del puesto" %} *</label>
-                    <input type="text" name="titulo" class="form-control" required placeholder="Ej: Desarrollador Full Stack Senior">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="createJobModalLabel">{% trans "Nueva Oferta de Empleo" %}</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label">{% trans "Nivel de experiencia" %} *</label>
-                            <select name="nivel" class="form-select" required>
-                                <option value="">{% trans "Seleccionar" %}</option>
-                                <option value="junior">{% trans "Junior" %}</option>
-                                <option value="mid">{% trans "Mid-level" %}</option>
-                                <option value="senior">{% trans "Senior" %}</option>
-                                <option value="lead">{% trans "Lead" %}</option>
-                            </select>
+                <div class="modal-body">
+                    
+                    <div class="form-group">
+                        <label class="form-label">{% trans "Título del puesto" %} *</label>
+                        <input type="text" name="titulo" id="jobTitle" class="form-control" required placeholder="Ej: Desarrollador Full Stack Senior">
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{% trans "Nivel de experiencia" %} *</label>
+                                <select name="nivel" id="jobNivel" class="form-select" required>
+                                    <option value="">{% trans "Seleccionar" %}</option>
+                                    <option value="junior">{% trans "Junior" %}</option>
+                                    <option value="mid">{% trans "Mid-level" %}</option>
+                                    <option value="senior">{% trans "Senior" %}</option>
+                                    <option value="lead">{% trans "Lead" %}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{% trans "Tipo de empleo" %} *</label>
+                                <select name="tipo_empleo" id="jobTipo" class="form-select" required>
+                                    <option value="">{% trans "Seleccionar" %}</option>
+                                    <option value="tiempo_completo">{% trans "Tiempo completo" %}</option>
+                                    <option value="medio_tiempo">{% trans "Medio tiempo" %}</option>
+                                    <option value="freelance">{% trans "Freelance" %}</option>
+                                    <option value="pasantia">{% trans "Pasantía" %}</option>
+                                    <option value="temporal">{% trans "Temporal" %}</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label">{% trans "Tipo de empleo" %} *</label>
-                            <select name="tipo_empleo" class="form-select" required>
-                                <option value="">{% trans "Seleccionar" %}</option>
-                                <option value="tiempo_completo">{% trans "Tiempo completo" %}</option>
-                                <option value="medio_tiempo">{% trans "Medio tiempo" %}</option>
-                                <option value="freelance">{% trans "Freelance" %}</option>
-                                <option value="pasantia">{% trans "Pasantía" %}</option>
-                                <option value="temporal">{% trans "Temporal" %}</option>
-                            </select>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{% trans "Modalidad" %} *</label>
+                                <select name="modalidad" id="jobModalidad" class="form-select" required>
+                                    <option value="">{% trans "Seleccionar" %}</option>
+                                    <option value="presencial">{% trans "Presencial" %}</option>
+                                    <option value="remoto">{% trans "Remoto" %}</option>
+                                    <option value="hibrido">{% trans "Híbrido" %}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{% trans "Ubicación" %} *</label>
+                                <input type="text" name="ubicacion" id="jobUbicacion" class="form-control" required placeholder="Caracas, Venezuela">
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label">{% trans "Modalidad" %} *</label>
-                            <select name="modalidad" class="form-select" required>
-                                <option value="">{% trans "Seleccionar" %}</option>
-                                <option value="presencial">{% trans "Presencial" %}</option>
-                                <option value="remoto">{% trans "Remoto" %}</option>
-                                <option value="hibrido">{% trans "Híbrido" %}</option>
-                            </select>
+                    
+                    <div class="form-group">
+                        <label class="form-label">{% trans "Descripción" %} *</label>
+                        <textarea name="descripcion" id="jobDescripcion" class="form-control" required placeholder="Describe el puesto..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">{% trans "Requisitos" %} *</label>
+                        <textarea name="requisitos" id="jobRequisitos" class="form-control" required placeholder="Lista los requisitos..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">{% trans "Responsabilidades" %}</label>
+                        <textarea name="responsabilidades" id="jobResponsabilidades" class="form-control" placeholder="Describe las responsabilidades..."></textarea>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{% trans "Salario mínimo (USD)" %}</label>
+                                <input type="number" name="salario_min" id="jobSalarioMin" class="form-control" step="0.01" placeholder="1000">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{% trans "Salario máximo (USD)" %}</label>
+                                <input type="number" name="salario_max" id="jobSalarioMax" class="form-control" step="0.01" placeholder="3000">
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label">{% trans "Ubicación" %} *</label>
-                            <input type="text" name="ubicacion" class="form-control" required placeholder="Caracas, Venezuela">
+                    
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" name="mostrar_salario" class="form-check-input" id="mostrarSalario" checked>
+                            <label class="form-check-label" for="mostrarSalario">
+                                {% trans "Mostrar salario públicamente" %}
+                            </label>
                         </div>
                     </div>
+                    
                 </div>
                 
-                <div class="form-group">
-                    <label class="form-label">{% trans "Descripción" %} *</label>
-                    <textarea name="descripcion" class="form-control" required placeholder="Describe el puesto..."></textarea>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        {% trans "Cancelar" %}
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="submitJobBtn">
+                        <i class="bi bi-check-circle me-2"></i>
+                        {% trans "Crear oferta" %}
+                    </button>
                 </div>
                 
-                <div class="form-group">
-                    <label class="form-label">{% trans "Requisitos" %} *</label>
-                    <textarea name="requisitos" class="form-control" required placeholder="Lista los requisitos..."></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">{% trans "Responsabilidades" %}</label>
-                    <textarea name="responsabilidades" class="form-control" placeholder="Describe las responsabilidades..."></textarea>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label">{% trans "Salario mínimo (USD)" %}</label>
-                            <input type="number" name="salario_min" class="form-control" step="0.01" placeholder="1000">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label">{% trans "Salario máximo (USD)" %}</label>
-                            <input type="number" name="salario_max" class="form-control" step="0.01" placeholder="3000">
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <div class="form-check">
-                        <input type="checkbox" name="mostrar_salario" class="form-check-input" id="mostrarSalario" checked>
-                        <label class="form-check-label" for="mostrarSalario">
-                            {% trans "Mostrar salario públicamente" %}
-                        </label>
-                    </div>
-                </div>
-                
-            </div>
-            
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeCreateModal(); return false;">
-                    {% trans "Cancelar" %}
-                </button>
-                <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-check-circle me-2"></i>
-                    {% trans "Crear oferta" %}
-                </button>
-            </div>
-            
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-// Toggle between active/inactive jobs
+// ===== TOGGLE BETWEEN ACTIVE/INACTIVE JOBS =====
 document.getElementById('activeJobs').addEventListener('change', function() {
     document.getElementById('activeJobsList').style.display = 'block';
     document.getElementById('inactiveJobsList').style.display = 'none';
@@ -515,39 +461,43 @@ document.getElementById('inactiveJobs').addEventListener('change', function() {
     document.getElementById('inactiveJobsList').style.display = 'block';
 });
 
-// ✅ Modal functions
-function openCreateModal() {
-    const modal = document.getElementById('createJobModal');
-    modal.style.display = 'flex'; // Forzar display flex
-    // Pequeño timeout para permitir que el display flex se aplique antes de añadir la clase active (si usas transiciones)
-    setTimeout(() => {
-        modal.classList.add('active');
-    }, 10);
-    document.body.style.overflow = 'hidden';
+// ===== VALIDACIÓN DE FORMULARIO DE CREAR OFERTA =====
+const createJobForm = document.getElementById('createJobForm');
+const submitJobBtn = document.getElementById('submitJobBtn');
+const requiredFields = ['jobTitle', 'jobNivel', 'jobTipo', 'jobModalidad', 'jobUbicacion', 'jobDescripcion', 'jobRequisitos'];
+
+function validateJobForm() {
+    let allFilled = true;
+    
+    requiredFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (!field || !field.value.trim()) {
+            allFilled = false;
+        }
+    });
+    
+    submitJobBtn.disabled = !allFilled;
 }
 
-function closeCreateModal() {
-    const modal = document.getElementById('createJobModal');
-    modal.classList.remove('active');
-    setTimeout(() => {
-        modal.style.display = 'none';
-    }, 300); // Esperar a que termine la transición si la hay
-    document.body.style.overflow = 'auto';
-}
-
-// ✅ Close modal ONLY when clicking the dark background overlay
-window.onclick = function(event) {
-    const modal = document.getElementById('createJobModal');
-    if (event.target == modal) {
-        closeCreateModal();
+// Agregar listeners a todos los campos requeridos
+requiredFields.forEach(fieldId => {
+    const field = document.getElementById(fieldId);
+    if (field) {
+        field.addEventListener('input', validateJobForm);
+        field.addEventListener('change', validateJobForm);
     }
-}
+});
 
-// Close modal on ESC key
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        closeCreateModal();
-    }
+// ===== RESET DEL FORMULARIO AL CERRAR MODAL (BOOTSTRAP EVENT) =====
+const createJobModal = document.getElementById('createJobModal');
+createJobModal.addEventListener('hidden.bs.modal', function () {
+    createJobForm.reset();
+    submitJobBtn.disabled = false; // Reset button state
+});
+
+// ===== VALIDAR AL CARGAR LA PÁGINA =====
+document.addEventListener('DOMContentLoaded', function() {
+    validateJobForm();
 });
 </script>
 {% endblock %}

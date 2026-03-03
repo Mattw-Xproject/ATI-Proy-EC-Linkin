@@ -3,6 +3,10 @@ from .profesional import Profesional
 from .empresa import Empresa
 from .publicacion import Publicacion
 from .comentario import Comentario
+from .like import Like
+from .seguidor import Seguidor
+from .conversacion import Conversacion
+from .mensaje import Mensaje
 from .habilidad import Habilidad
 from .educacion import Educacion
 from .experiencia_laboral import ExperienciaLaboral
@@ -18,6 +22,8 @@ __all__ = [
     'Empresa',
     'Publicacion',
     'Comentario',
+    'Like',
+    'Seguidor',
     'Habilidad',
     'Educacion',
     'ExperienciaLaboral',

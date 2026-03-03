@@ -17,9 +17,11 @@ from .views import (
     message_list,
     message_detail,
     add_section,
+    job_applicants,
+    job_manage,
+    feed,
 )
-from .views import job_applicants
-from .views import job_manage
+from .views import api
 urlpatterns = [
     # Authentication
     path('login/', auth_login.login_view, name='auth_login'),
@@ -79,7 +81,18 @@ urlpatterns = [
     path('messages/create/<int:user_id>/', message_detail.create_conversation, name='create_conversation'),
     
     # Message Actions
-    path('messages/<int:conversation_id>/accept/', message_detail.accept_conversation, name='accept_conversation'),
+     path('messages/<int:conversation_id>/accept/', message_detail.accept_conversation, name='accept_conversation'),
     path('messages/<int:conversation_id>/reject/', message_detail.reject_conversation, name='reject_conversation'),
     path('messages/<int:conversation_id>/block/', message_detail.block_conversation, name='block_conversation'),
+    path('messages/<int:conversation_id>/unblock/', message_detail.unblock_conversation, name='unblock_conversation'),
+
+    # API Endpoints
+    path('api/search-users/', api.search_users, name='api_search_users'),
+
+     # Feed Actions
+    path('feed/post/create/', feed.crear_publicacion, name='crear_publicacion'),
+    path('feed/post/<int:publicacion_id>/like/', feed.toggle_like, name='toggle_like'),
+    path('feed/post/<int:publicacion_id>/comment/', feed.crear_comentario, name='crear_comentario'),
+    path('feed/post/<int:publicacion_id>/comments/', feed.cargar_comentarios, name='cargar_comentarios'),
+    path('feed/user/<int:usuario_id>/follow/', feed.toggle_seguir, name='toggle_seguir'),
 ]
