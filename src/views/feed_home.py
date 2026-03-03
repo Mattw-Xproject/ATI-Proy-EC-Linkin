@@ -1,47 +1,45 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.utils.translation import gettext as _
-from django.db.models import Count, Q
-from src.models import Publicacion, Usuario
+from django.db.models import Count
+from src.models import Publicacion, Usuario, Seguidor
 
 @login_required
 def feed_home(request):
     """
-    Vista principal del feed (UC#03 - Publicaciones y Comentarios)
-    
-    Desktop: Layout 3 columnas (Sidebar Left + Feed + Sidebar Right)
-    Mobile: Solo feed con bottom navigation
+    Vista principal del feed con lógica de sugerencias real
     """
-    
-    # Obtener publicaciones ordenadas por fecha (más recientes primero)
+    # 1. Obtener IDs de usuarios que el usuario ya sigue
+    ids_siguiendo = Seguidor.objects.filter(
+        seguidor=request.user
+    ).values_list('seguido_id', flat=True)
+
+    # 2. Publicaciones para el feed
     publicaciones = Publicacion.objects.select_related(
-        'creador'
+        'autor'
     ).prefetch_related(
-        'comentarios__creador',
-        'comentarios__respuestas'
+        'comentarios__autor'
     ).annotate(
         comentarios_count=Count('comentarios')
-    ).order_by('-fecha')[:20]  # Últimas 20 publicaciones
-    
-    # Estadísticas del usuario para el mini-perfil (sidebar left)
+    ).order_by('-fecha_creacion')[:20]
+
+    # 3. Sugerencias: Empresas que NO sigues y NO eres tú mismo
+    suggested_users = Usuario.objects.filter(
+        tipo_usuario='empresa'
+    ).exclude(
+        id__in=list(ids_siguiendo) + [request.user.id]
+    ).select_related('empresa').order_by('?')[:5] # '?' para aleatoriedad
+
+    # 4. Estadísticas del mini-perfil
     user_stats = {
-        'followers_count': 0,  # TODO: Implementar sistema de seguidores
-        'following_count': 0,
+        'followers_count': Seguidor.objects.filter(seguido=request.user).count(),
+        'following_count': len(ids_siguiendo),
         'posts_count': request.user.publicaciones.count(),
     }
     
-    # Sugerencias para sidebar derecho (opcional)
-    suggested_users = Usuario.objects.exclude(
-        id=request.user.id
-    ).filter(
-        tipo_usuario='empresa'  # Sugerir empresas
-    )[:3]
-    
     context = {
         'publicaciones': publicaciones,
-        'user_stats': user_stats,
         'suggested_users': suggested_users,
-        'page_title': _('Feed'),
+        'user_stats': user_stats,
     }
     
     return render(request, 'feed_home.html', context)

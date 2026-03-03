@@ -4,296 +4,800 @@
 
 {% block title %}{% trans "Feed - Linking X" %}{% endblock %}
 
-{% block content %}
-<div class="container-fluid" style="max-width: 1280px;">
-    <div class="row g-3 py-3">
+{% block extra_css %}
+<style>
+    /* ========== LAYOUT PRINCIPAL ========== */
+    .feed-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem;
+    }
+    
+    .feed-layout {
+        display: grid;
+        grid-template-columns: 240px 1fr 300px;
+        gap: 1.5rem;
+    }
+    
+    /* ========== AVATARES FIJOS 128x128 (escalados proporcionalmente) ========== */
+    .avatar-xs {
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+    }
+    
+    .avatar-sm {
+        width: 36px !important;
+        height: 36px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+    }
+    
+    .avatar-md {
+        width: 48px !important;
+        height: 48px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+    }
+    
+    .avatar-lg {
+        width: 80px !important;
+        height: 80px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+    }
+    
+    .avatar-xl {
+        width: 128px !important;
+        height: 128px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+    }
+    
+    /* ========== SIDEBAR IZQUIERDO ========== */
+    .left-sidebar {
+        position: sticky;
+        top: 80px;
+        height: fit-content;
+    }
+    
+    .profile-card {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        overflow: hidden;
+        margin-bottom: 1rem;
+    }
+    
+    .profile-card-header {
+        height: 60px;
+        background: linear-gradient(135deg, #0A66C2 0%, #004182 100%);
+    }
+    
+    .profile-card-body {
+        padding: 1rem;
+        text-align: center;
+        margin-top: -40px;
+    }
+    
+    .profile-name {
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 0.5rem;
+        color: #111827;
+    }
+    
+    .profile-title {
+        font-size: 13px;
+        color: #6b7280;
+        margin-top: 0.25rem;
+    }
+    
+    .sidebar-menu {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .menu-item {
+        padding: 0.75rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: #374151;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        border-bottom: 1px solid #f3f4f6;
+        transition: background 0.2s;
+    }
+    
+    .menu-item:last-child {
+        border-bottom: none;
+    }
+    
+    .menu-item:hover {
+        background: #f9fafb;
+    }
+    
+    .menu-item i {
+        font-size: 18px;
+        color: #6b7280;
+    }
+    
+    /* ========== FEED CENTRAL ========== */
+    .feed-main {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    /* ========== CREAR PUBLICACIÓN ========== */
+    .create-post-card {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        padding: 1rem;
+    }
+    
+    .create-post-input {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    .create-post-button {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border: 1px solid #d1d5db;
+        border-radius: 24px;
+        background: #f9fafb;
+        text-align: left;
+        color: #6b7280;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .create-post-button:hover {
+        background: #f3f4f6;
+    }
+    
+    .create-post-actions {
+        display: flex;
+        gap: 0.5rem;
+        padding-top: 0.75rem;
+        border-top: 1px solid #e5e7eb;
+    }
+    
+    .post-action-btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem;
+        border: none;
+        background: transparent;
+        border-radius: 6px;
+        color: #6b7280;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    
+    .post-action-btn:hover {
+        background: #f3f4f6;
+    }
+    
+    .post-action-btn i {
+        font-size: 20px;
+    }
+    
+    /* ========== PUBLICACIÓN ========== */
+    .post-card {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .post-header {
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+    }
+    
+    .post-author {
+        display: flex;
+        gap: 0.75rem;
+        flex: 1;
+    }
+    
+    .post-author-info {
+        flex: 1;
+    }
+    
+    .post-author-name {
+        font-size: 15px;
+        font-weight: 600;
+        color: #111827;
+        text-decoration: none;
+    }
+    
+    .post-author-name:hover {
+        color: #0A66C2;
+    }
+    
+    .post-author-title {
+        font-size: 13px;
+        color: #6b7280;
+    }
+    
+    .post-time {
+        font-size: 12px;
+        color: #9ca3af;
+        margin-top: 0.25rem;
+    }
+    
+    .follow-btn {
+        padding: 0.5rem 1rem;
+        border: 1px solid #0A66C2;
+        background: white;
+        color: #0A66C2;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .follow-btn:hover {
+        background: #E7F3FF;
+    }
+    
+    .follow-btn.following {
+        background: #0A66C2;
+        color: white;
+    }
+    
+    .follow-btn.following:hover {
+        background: #004182;
+    }
+    
+    .post-content {
+        padding: 0 1rem 1rem;
+        font-size: 15px;
+        line-height: 1.5;
+        color: #111827;
+        white-space: pre-wrap;
+    }
+    
+    .post-media {
+        width: 100%;
+        max-height: 500px;
+        object-fit: cover;
+    }
+    
+    .post-stats {
+        padding: 0.75rem 1rem;
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid #e5e7eb;
+        font-size: 13px;
+        color: #6b7280;
+    }
+    
+    .post-actions {
+        display: flex;
+        padding: 0.5rem;
+        border-top: 1px solid #e5e7eb;
+    }
+    
+    .post-action {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem;
+        border: none;
+        background: transparent;
+        border-radius: 6px;
+        color: #6b7280;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .post-action:hover {
+        background: #f3f4f6;
+    }
+    
+    .post-action.liked {
+        color: #0A66C2;
+    }
+    
+    /* ========== COMENTARIOS ========== */
+    .comments-section {
+        border-top: 1px solid #e5e7eb;
+        padding: 1rem;
+        display: none;
+    }
+    
+    .comments-section.active {
+        display: block;
+    }
+    
+    .comment-form {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    .comment-input-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .comment-input {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border: 1px solid #d1d5db;
+        border-radius: 20px;
+        font-size: 14px;
+        resize: none;
+        min-height: 36px;
+        max-height: 120px;
+    }
+    
+    .comment-input:focus {
+        outline: none;
+        border-color: #0A66C2;
+    }
+    
+    .comment-actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+    
+    .comment-media-btns {
+        display: flex;
+        gap: 0.25rem;
+    }
+    
+    .comment-media-btn {
+        width: 32px;
+        height: 32px;
+        border: none;
+        background: transparent;
+        border-radius: 50%;
+        color: #6b7280;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .comment-media-btn:hover {
+        background: #f3f4f6;
+    }
+    
+    .comment-submit {
+        padding: 0.5rem 1.25rem;
+        background: #0A66C2;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-left: auto;
+    }
+    
+    .comment-submit:hover {
+        background: #004182;
+    }
+    
+    .comment-submit:disabled {
+        background: #d1d5db;
+        cursor: not-allowed;
+    }
+    
+    .comments-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .comment {
+        display: flex;
+        gap: 0.75rem;
+    }
+    
+    .comment.level-1 {
+        margin-left: 2rem;
+    }
+    
+    .comment.level-2 {
+        margin-left: 4rem;
+    }
+    
+    .comment.level-3 {
+        margin-left: 6rem;
+    }
+    
+    .comment-body {
+        flex: 1;
+        background: #f3f4f6;
+        padding: 0.75rem;
+        border-radius: 12px;
+    }
+    
+    .comment-author {
+        font-size: 14px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 0.25rem;
+    }
+    
+    .comment-text {
+        font-size: 14px;
+        color: #374151;
+        margin-bottom: 0.5rem;
+    }
+    
+    .comment-meta {
+        display: flex;
+        gap: 1rem;
+        font-size: 12px;
+        color: #6b7280;
+    }
+    
+    .comment-action {
+        cursor: pointer;
+        font-weight: 600;
+    }
+    
+    .comment-action:hover {
+        color: #0A66C2;
+    }
+    
+    /* ========== SIDEBAR DERECHO ========== */
+    .right-sidebar {
+        position: sticky;
+        top: 80px;
+        height: fit-content;
+    }
+    
+    .suggestions-card {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        padding: 1rem;
+    }
+    
+    .suggestions-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 2rem;
+        color: #9ca3af;
+    }
+    
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 1024px) {
+        .feed-layout {
+            grid-template-columns: 1fr;
+        }
         
-        <aside class="col-lg-3 d-none d-lg-block">
-            <div class="lx-card">
-                <div style="height: 60px; background: linear-gradient(135deg, var(--lx-primary), #0077B5);"></div>
-                <div class="text-center" style="margin-top: -36px;">
-                    <div class="avatar-lg mx-auto border border-4 border-white mb-2 shadow-sm">
-                        <img src="{{ user.get_avatar_url }}" alt="Avatar">
-                    </div>
-                    <h6 class="mb-1 fw-bold">{{ user.get_full_name|default:user.username }}</h6>
-                    <p class="text-muted small mb-3">
-                        {% if user.tipo_usuario == 'profesional' %}
-                            {{ user.profesional.titulo_actual|default:"Profesional en Linking X" }}
-                        {% else %}
-                            {{ user.empresa.descripcion_breve|truncatewords:8 }}
+        .left-sidebar,
+        .right-sidebar {
+            display: none;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="feed-container">
+    <div class="feed-layout">
+        
+        <!-- ========== SIDEBAR IZQUIERDO ========== -->
+        <aside class="left-sidebar">
+            <div class="profile-card">
+                <div class="profile-card-header"></div>
+                <div class="profile-card-body">
+                    <img src="{{ user.get_avatar_url }}" alt="Avatar" class="avatar-lg">
+                    <div class="profile-name">{{ user.get_full_name }}</div>
+                    <div class="profile-title">
+                        {% if user.tipo_usuario == 'profesional' and user.profesional.titulo_actual %}
+                            {{ user.profesional.titulo_actual }}
+                        {% elif user.tipo_usuario == 'empresa' and user.empresa.nombre_empresa %}
+                            {{ user.empresa.nombre_empresa }}
                         {% endif %}
-                    </p>
-                </div>
-                <div class="border-top px-3 py-2 d-flex justify-content-between small">
-                    <span class="text-muted">{% trans "Seguidores" %}</span>
-                    <span class="fw-semibold text-primary">{{ user_stats.followers_count }}</span>
-                </div>
-                <div class="border-top px-3 py-3">
-                    <a href="{% url 'profile_detail' user.id %}" class="btn btn-outline-primary btn-sm w-100">
-                        {% trans "Ver perfil" %}
-                    </a>
+                    </div>
                 </div>
             </div>
             
-            <div class="lx-card mt-3">
-                <div class="list-group list-group-flush">
-                    <a href="{% url 'job_list' %}" class="list-group-item list-group-item-action border-0">
-                        <i class="bi bi-briefcase text-primary me-2"></i>{% trans "Empleos" %}
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action border-0">
-                        <i class="bi bi-people text-primary me-2"></i>{% trans "Mi Red" %}
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action border-0">
-                        <i class="bi bi-gear text-primary me-2"></i>{% trans "Configuración" %}
-                    </a>
-                </div>
+            <div class="sidebar-menu">
+                <a href="{% url 'profile_detail' user.id %}" class="menu-item">
+                    <i class="bi bi-person"></i>
+                    <span>{% trans "Mi perfil" %}</span>
+                </a>
+                <a href="{% url 'job_list' %}" class="menu-item">
+                    <i class="bi bi-briefcase"></i>
+                    <span>{% trans "Empleos" %}</span>
+                </a>
+                <a href="{% url 'message_list' %}" class="menu-item">
+                    <i class="bi bi-chat"></i>
+                    <span>{% trans "Mensajes" %}</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="bi bi-bookmark"></i>
+                    <span>{% trans "Guardados" %}</span>
+                </a>
             </div>
         </aside>
         
-        <main class="col-lg-6 pb-5 pb-lg-0">
+        <!-- ========== FEED CENTRAL ========== -->
+        <main class="feed-main">
             
-            <div class="lx-card mb-3">
-                <div class="lx-card-body">
-                    <div class="d-flex gap-3 mb-3 align-items-center">
-                        <div class="avatar-md">
-                            <img src="{{ user.get_avatar_url }}" alt="Avatar">
-                        </div>
-                        <button 
-                            class="btn btn-outline-secondary w-100 text-start rounded-pill" 
-                            data-bs-toggle="modal" 
-                            data-bs-target="#createPostModal"
-                        >
-                            {% trans "¿Qué quieres compartir?" %}
-                        </button>
-                    </div>
-                    
-                    <div class="d-flex justify-content-around border-top pt-2">
-                        <button class="btn btn-light btn-sm flex-fill me-1">
-                            <i class="bi bi-image text-primary"></i>
-                            <span class="d-none d-sm-inline ms-1">{% trans "Foto" %}</span>
-                        </button>
-                        <button class="btn btn-light btn-sm flex-fill me-1">
-                            <i class="bi bi-camera-video text-success"></i>
-                            <span class="d-none d-sm-inline ms-1">{% trans "Video" %}</span>
-                        </button>
-                        <button class="btn btn-light btn-sm flex-fill">
-                            <i class="bi bi-pencil text-warning"></i>
-                            <span class="d-none d-sm-inline ms-1">{% trans "Escribir" %}</span>
-                        </button>
-                    </div>
+            <!-- Crear Publicación -->
+            <div class="create-post-card">
+                <div class="create-post-input">
+                    <img src="{{ user.get_avatar_url }}" alt="Avatar" class="avatar-md">
+                    <button type="button" class="create-post-button" data-bs-toggle="modal" data-bs-target="#createPostModal">
+                        {% trans "¿Qué quieres compartir?" %}
+                    </button>
+                </div>
+                <div class="create-post-actions">
+                    <button type="button" class="post-action-btn" data-bs-toggle="modal" data-bs-target="#createPostModal">
+                        <i class="bi bi-image text-success"></i>
+                        <span>{% trans "Foto" %}</span>
+                    </button>
+                    <button type="button" class="post-action-btn" data-bs-toggle="modal" data-bs-target="#createPostModal">
+                        <i class="bi bi-play-btn text-danger"></i>
+                        <span>{% trans "Video" %}</span>
+                    </button>
+                    <button type="button" class="post-action-btn" data-bs-toggle="modal" data-bs-target="#createPostModal">
+                        <i class="bi bi-pencil text-primary"></i>
+                        <span>{% trans "Artículo" %}</span>
+                    </button>
                 </div>
             </div>
             
-            {% for publicacion in publicaciones %}
-            <article class="lx-card mb-3" data-post-id="{{ publicacion.id }}">
-                <div class="lx-card-header">
-                    <div class="d-flex align-items-center flex-grow-1">
-                        <div class="avatar-md me-3">
-                            <img src="{{ publicacion.creador.get_avatar_url }}" alt="Avatar">
-                        </div>
-                        <div class="flex-grow-1">
-                            <h6 class="mb-0">
-                                <a href="{% url 'profile_detail' publicacion.creador.id %}" class="text-decoration-none text-dark fw-semibold">
-                                    {{ publicacion.creador.get_full_name|default:publicacion.creador.username }}
-                                </a>
-                            </h6>
-                            <small class="text-muted">
-                                {{ publicacion.fecha|timesince }} {% trans "atrás" %}
-                            </small>
+            <!-- Publicaciones -->
+            {% for pub in publicaciones %}
+            <article class="post-card" data-post-id="{{ pub.id }}">
+                <!-- Header -->
+                <div class="post-header">
+                    <div class="post-author">
+                        <img src="{{ pub.autor.get_avatar_url }}" alt="Avatar" class="avatar-md">
+                        <div class="post-author-info">
+                            <a href="{% url 'profile_detail' pub.autor.id %}" class="post-author-name">
+                                {{ pub.autor.get_full_name }}
+                            </a>
+                            <div class="post-author-title">
+                                {% if pub.autor.tipo_usuario == 'profesional' and pub.autor.profesional.titulo_actual %}
+                                    {{ pub.autor.profesional.titulo_actual }}
+                                {% elif pub.autor.tipo_usuario == 'empresa' and pub.autor.empresa.nombre_empresa %}
+                                    {{ pub.autor.empresa.nombre_empresa }}
+                                {% endif %}
+                            </div>
+                            <div class="post-time">{{ pub.fecha_creacion|timesince }}</div>
                         </div>
                     </div>
-                    <button class="btn btn-icon">
-                        <i class="bi bi-three-dots"></i>
+                    
+                    {% if pub.autor != user %}
+                    <button 
+                        type="button" 
+                        class="follow-btn {% if pub.usuario_sigue_autor %}following{% endif %}"
+                        onclick="toggleFollow('{{ pub.autor.id }}', this)"
+                    >
+                        <span class="follow-text">
+                            {% if pub.usuario_sigue_autor %}
+                                {% trans "Siguiendo" %}
+                            {% else %}
+                                {% trans "Seguir" %}
+                            {% endif %}
+                        </span>
+                    </button>
+                    {% endif %}
+                </div>
+                
+                <!-- Contenido -->
+                {% if pub.contenido %}
+                <div class="post-content">{{ pub.contenido }}</div>
+                {% endif %}
+                
+                <!-- Media -->
+                {% if pub.imagen %}
+                <img src="{{ pub.imagen.url }}" alt="Imagen" class="post-media">
+                {% elif pub.video %}
+                <video src="{{ pub.video.url }}" controls class="post-media"></video>
+                {% endif %}
+                
+                <!-- Estadísticas -->
+                <div class="post-stats">
+                    <span class="likes-count">
+                        <i class="bi bi-hand-thumbs-up-fill text-primary"></i>
+                        <span data-likes="{{ pub.id }}">{{ pub.total_likes }}</span>
+                    </span>
+                    <span>
+                        <span data-comments="{{ pub.id }}">{{ pub.total_comentarios }}</span> {% trans "comentarios" %}
+                    </span>
+                </div>
+                
+                <!-- Acciones -->
+                <div class="post-actions">
+                    <button 
+                        type="button" 
+                        class="post-action {% if pub.usuario_dio_like %}liked{% endif %}"
+                        onclick="toggleLike('{{ pub.id }}', this)"
+                    >
+                        <i class="bi bi-hand-thumbs-up"></i>
+                        <span>{% trans "Me gusta" %}</span>
+                    </button>
+                    <button type="button" class="post-action" onclick="toggleComments('{{ pub.id }}')">
+                        <i class="bi bi-chat"></i>
+                        <span>{% trans "Comentar" %}</span>
+                    </button>
+                    <button type="button" class="post-action">
+                        <i class="bi bi-share"></i>
+                        <span>{% trans "Compartir" %}</span>
                     </button>
                 </div>
                 
-                <div class="lx-card-body">
-                    <p class="mb-3">{{ publicacion.contenido }}</p>
-                    
-                    {% if publicacion.contenido_multimedia %}
-                    <div class="bg-light rounded mb-3 text-center overflow-hidden">
-                        <img 
-                            src="{{ publicacion.contenido_multimedia.url }}" 
-                            alt="Post image" 
-                            class="img-fluid"
-                            style="width: 100%; max-height: 500px; object-fit: contain;"
-                        >
-                    </div>
-                    {% endif %}
-                    
-                    <div class="d-flex justify-content-between text-muted small mb-2">
-                        <span>
-                            <i class="bi bi-hand-thumbs-up-fill text-primary"></i> 
-                            {{ publicacion.likes_count }} {% trans "Me gusta" %}
-                        </span>
-                        <span>{{ publicacion.comentarios_count }} {% trans "comentarios" %}</span>
-                    </div>
-                </div>
-                
-                <div class="lx-card-footer">
-                    <div class="row g-2">
-                        <div class="col">
-                            <button class="btn btn-light btn-sm w-100">
-                                <i class="bi bi-hand-thumbs-up me-1"></i>
-                                {% trans "Me gusta" %}
-                            </button>
-                        </div>
-                        <div class="col">
-                            <button class="btn btn-light btn-sm w-100" onclick="toggleComments('{{ publicacion.id }}')">
-                                <i class="bi bi-chat me-1"></i>
-                                {% trans "Comentar" %}
-                            </button>
-                        </div>
-                        <div class="col">
-                            <button class="btn btn-light btn-sm w-100">
-                                <i class="bi bi-share me-1"></i>
-                                {% trans "Compartir" %}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="collapse" id="comments-{{ publicacion.id }}">
-                    <div class="p-3 border-top">
-                        <div class="d-flex gap-2 mb-3 align-items-center">
-                            <div class="avatar-sm">
-                                <img src="{{ user.get_avatar_url }}" alt="Avatar">
-                            </div>
-                            <div class="flex-grow-1">
-                                <input type="text" class="form-control form-control-sm rounded-pill px-3" placeholder="{% trans 'Agrega un comentario...' %}">
-                            </div>
-                        </div>
-                        
-                        {% for comentario in publicacion.get_comentarios_raiz %}
-                        <div class="d-flex gap-2 mb-3">
-                            <div class="avatar-sm mt-1">
-                                <img src="{{ comentario.creador.get_avatar_url }}" alt="Avatar">
-                            </div>
-                            <div class="flex-grow-1">
-                                <div class="bg-light rounded p-2">
-                                    <h6 class="mb-0 small fw-semibold">{{ comentario.creador.get_full_name }}</h6>
-                                    <p class="mb-0 small">{{ comentario.contenido }}</p>
+                <!-- Sección de Comentarios -->
+                <div class="comments-section" id="comments-{{ pub.id }}">
+                    <form class="comment-form" onsubmit="submitComment(event, '{{ pub.id }}')">
+                        <img src="{{ user.get_avatar_url }}" alt="Avatar" class="avatar-sm">
+                        <div class="comment-input-wrapper">
+                            <textarea 
+                                class="comment-input" 
+                                placeholder="{% trans 'Escribe un comentario...' %}"
+                                rows="1"
+                                oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px'"
+                            ></textarea>
+                            <div class="comment-actions">
+                                <div class="comment-media-btns">
+                                    <button type="button" class="comment-media-btn" title="{% trans 'Agregar imagen' %}">
+                                        <i class="bi bi-image"></i>
+                                    </button>
+                                    <button type="button" class="comment-media-btn" title="{% trans 'Agregar video' %}">
+                                        <i class="bi bi-camera-video"></i>
+                                    </button>
                                 </div>
-                                <div class="d-flex gap-3 mt-1">
-                                    <button class="btn btn-link btn-sm text-muted p-0 text-decoration-none">{% trans "Me gusta" %}</button>
-                                    <button class="btn btn-link btn-sm text-muted p-0 text-decoration-none">{% trans "Responder" %}</button>
-                                    <small class="text-muted">{{ comentario.fecha|timesince }}</small>
-                                </div>
+                                <button type="submit" class="comment-submit" disabled>
+                                    {% trans "Comentar" %}
+                                </button>
                             </div>
                         </div>
-                        {% endfor %}
-                    </div>
+                    </form>
+                    
+                    <div class="comments-list" id="comments-list-{{ pub.id }}"></div>
                 </div>
             </article>
             {% empty %}
-            <div class="lx-card text-center py-5 mb-3">
-                <i class="bi bi-inbox display-1 text-muted"></i>
-                <h5 class="mt-3">{% trans "No hay publicaciones aún" %}</h5>
-                <p class="text-muted">{% trans "¡Sé el primero en compartir algo!" %}</p>
+            <div class="empty-state" style="background: white; border-radius: 8px; border: 1px solid #e5e7eb; padding: 3rem;">
+                <i class="bi bi-file-post" style="font-size: 64px; color: #d1d5db;"></i>
+                <h3 style="margin-top: 1rem; color: #6b7280;">{% trans "No hay publicaciones aún" %}</h3>
+                <p style="color: #9ca3af;">{% trans "Sé el primero en compartir algo" %}</p>
             </div>
             {% endfor %}
-
-            <div class="d-block d-lg-none text-center mt-4 mb-5 pb-4">
-                <ul class="list-inline small text-muted mb-2 px-3">
-                    <li class="list-inline-item mx-2"><a href="#" class="text-decoration-none text-muted">{% trans "Acerca de" %}</a></li>
-                    <li class="list-inline-item mx-2"><a href="#" class="text-decoration-none text-muted">{% trans "Ayuda" %}</a></li>
-                    <li class="list-inline-item mx-2"><a href="#" class="text-decoration-none text-muted">{% trans "Privacidad" %}</a></li>
-                    <li class="list-inline-item mx-2"><a href="#" class="text-decoration-none text-muted">{% trans "Condiciones" %}</a></li>
-                    <li class="list-inline-item mx-2"><a href="#" class="text-decoration-none text-muted">{% trans "Idioma" %}</a></li>
-                </ul>
-                <div class="small text-muted d-flex align-items-center justify-content-center">
-                    <img src="{% static 'img/logo-icon.png' %}" alt="Logo" width="16" height="16" style="filter: grayscale(100%); opacity: 0.7;" class="me-1">
-                    <span>ATI PROY EC Linking X &copy; 2026</span>
-                </div>
-            </div>
             
         </main>
         
-        <aside class="col-lg-3 d-none d-lg-block">
-            
-            <div class="lx-card mb-3">
-                <div class="lx-card-body text-center">
-                    <small class="text-muted text-uppercase d-block mb-2" style="font-size: 11px; letter-spacing: 0.5px;">{% trans "Publicidad" %}</small>
-                    <div class="bg-light rounded mb-3 d-flex align-items-center justify-content-center" style="height: 120px;">
-                        <span class="text-muted fw-bold">LOGO</span>
-                    </div>
-                    <p class="small mb-3">{% trans "Impulsa tu carrera profesional con nuestros cursos en línea" %}</p>
-                    <button class="btn btn-outline-primary btn-sm w-100">{% trans "Más información" %}</button>
-                </div>
-            </div>
-            
-            {% if suggested_users %}
-            <div class="lx-card mb-3">
-                <div class="lx-card-header">
-                    <h6 class="mb-0">{% trans "Empresas sugeridas" %}</h6>
-                </div>
-                <div class="list-group list-group-flush">
-                    {% for user in suggested_users %}
-                    <div class="list-group-item">
-                        <div class="d-flex align-items-center">
-                            <div class="avatar-sm me-2">
-                                <img src="{{ user.get_avatar_url }}" alt="Avatar">
-                            </div>
-                            <div class="flex-grow-1 small">
-                                <div class="fw-semibold">{{ user.get_full_name }}</div>
-                                <div class="text-muted">{{ user.empresa.sector|default:"Empresa" }}</div>
-                            </div>
-                            <button class="btn btn-outline-primary btn-sm rounded-pill px-3">
-                                <i class="bi bi-plus-lg"></i>
-                            </button>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
+        <!-- ========== SIDEBAR DERECHO ========== -->
+        <aside class="feed-sidebar-right">
+    {% if suggested_users %}
+    <section class="card suggestions-card p-3">
+        <h3 class="card-title h6 fw-bold mb-3">{% trans "Empresas sugeridas" %}</h3>
+        
+        <div class="suggestions-list">
+            {% for suggested_user in suggested_users %}
+            <div class="suggestion-item d-flex align-items-center mb-3">
+    <img class="avatar-sm me-2" src="{{ suggested_user.get_avatar_url }}" alt="">
+    <div class="suggestion-info flex-grow-1">
+        <p class="suggestion-name mb-0 fw-bold">{{ suggested_user.get_full_name|default:suggested_user.username }}</p>
+        <p class="suggestion-meta mb-0 text-muted" style="font-size: 12px;">
+            {{ suggested_user.empresa.sector|default:"Empresa" }}
+        </p>
+    </div>
+    <button 
+        class="btn btn-outline-primary btn-sm rounded-pill px-3 follow-btn" 
+        onclick="toggleFollow('{{ suggested_user.id }}', this)"
+    >
+        <span class="follow-text">{% trans "Seguir" %}</span>
+    </button>
+</div>
+            {% endfor %}
+        </div>
+        
+        <a href="#" class="btn btn-link btn-sm text-decoration-none p-0 mt-2">
+            {% trans "Ver todas las recomendaciones" %} →
+        </a>
+    </section>
+    {% endif %}
 
-            <div class="text-center mt-3 position-sticky" style="top: 80px;">
-                <ul class="list-inline small text-muted mb-2 px-3">
-                    <li class="list-inline-item mx-2"><a href="#" class="text-decoration-none text-muted">{% trans "Acerca de" %}</a></li>
-                    <li class="list-inline-item mx-2"><a href="#" class="text-decoration-none text-muted">{% trans "Ayuda" %}</a></li>
-                    <li class="list-inline-item mx-2"><a href="#" class="text-decoration-none text-muted">{% trans "Privacidad" %}</a></li>
-                    <li class="list-inline-item mx-2"><a href="#" class="text-decoration-none text-muted">{% trans "Condiciones" %}</a></li>
-                    <li class="list-inline-item mx-2"><a href="#" class="text-decoration-none text-muted">{% trans "Idioma" %}</a></li>
-                </ul>
-                <div class="small text-muted d-flex align-items-center justify-content-center mt-2">
-                    <img src="{% static 'img/logo-icon.png' %}" alt="Logo" width="16" height="16" style="filter: grayscale(100%); opacity: 0.7;" class="me-1">
-                    <span>ATI proy EC Linking X &copy; 2026</span>
-                </div>
-            </div>
-            
-        </aside>
+    <div class="mt-3 px-2 text-center">
+        <p class="text-muted" style="font-size: 12px;">Linking X © 2024</p>
+    </div>
+</aside>
         
     </div>
 </div>
 
-<div class="modal fade" id="createPostModal" tabindex="-1">
+<!-- ===== MODAL BOOTSTRAP CREAR PUBLICACIÓN ===== -->
+<div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header border-0">
-                <h5 class="modal-title">{% trans "Crear publicación" %}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="avatar-md me-2">
-                        <img src="{{ user.get_avatar_url }}" alt="Avatar">
-                    </div>
-                    <div>
-                        <h6 class="mb-0">{{ user.get_full_name }}</h6>
-                        <small class="text-muted">
-                            <i class="bi bi-globe"></i> {% trans "Público" %}
-                        </small>
-                    </div>
+            <form id="createPostForm" method="post" action="{% url 'crear_publicacion' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="modal-header border-bottom">
+                    <h5 class="modal-title fw-bold" id="createPostModalLabel">{% trans "Crear publicación" %}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <textarea class="form-control border-0 px-0" rows="5" placeholder="{% trans '¿Qué quieres compartir?' %}" style="box-shadow: none; resize: none;"></textarea>
-            </div>
-            <div class="modal-footer border-0">
-                <button type="button" class="btn btn-light rounded-circle me-auto p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                    <i class="bi bi-image fs-5 text-muted"></i>
-                </button>
-                <button type="button" class="btn btn-primary rounded-pill px-4">{% trans "Publicar" %}</button>
-            </div>
+                
+                <div class="modal-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="me-2">
+                            <img src="{{ user.get_avatar_url }}" alt="Avatar" class="avatar-md">
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold">{{ user.get_full_name }}</h6>
+                            <small class="text-muted">
+                                <i class="bi bi-globe"></i> {% trans "Cualquiera" %}
+                            </small>
+                        </div>
+                    </div>
+                    
+                    <textarea 
+                        name="contenido" 
+                        id="postContent"
+                        class="form-control border-0 px-0" 
+                        rows="4" 
+                        placeholder="{% trans '¿Sobre qué quieres hablar?' %}" 
+                        style="box-shadow: none; resize: none; font-size: 1.1rem;"></textarea>
+                    
+                    <div id="mediaPreviewContainer" class="position-relative mt-3" style="display: none;">
+                        <button type="button" class="btn btn-dark btn-sm position-absolute top-0 end-0 m-2 rounded-circle" onclick="removeMedia()" style="z-index: 10;">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                        <img id="previewImage" class="img-fluid rounded border" style="display: none; width: 100%;">
+                        <video id="previewVideo" controls class="w-100 rounded border" style="display: none;"></video>
+                    </div>
+
+                    <input type="file" name="imagen" id="imageInput" accept="image/*" style="display: none;" onchange="previewMedia(this, 'image')">
+                    <input type="file" name="video" id="videoInput" accept="video/*" style="display: none;" onchange="previewMedia(this, 'video')">
+                </div>
+                
+                <div class="modal-footer justify-content-between border-top-0">
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-light rounded-circle p-2" onclick="document.getElementById('imageInput').click()" title="{% trans 'Añadir foto' %}">
+                            <i class="bi bi-image fs-5 text-success"></i>
+                        </button>
+                        <button type="button" class="btn btn-light rounded-circle p-2" onclick="document.getElementById('videoInput').click()" title="{% trans 'Añadir video' %}">
+                            <i class="bi bi-camera-video fs-5 text-danger"></i>
+                        </button>
+                    </div>
+                    <button type="submit" id="submitPost" class="btn btn-primary rounded-pill px-4 fw-bold" disabled>
+                        {% trans "Publicar" %}
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -301,11 +805,270 @@
 
 {% block extra_js %}
 <script>
-function toggleComments(postId) {
-    const commentsSection = document.getElementById('comments-' + postId);
-    const bsCollapse = new bootstrap.Collapse(commentsSection, {
-        toggle: true
+// ===== CSRF TOKEN =====
+const csrftoken = '{{ csrf_token }}';
+
+// ===== VALIDACIÓN FORMULARIO PUBLICACIÓN =====
+const postContent = document.getElementById('postContent');
+const submitPost = document.getElementById('submitPost');
+const imageInput = document.getElementById('imageInput');
+const videoInput = document.getElementById('videoInput');
+
+function validatePostForm() {
+    const hasText = postContent.value.trim().length > 0;
+    const hasImage = imageInput.files.length > 0;
+    const hasVideo = videoInput.files.length > 0;
+    submitPost.disabled = !(hasText || hasImage || hasVideo);
+}
+
+postContent.addEventListener('input', validatePostForm);
+
+// ===== PREVISUALIZACIÓN DE MEDIA =====
+function previewMedia(input, type) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const container = document.getElementById('mediaPreviewContainer');
+    const img = document.getElementById('previewImage');
+    const video = document.getElementById('previewVideo');
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        container.style.display = 'block';
+        if (type === 'image') {
+            img.src = e.target.result;
+            img.style.display = 'block';
+            video.style.display = 'none';
+            videoInput.value = '';
+        } else {
+            video.src = e.target.result;
+            video.style.display = 'block';
+            img.style.display = 'none';
+            imageInput.value = '';
+        }
+        validatePostForm();
+    }
+    reader.readAsDataURL(file);
+}
+
+// ===== QUITAR MEDIA =====
+function removeMedia() {
+    document.getElementById('mediaPreviewContainer').style.display = 'none';
+    imageInput.value = '';
+    videoInput.value = '';
+    document.getElementById('previewImage').src = '';
+    document.getElementById('previewVideo').src = '';
+    validatePostForm();
+}
+
+// ===== RESET MODAL AL CERRAR =====
+const createPostModal = document.getElementById('createPostModal');
+createPostModal.addEventListener('hidden.bs.modal', function () {
+    document.getElementById('createPostForm').reset();
+    removeMedia();
+});
+
+// ===== LIKES =====
+function toggleLike(publicacionId, button) {
+    fetch(`/feed/post/${publicacionId}/like/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken,
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            if (data.liked) {
+                button.classList.add('liked');
+            } else {
+                button.classList.remove('liked');
+            }
+            
+            const likesSpan = document.querySelector(`[data-likes="${publicacionId}"]`);
+            if (likesSpan) {
+                likesSpan.textContent = data.total_likes;
+            }
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+// ===== SEGUIR/DEJAR DE SEGUIR =====
+// Función para obtener el CSRF Token (necesario para POST en Django)
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function followUser(button, userId) {
+    const url = `/profiles/follow/${userId}/`; 
+    const csrftoken = getCookie('csrftoken');
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken,
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest' // Identifica la petición como AJAX
+        }
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Error en la red');
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            // Animación de salida para el elemento sugerido
+            const item = button.closest('.suggestion-item');
+            item.style.transition = 'all 0.3s ease';
+            item.style.opacity = '0';
+            item.style.transform = 'translateX(20px)';
+            
+            setTimeout(() => {
+                item.remove();
+                // Si la lista queda vacía, removemos toda la sección de sugerencias
+                const list = document.querySelector('.suggestions-list');
+                if (list && list.children.length === 0) {
+                    const card = document.querySelector('.suggestions-card');
+                    if (card) card.remove();
+                }
+            }, 300);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Opcional: mostrar un mensaje de error visual al usuario
     });
 }
+function toggleFollow(usuarioId, button) {
+    fetch(`/feed/user/${usuarioId}/follow/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken,
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const text = button.querySelector('.follow-text');
+            if (data.siguiendo) {
+                button.classList.add('following');
+                text.textContent = '{% trans "Siguiendo" %}';
+            } else {
+                button.classList.remove('following');
+                text.textContent = '{% trans "Seguir" %}';
+            }
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+// ===== COMENTARIOS =====
+function toggleComments(publicacionId) {
+    const section = document.getElementById(`comments-${publicacionId}`);
+    const isActive = section.classList.contains('active');
+    
+    if (!isActive) {
+        section.classList.add('active');
+        loadComments(publicacionId);
+    } else {
+        section.classList.remove('active');
+    }
+}
+
+function loadComments(publicacionId) {
+    const list = document.getElementById(`comments-list-${publicacionId}`);
+    
+    fetch(`/feed/post/${publicacionId}/comments/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                renderComments(data.comentarios, list);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function renderComments(comentarios, container) {
+    container.innerHTML = '';
+    comentarios.forEach(comentario => {
+        const div = document.createElement('div');
+        div.className = `comment level-${comentario.nivel}`;
+        div.innerHTML = `
+            <img src="${comentario.autor_avatar}" alt="Avatar" class="avatar-sm">
+            <div class="comment-body">
+                <div class="comment-author">${comentario.autor}</div>
+                <div class="comment-text">${comentario.contenido}</div>
+                <div class="comment-meta">
+                    <span>${comentario.fecha_creacion}</span>
+                    <span class="comment-action" onclick="replyToComment(${comentario.id})">{% trans "Responder" %}</span>
+                </div>
+            </div>
+        `;
+        container.appendChild(div);
+        
+        if (comentario.respuestas && comentario.respuestas.length > 0) {
+            renderComments(comentario.respuestas, container);
+        }
+    });
+}
+
+function submitComment(event, publicacionId) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const textarea = form.querySelector('.comment-input');
+    const contenido = textarea.value.trim();
+    
+    if (!contenido) return;
+    
+    const formData = new FormData();
+    formData.append('contenido', contenido);
+    
+    fetch(`/feed/post/${publicacionId}/comment/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken,
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            loadComments(publicacionId);
+            
+            const counter = document.querySelector(`[data-comments="${publicacionId}"]`);
+            if (counter) {
+                counter.textContent = data.total_comentarios;
+            }
+            
+            textarea.value = '';
+            textarea.style.height = 'auto';
+            form.querySelector('.comment-submit').disabled = true;
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+// Habilitar botón de comentar
+document.querySelectorAll('.comment-input').forEach(input => {
+    input.addEventListener('input', function() {
+        const btn = this.closest('.comment-input-wrapper').querySelector('.comment-submit');
+        btn.disabled = this.value.trim().length === 0;
+    });
+});
 </script>
 {% endblock %}

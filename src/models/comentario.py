@@ -5,9 +5,8 @@ from .publicacion import Publicacion
 
 class Comentario(models.Model):
     """
-    Modelo de Comentario con soporte para hilos (threading)
+    Modelo de Comentario con soporte para anidación
     """
-    
     publicacion = models.ForeignKey(
         Publicacion,
         on_delete=models.CASCADE,
@@ -15,7 +14,7 @@ class Comentario(models.Model):
         verbose_name=_("Publicación")
     )
     
-    creador = models.ForeignKey(
+    autor = models.ForeignKey(
         Usuario,
         on_delete=models.CASCADE,
         related_name='comentarios',
@@ -23,32 +22,49 @@ class Comentario(models.Model):
     )
     
     contenido = models.TextField(
-        verbose_name=_("Contenido del comentario")
+        verbose_name=_("Contenido")
     )
     
-    fecha = models.DateTimeField(
+    fecha_creacion = models.DateTimeField(
         auto_now_add=True,
-        verbose_name=_("Fecha")
+        verbose_name=_("Fecha de creación")
     )
     
-    # Para hilos de comentarios (comentario padre)
-    referencia_comentario_raiz = models.ForeignKey(
+    # Para comentarios anidados
+    comentario_padre = models.ForeignKey(
         'self',
-        on_delete=models.CASCADE,
         null=True,
         blank=True,
+        on_delete=models.CASCADE,
         related_name='respuestas',
-        verbose_name=_("Comentario raíz")
+        verbose_name=_("Comentario padre")
+    )
+    
+    nivel = models.IntegerField(
+        default=0,
+        verbose_name=_("Nivel de anidación")
     )
     
     class Meta:
         verbose_name = _("Comentario")
         verbose_name_plural = _("Comentarios")
-        ordering = ['fecha']
+        ordering = ['fecha_creacion']
     
     def __str__(self):
-        return f"{self.creador.username} - {self.contenido[:50]}"
+        return f"Comentario de {self.autor.get_full_name()} en {self.publicacion}"
     
-    def is_respuesta(self):
-        """Verifica si es una respuesta a otro comentario"""
-        return self.referencia_comentario_raiz is not None
+    def save(self, *args, **kwargs):
+        """Calcular el nivel de anidación automáticamente"""
+        if self.comentario_padre:
+            self.nivel = self.comentario_padre.nivel + 1
+        else:
+            self.nivel = 0
+        super().save(*args, **kwargs)
+    
+    def get_nivel_visual(self):
+        """Retorna el nivel visual (máximo 3 para UI)"""
+        return min(self.nivel, 3)
+    
+    def get_respuestas(self):
+        """Retorna las respuestas directas a este comentario"""
+        return self.respuestas.all()
