@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.db.models import Count, Exists, OuterRef
+from django.db.models import Count, Exists, OuterRef, Q
 from django.utils.translation import gettext as _
 from src.models import Publicacion, Comentario, Like, Seguidor, Usuario
 
@@ -10,12 +10,11 @@ def feed_home(request):
     """
     Vista principal del feed
     """
-    # Obtener todas las publicaciones con contadores
     publicaciones = Publicacion.objects.select_related(
         'autor'
     ).annotate(
         total_likes=Count('likes', distinct=True),
-        total_comentarios=Count('comentarios', distinct=True),
+        total_comentarios=Count('comentarios', distinct=True, filter=Q(comentarios__is_active=True)),
         usuario_dio_like=Exists(
             Like.objects.filter(
                 publicacion=OuterRef('pk'),
@@ -24,7 +23,6 @@ def feed_home(request):
         )
     ).order_by('-fecha_creacion')[:50]
     
-    # Agregar información de seguimiento para cada publicación
     for pub in publicaciones:
         pub.usuario_sigue_autor = Seguidor.objects.filter(
             seguidor=request.user,
@@ -81,7 +79,6 @@ def toggle_like(request, publicacion_id):
     else:
         liked = True
     
-    # Obtener nuevo total de likes
     total_likes = publicacion.likes.count()
     
     return JsonResponse({
@@ -94,7 +91,7 @@ def toggle_like(request, publicacion_id):
 @login_required
 def crear_comentario(request, publicacion_id):
     """
-    Vista para crear un comentario
+    Vista para crear un comentario (CON SOPORTE MULTIMEDIA)
     """
     if request.method != 'POST':
         return JsonResponse({'error': 'Method not allowed'}, status=405)
@@ -103,7 +100,12 @@ def crear_comentario(request, publicacion_id):
     contenido = request.POST.get('contenido', '').strip()
     comentario_padre_id = request.POST.get('comentario_padre_id')
     
-    if not contenido:
+    # Obtener archivos multimedia
+    imagen = request.FILES.get('imagen')
+    video = request.FILES.get('video')
+    
+    # Validar que haya contenido o multimedia
+    if not contenido and not imagen and not video:
         return JsonResponse({'error': 'Contenido vacío'}, status=400)
     
     comentario_padre = None
@@ -114,7 +116,9 @@ def crear_comentario(request, publicacion_id):
         publicacion=publicacion,
         autor=request.user,
         contenido=contenido,
-        comentario_padre=comentario_padre
+        comentario_padre=comentario_padre,
+        imagen=imagen,
+        video=video
     )
     
     return JsonResponse({
@@ -126,6 +130,8 @@ def crear_comentario(request, publicacion_id):
             'contenido': comentario.contenido,
             'nivel': comentario.get_nivel_visual(),
             'fecha': comentario.fecha_creacion.strftime('%d %b %Y'),
+            'imagen': comentario.imagen.url if comentario.imagen else None,
+            'video': comentario.video.url if comentario.video else None,
         },
         'total_comentarios': publicacion.comentarios.count()
     })
@@ -164,14 +170,20 @@ def toggle_seguir(request, usuario_id):
 @login_required
 def cargar_comentarios(request, publicacion_id):
     """
-    Vista para cargar comentarios de una publicación
+    Vista para cargar comentarios de una publicación (CON PAGINACIÓN)
     """
     publicacion = get_object_or_404(Publicacion, id=publicacion_id)
+    limit = int(request.GET.get('limit', 3))
+    offset = int(request.GET.get('offset', 0))
     
     # Obtener comentarios de nivel 0 (raíz)
     comentarios_raiz = publicacion.comentarios.filter(
         comentario_padre__isnull=True
-    ).select_related('autor').order_by('fecha_creacion')
+    ).select_related('autor').order_by('fecha_creacion')[offset:offset + limit]
+    
+    total_comentarios_raiz = publicacion.comentarios.filter(
+        comentario_padre__isnull=True
+    ).count()
     
     def serializar_comentario(comentario):
         return {
@@ -181,6 +193,9 @@ def cargar_comentarios(request, publicacion_id):
             'contenido': comentario.contenido,
             'fecha': comentario.fecha_creacion.strftime('%d %b %Y'),
             'nivel': comentario.get_nivel_visual(),
+            'imagen': comentario.imagen.url if comentario.imagen else None,
+            'video': comentario.video.url if comentario.video else None,
+            'total_respuestas': comentario.respuestas.count(),
             'respuestas': [serializar_comentario(resp) for resp in comentario.get_respuestas()]
         }
     
@@ -189,5 +204,7 @@ def cargar_comentarios(request, publicacion_id):
     return JsonResponse({
         'success': True,
         'comentarios': comentarios_data,
-        'total': publicacion.comentarios.count()
+        'total': publicacion.comentarios.count(),
+        'total_raiz': total_comentarios_raiz,
+        'has_more': (offset + limit) < total_comentarios_raiz
     })
