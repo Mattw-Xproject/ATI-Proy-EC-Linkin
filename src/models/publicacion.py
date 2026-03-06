@@ -2,12 +2,16 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from .usuario import Usuario
 
+class PublicacionManager(models.Manager):
+    """Manager para publicaciones activas"""
+    def get_queryset(self):
+        return super().get_queryset().filter(is_active=True)
+
 class Publicacion(models.Model):
     """
-    Modelo de Publicación (UC#03 - Publicaciones y Comentarios)
+    Modelo de Publicación con soporte para soft delete
     """
     
-    # Cambiar 'creador' a 'autor' para consistencia con las vistas
     autor = models.ForeignKey(
         Usuario,
         on_delete=models.CASCADE,
@@ -20,7 +24,6 @@ class Publicacion(models.Model):
         verbose_name=_("Contenido")
     )
     
-    # Separar imagen y video en campos diferentes
     imagen = models.ImageField(
         upload_to='publicaciones/imagenes/',
         null=True,
@@ -40,6 +43,36 @@ class Publicacion(models.Model):
         verbose_name=_("Fecha de publicación")
     )
     
+    # ✅ SOFT DELETE
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name=_("Activa")
+    )
+    
+    bloqueado_por = models.ForeignKey(
+        Usuario,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='publicaciones_bloqueadas',
+        verbose_name=_("Bloqueado por")
+    )
+    
+    fecha_bloqueo = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name=_("Fecha de bloqueo")
+    )
+    
+    razon_bloqueo = models.TextField(
+        blank=True,
+        verbose_name=_("Razón del bloqueo")
+    )
+    
+    # Managers
+    objects = PublicacionManager()  # Solo activas
+    all_objects = models.Manager()  # Todas (incluyendo bloqueadas)
+    
     class Meta:
         verbose_name = _("Publicación")
         verbose_name_plural = _("Publicaciones")
@@ -48,9 +81,22 @@ class Publicacion(models.Model):
     def __str__(self):
         return f"{self.autor.get_full_name()} - {self.fecha_creacion.strftime('%Y-%m-%d %H:%M')}"
     
-    def get_comentarios_raiz(self):
-        """Retorna solo comentarios de primer nivel (sin padre)"""
-        return self.comentarios.filter(comentario_padre__isnull=True)
+    def bloquear(self, admin_user, razon=""):
+        """Bloquear publicación (soft delete)"""
+        from django.utils import timezone
+        self.is_active = False
+        self.bloqueado_por = admin_user
+        self.fecha_bloqueo = timezone.now()
+        self.razon_bloqueo = razon
+        self.save()
+    
+    def desbloquear(self):
+        """Desbloquear publicación"""
+        self.is_active = True
+        self.bloqueado_por = None
+        self.fecha_bloqueo = None
+        self.razon_bloqueo = ""
+        self.save()
     
     # === NUEVAS PROPIEDADES PARA EL TEMPLATE ===
     @property
