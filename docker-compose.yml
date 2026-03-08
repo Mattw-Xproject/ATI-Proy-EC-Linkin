@@ -7,7 +7,7 @@ services:
       - bd_data:/data
     command: sh -c "mkdir -p /data && chmod 777 /data && echo 'Contenedor de base de datos listo' && tail -f /dev/null"
     healthcheck:
-      test: ["CMD", "test", "-d", "/data"]
+      test: [ "CMD", "test", "-d", "/data" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -20,8 +20,7 @@ services:
     expose:
       - "8000"
     depends_on:
-      db:
-        condition: service_healthy
+      - db
 
   apache:
     build:
