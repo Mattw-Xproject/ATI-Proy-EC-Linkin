@@ -7,7 +7,7 @@ services:
       - bd_data:/data
     command: sh -c "mkdir -p /data && chmod 777 /data && echo 'Contenedor de base de datos listo' && tail -f /dev/null"
     healthcheck:
-      test: [ "CMD", "test", "-d", "/data" ]
+      test: ["CMD", "test", "-d", "/data"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -17,10 +17,12 @@ services:
     container_name: linkin_web
     volumes:
       - bd_data:/data
+      - static_data:/app/staticfiles
     expose:
       - "8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   apache:
     build:
@@ -29,8 +31,11 @@ services:
     container_name: linkin_apache
     ports:
       - "80:80"
+    volumes:
+      - static_data:/usr/local/apache2/htdocs/static
     depends_on:
       - web
 
 volumes:
   bd_data:
+  static_data:
