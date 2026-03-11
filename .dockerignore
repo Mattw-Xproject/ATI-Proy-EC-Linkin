@@ -25,8 +25,7 @@ db.sqlite3
 db.sqlite3-journal
 *.db
 
-# Directorios de medios y archivos estáticos (se generan en runtime)
-media/
+# El directorio staticfiles se genera con collectstatic, no se copia
 staticfiles/
 
 # Archivos de configuración local
@@ -73,15 +72,3 @@ Thumbs.db
 # Backups
 *.bak
 *.backup
-
-# Comentario: Los archivos estáticos y media se manejan diferente:
-# - En producción: se sirven desde otro servicio (S3, nginx, etc.)
-# - En desarrollo: se montan como volúmenes
-
-# Asegurar que COPY copie estos directorios vacíos
-!static/
-!media/
-static/*
-!static/.gitkeep
-media/*
-!media/.gitkeep
