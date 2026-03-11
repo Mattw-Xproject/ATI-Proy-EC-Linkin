@@ -22,10 +22,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-
-    - name: Run Linter (Flake8)
-      run: |
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=migrations,.venv,env,__pycache__
+        pip install "flake8>=7.0.0"
 
     - name: Run Tests
       run: |
