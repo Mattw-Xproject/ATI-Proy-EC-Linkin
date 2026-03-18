@@ -14,16 +14,16 @@
     
     /* ========== HEADER CARD ========== */
     .profile-header-card {
-        background: white;
+        background: var(--bg-card, white);
         border-radius: 8px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border-color, #e5e7eb);
         overflow: hidden;
         margin-bottom: 1.5rem;
     }
     
     .cover-photo {
         height: 200px;
-        background: linear-gradient(135deg, #0A66C2 0%, #004182 100%);
+        background: linear-gradient(135deg, var(--link-color, #0A66C2) 0%, #004182 100%);
     }
     
     .profile-header-content {
@@ -40,28 +40,28 @@
         width: 128px;
         height: 128px;
         border-radius: 50%;
-        border: 4px solid white;
+        border: 4px solid var(--bg-card, white);
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         object-fit: cover;
-        background: white;
+        background: var(--bg-card, white);
     }
     
     .profile-name {
         font-size: 28px;
         font-weight: 700;
-        color: #111827;
+        color: var(--text-primary, #111827);
         margin-bottom: 0.25rem;
     }
     
     .profile-title {
         font-size: 18px;
-        color: #374151;
+        color: var(--text-primary, #374151);
         margin-bottom: 0.5rem;
     }
     
     .profile-location {
         font-size: 14px;
-        color: #6b7280;
+        color: var(--text-secondary, #6b7280);
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -75,9 +75,9 @@
     
     /* ========== STATS CARD ========== */
     .profile-stats-card {
-        background: white;
+        background: var(--bg-card, white);
         border-radius: 8px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border-color, #e5e7eb);
         padding: 1.5rem;
         display: flex;
         justify-content: space-around;
@@ -91,12 +91,12 @@
     .stat-value {
         font-size: 24px;
         font-weight: 700;
-        color: #111827;
+        color: var(--text-primary, #111827);
     }
     
     .stat-label {
         font-size: 14px;
-        color: #6b7280;
+        color: var(--text-secondary, #6b7280);
         margin-top: 0.25rem;
     }
     
@@ -109,9 +109,9 @@
     
     /* ========== SECTION CARD ========== */
     .section-card {
-        background: white;
+        background: var(--bg-card, white);
         border-radius: 8px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border-color, #e5e7eb);
         padding: 1.5rem;
         margin-bottom: 1.5rem;
     }
@@ -126,11 +126,11 @@
     .section-title {
         font-size: 18px;
         font-weight: 700;
-        color: #111827;
+        color: var(--text-primary, #111827);
     }
     
     .section-action {
-        color: #0A66C2;
+        color: var(--link-color, #0A66C2);
         font-size: 14px;
         font-weight: 600;
         text-decoration: none;
@@ -140,14 +140,14 @@
     }
     
     .section-action:hover {
-        color: #004182;
+        opacity: 0.8;
     }
     
     /* ========== ABOUT SECTION ========== */
     .about-text {
         font-size: 15px;
         line-height: 1.6;
-        color: #374151;
+        color: var(--text-primary, #374151);
         white-space: pre-wrap;
     }
     
@@ -156,7 +156,7 @@
         display: flex;
         gap: 1rem;
         padding: 1rem 0;
-        border-bottom: 1px solid #f3f4f6;
+        border-bottom: 1px solid var(--border-color, #f3f4f6);
     }
     
     .timeline-item:last-child {
@@ -166,7 +166,7 @@
     .timeline-icon {
         width: 48px;
         height: 48px;
-        background: #f3f4f6;
+        background: var(--bg-body, #f3f4f6);
         border-radius: 8px;
         display: flex;
         align-items: center;
@@ -176,7 +176,7 @@
     
     .timeline-icon i {
         font-size: 24px;
-        color: #6b7280;
+        color: var(--text-secondary, #6b7280);
     }
     
     .timeline-content {
@@ -186,24 +186,24 @@
     .timeline-title {
         font-size: 16px;
         font-weight: 600;
-        color: #111827;
+        color: var(--text-primary, #111827);
         margin-bottom: 0.25rem;
     }
     
     .timeline-subtitle {
         font-size: 14px;
-        color: #6b7280;
+        color: var(--text-secondary, #6b7280);
         margin-bottom: 0.25rem;
     }
     
     .timeline-date {
         font-size: 13px;
-        color: #9ca3af;
+        color: var(--text-secondary, #9ca3af);
     }
     
     .timeline-description {
         font-size: 14px;
-        color: #374151;
+        color: var(--text-primary, #374151);
         margin-top: 0.5rem;
         line-height: 1.5;
     }
@@ -217,11 +217,12 @@
     
     .skill-badge {
         padding: 0.5rem 1rem;
-        background: #f3f4f6;
+        background: var(--bg-body, #f3f4f6);
         border-radius: 20px;
         font-size: 14px;
         font-weight: 500;
-        color: #374151;
+        color: var(--text-primary, #374151);
+        border: 1px solid var(--border-color, transparent);
     }
     
     /* ========== CONTACT INFO ========== */
@@ -230,7 +231,7 @@
         align-items: center;
         gap: 0.75rem;
         padding: 0.75rem 0;
-        border-bottom: 1px solid #f3f4f6;
+        border-bottom: 1px solid var(--border-color, #f3f4f6);
     }
     
     .contact-item:last-child {
@@ -240,7 +241,7 @@
     .contact-icon {
         width: 40px;
         height: 40px;
-        background: #f3f4f6;
+        background: var(--bg-body, #f3f4f6);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -250,7 +251,7 @@
     
     .contact-icon i {
         font-size: 18px;
-        color: #6b7280;
+        color: var(--text-secondary, #6b7280);
     }
     
     .contact-info {
@@ -259,27 +260,27 @@
     
     .contact-label {
         font-size: 12px;
-        color: #9ca3af;
+        color: var(--text-secondary, #9ca3af);
     }
     
     .contact-value {
         font-size: 14px;
-        color: #374151;
+        color: var(--text-primary, #374151);
         font-weight: 500;
     }
 
     /* ========== AD CARD ========== */
     .ad-card {
-        background: white;
+        background: var(--bg-card, white);
         border-radius: 8px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border-color, #e5e7eb);
         padding: 1.5rem;
         margin-bottom: 1.5rem;
     }
     
     .ad-label {
         font-size: 12px;
-        color: #9ca3af;
+        color: var(--text-secondary, #9ca3af);
         text-transform: uppercase;
         font-weight: 600;
         margin-bottom: 1rem;
@@ -292,23 +293,24 @@
     .ad-placeholder {
         width: 100%;
         height: 120px;
-        background: #f3f4f6;
+        background: var(--bg-body, #f3f4f6);
         border-radius: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
         margin-bottom: 1rem;
+        border: 1px dashed var(--border-color);
     }
     
     .ad-placeholder span {
         font-size: 24px;
         font-weight: 700;
-        color: #d1d5db;
+        color: var(--text-secondary, #d1d5db);
     }
     
     .ad-text {
         font-size: 14px;
-        color: #6b7280;
+        color: var(--text-secondary, #6b7280);
         margin-bottom: 1rem;
     }
     
@@ -329,16 +331,16 @@
     }
     
     .btn-primary {
-        background: #0A66C2;
+        background: var(--link-color, #0A66C2);
         color: white;
     }
     
     .btn-primary:hover {
-        background: #004182;
+        opacity: 0.9;
     }
     
     .btn-primary.following {
-        background: #6b7280;
+        background: var(--text-secondary, #6b7280);
     }
     
     .btn-primary.following:hover {
@@ -346,14 +348,13 @@
     }
     
     .btn-secondary {
-        background: white;
-        color: #374151;
-        border: 1px solid #d1d5db;
+        background: transparent;
+        color: var(--text-primary, #374151);
+        border: 1px solid var(--border-color, #d1d5db);
     }
     
     .btn-secondary:hover {
-        background: #f9fafb;
-        border-color: #9ca3af;
+        background: var(--bg-body, #f9fafb);
     }
     
     /* ========== RESPONSIVE ========== */
@@ -368,7 +369,6 @@
 {% block content %}
 <div class="profile-container">
     
-    <!-- Profile Header -->
     <div class="profile-header-card">
         <div class="cover-photo"></div>
         
@@ -420,7 +420,6 @@
         </div>
     </div>
     
-    <!-- Profile Stats -->
     <div class="profile-stats-card">
         <div class="stat-item">
             <div class="stat-value" id="seguidoresCount">{{ total_seguidores }}</div>
@@ -436,13 +435,10 @@
         </div>
     </div>
     
-    <!-- Two Column Layout -->
     <div class="profile-layout">
         
-        <!-- Main Content -->
         <div class="main-content">
             
-            <!-- About Section -->
             {% if profesional.descripcion_personal %}
             <div class="section-card">
                 <div class="section-header">
@@ -457,7 +453,6 @@
             </div>
             {% endif %}
             
-            <!-- Experience Section -->
             {% if experiencias %}
             <div class="section-card">
                 <div class="section-header">
@@ -494,7 +489,6 @@
             </div>
             {% endif %}
             
-            <!-- Education Section -->
             {% if educaciones %}
             <div class="section-card">
                 <div class="section-header">
@@ -531,7 +525,6 @@
             </div>
             {% endif %}
             
-            <!-- Skills Section -->
             {% if habilidades %}
             <div class="section-card">
                 <div class="section-header">
@@ -553,10 +546,8 @@
             
         </div>
         
-        <!-- Sidebar -->
         <aside class="sidebar-content">
             
-            <!-- Contact Info -->
             <div class="section-card">
                 <div class="section-header">
                     <h2 class="section-title">{% trans "Información de contacto" %}</h2>
@@ -616,9 +607,6 @@
                 </div>
                 {% endif %}
             </div>
-            <!-- ========================================
-                 AD CARD (Publicidad)
-                 ======================================== -->
             <section class="ad-card hide-mobile">
                 <div class="ad-label">{% trans "Publicidad" %}</div>
                 <div class="ad-content">

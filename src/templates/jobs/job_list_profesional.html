@@ -26,14 +26,14 @@
     }
     
     .sidebar-profile-card {
-        background: white;
+        background: var(--bg-card, white);
         border-radius: 8px;
-        border: 1px solid var(--lx-gray-200);
+        border: 1px solid var(--border-color, #e5e7eb);
         overflow: hidden;
     }
     
     .profile-header {
-        background: linear-gradient(135deg, var(--lx-primary), #0077B5);
+        background: linear-gradient(135deg, var(--link-color, #0A66C2), #0077B5);
         height: 50px;
     }
     
@@ -47,26 +47,29 @@
         width: 60px;
         height: 60px;
         border-radius: 50%;
-        border: 3px solid white;
+        border: 3px solid var(--bg-card, white);
+        object-fit: cover;
         margin-bottom: 0.5rem;
+        background: var(--bg-card, white);
     }
     
     .profile-name-small {
         font-size: 16px;
         font-weight: 600;
         margin-bottom: 0.25rem;
+        color: var(--text-primary, #111827);
     }
     
     .profile-info-small {
         font-size: 13px;
-        color: var(--lx-gray-600);
+        color: var(--text-secondary, #6b7280);
         margin-bottom: 0.75rem;
     }
     
     .sidebar-section {
-        background: white;
+        background: var(--bg-card, white);
         border-radius: 8px;
-        border: 1px solid var(--lx-gray-200);
+        border: 1px solid var(--border-color, #e5e7eb);
         padding: 1rem;
     }
     
@@ -79,13 +82,13 @@
         cursor: pointer;
         transition: all 0.2s ease;
         text-decoration: none;
-        color: var(--lx-gray-700);
+        color: var(--text-primary, #374151);
         font-weight: 500;
     }
     
     .sidebar-item:hover {
-        background: var(--lx-gray-100);
-        color: var(--lx-primary);
+        background: var(--bg-body, #f3f4f6);
+        color: var(--link-color, #0A66C2);
     }
     
     .sidebar-item i {
@@ -102,29 +105,29 @@
     }
     
     .post-job-banner {
-        background: linear-gradient(135deg, #E7F3FF, white);
-        border: 2px dashed var(--lx-primary);
+        background: var(--bg-card, white);
+        border: 2px dashed var(--link-color, #0A66C2);
         border-radius: 8px;
         padding: 1.5rem;
         text-align: center;
     }
     
     .post-job-banner h3 {
-        color: var(--lx-primary);
+        color: var(--link-color, #0A66C2);
         font-size: 18px;
         margin-bottom: 0.5rem;
     }
     
     .post-job-banner p {
-        color: var(--lx-gray-600);
+        color: var(--text-secondary, #6b7280);
         font-size: 14px;
         margin-bottom: 1rem;
     }
     
     .job-section {
-        background: white;
+        background: var(--bg-card, white);
         border-radius: 8px;
-        border: 1px solid var(--lx-gray-200);
+        border: 1px solid var(--border-color, #e5e7eb);
         padding: 1.5rem;
     }
     
@@ -138,11 +141,11 @@
     .section-title {
         font-size: 18px;
         font-weight: 600;
-        color: var(--lx-gray-900);
+        color: var(--text-primary, #111827);
     }
     
     .job-card {
-        border: 1px solid var(--lx-gray-200);
+        border: 1px solid var(--border-color, #e5e7eb);
         border-radius: 8px;
         padding: 1.25rem;
         margin-bottom: 1rem;
@@ -151,11 +154,12 @@
         text-decoration: none;
         color: inherit;
         display: block;
+        background: var(--bg-card, white);
     }
     
     .job-card:hover {
-        border-color: var(--lx-primary);
-        box-shadow: 0 4px 12px rgba(10, 102, 194, 0.15);
+        border-color: var(--link-color, #0A66C2);
+        background: var(--bg-body, #f9fafb);
         transform: translateY(-2px);
     }
     
@@ -171,6 +175,7 @@
         border-radius: 8px;
         object-fit: cover;
         flex-shrink: 0;
+        border: 1px solid var(--border-color, transparent);
     }
     
     .job-info {
@@ -180,13 +185,13 @@
     .job-title {
         font-size: 16px;
         font-weight: 600;
-        color: var(--lx-gray-900);
+        color: var(--text-primary, #111827);
         margin-bottom: 0.25rem;
     }
     
     .company-name {
         font-size: 14px;
-        color: var(--lx-gray-600);
+        color: var(--text-secondary, #6b7280);
         margin-bottom: 0.5rem;
     }
     
@@ -195,7 +200,7 @@
         flex-wrap: wrap;
         gap: 1rem;
         font-size: 13px;
-        color: var(--lx-gray-600);
+        color: var(--text-secondary, #6b7280);
     }
     
     .job-meta-item {
@@ -212,17 +217,23 @@
     }
     
     .job-tag {
-        background: var(--lx-gray-100);
-        color: var(--lx-gray-700);
+        background: var(--bg-body, #f3f4f6);
+        color: var(--text-primary, #374151);
         padding: 0.25rem 0.75rem;
         border-radius: 12px;
         font-size: 12px;
         font-weight: 500;
+        border: 1px solid var(--border-color, transparent);
     }
     
     .job-tag.highlighted {
-        background: var(--lx-primary-light);
-        color: var(--lx-primary);
+        background: var(--bg-body, #E7F3FF);
+        color: var(--link-color, #0A66C2);
+        border: 1px solid var(--link-color, #0A66C2);
+    }
+
+    .text-muted {
+        color: var(--text-secondary, #6c757d) !important;
     }
     
     /* Responsive */
@@ -242,9 +253,7 @@
 <div class="jobs-container">
     <div class="jobs-layout">
         
-        <!-- Left Sidebar -->
         <aside class="jobs-sidebar">
-            <!-- Mini Profile -->
             <div class="sidebar-profile-card">
                 <div class="profile-header"></div>
                 <div class="profile-content">
@@ -265,7 +274,6 @@
                 </div>
             </div>
             
-            <!-- Quick Actions -->
             <div class="sidebar-section">
                 <a href="#" class="sidebar-item">
                     <i class="bi bi-bookmark"></i>
@@ -290,10 +298,8 @@
             </div>
         </aside>
         
-        <!-- Main Content -->
         <main class="jobs-main">
             
-            <!-- Post Job Banner (only for companies) -->
             {% if user.tipo_usuario == 'empresa' %}
             <div class="post-job-banner">
                 <h3><i class="bi bi-megaphone me-2"></i>{% trans "Publica un empleo gratis" %}</h3>
@@ -305,7 +311,6 @@
             </div>
             {% endif %}
             
-            <!-- Top Job Picks -->
             {% if ofertas_destacadas %}
             <div class="job-section">
                 <div class="section-header">
@@ -346,7 +351,6 @@
             </div>
             {% endif %}
             
-            <!-- More Jobs -->
             <div class="job-section">
                 <div class="section-header">
                     <h2 class="section-title">{% trans "More jobs for you" %}</h2>
@@ -380,7 +384,7 @@
                 {% empty %}
                 <div class="text-center py-5">
                     <i class="bi bi-inbox display-1 text-muted"></i>
-                    <h5 class="mt-3">{% trans "No hay empleos disponibles" %}</h5>
+                    <h5 class="mt-3" style="color: var(--text-primary);">{% trans "No hay empleos disponibles" %}</h5>
                     <p class="text-muted">{% trans "Vuelve pronto para ver nuevas oportunidades" %}</p>
                 </div>
                 {% endfor %}

@@ -1,5 +1,5 @@
 /* ============================================
-   LINKING X - BASE STYLES
+   LINKING X - BASE STYLES & TYPOGRAPHY
    ============================================ */
 
 * {
@@ -14,135 +14,246 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ========== BODY (Estilos prioritarios de la etiqueta style) ========== */
 body {
-  font-family: var(--font-family);
-  background-color: var(--color-gray-100);
-  color: var(--color-black-800);
-  line-height: 1.5;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+    background-color: var(--bg-body, #f4f6f8);
+    color: var(--text-primary, #000000);
+    padding-bottom: 80px; /* Prevalece el 80px que tenías al final de tu style */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: var(--font-family); /* Mantenemos tu fuente */
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-/* ========== TYPOGRAPHY ========== */
+/* ========== TYPOGRAPHY (De base.css original) ========== */
+h1, .h1 { font-size: var(--mobile-h1-size); line-height: var(--mobile-h1-line); font-weight: var(--mobile-h1-weight); letter-spacing: var(--mobile-h1-spacing); color: var(--text-primary); }
+h2, .h2 { font-size: var(--mobile-h2-size); line-height: var(--mobile-h2-line); font-weight: var(--mobile-h2-weight); color: var(--text-primary); }
+h3, .h3 { font-size: var(--mobile-h3-size); line-height: var(--mobile-h3-line); font-weight: var(--mobile-h3-weight); color: var(--text-primary); }
+p, .body { font-size: var(--mobile-body-size); line-height: var(--mobile-body-line); }
+small, .small { font-size: var(--mobile-small-size); line-height: var(--mobile-small-line); }
+.caption { font-size: var(--mobile-caption-size); line-height: var(--mobile-caption-line); color: var(--text-secondary); }
 
-h1, .h1 {
-  font-size: var(--mobile-h1-size);
-  line-height: var(--mobile-h1-line);
-  font-weight: var(--mobile-h1-weight);
-  letter-spacing: var(--mobile-h1-spacing);
-  color: var(--color-black-800);
-}
-
-h2, .h2 {
-  font-size: var(--mobile-h2-size);
-  line-height: var(--mobile-h2-line);
-  font-weight: var(--mobile-h2-weight);
-}
-
-h3, .h3 {
-  font-size: var(--mobile-h3-size);
-  line-height: var(--mobile-h3-line);
-  font-weight: var(--mobile-h3-weight);
-}
-
-p, .body {
-  font-size: var(--mobile-body-size);
-  line-height: var(--mobile-body-line);
-}
-
-small, .small {
-  font-size: var(--mobile-small-size);
-  line-height: var(--mobile-small-line);
-}
-
-.caption {
-  font-size: var(--mobile-caption-size);
-  line-height: var(--mobile-caption-line);
-  color: var(--color-gray-600);
-}
-
-/* Desktop Typography Override */
 @media (min-width: 1024px) {
-  h1, .h1 {
-    font-size: var(--desktop-h1-size);
-    line-height: var(--desktop-h1-line);
-    letter-spacing: var(--desktop-h1-spacing);
-  }
-  
-  h2, .h2 {
-    font-size: var(--desktop-h2-size);
-    line-height: var(--desktop-h2-line);
-  }
-  
-  h3, .h3 {
-    font-size: var(--desktop-h3-size);
-    line-height: var(--desktop-h3-line);
-  }
+  h1, .h1 { font-size: var(--desktop-h1-size); line-height: var(--desktop-h1-line); letter-spacing: var(--desktop-h1-spacing); }
+  h2, .h2 { font-size: var(--desktop-h2-size); line-height: var(--desktop-h2-line); }
+  h3, .h3 { font-size: var(--desktop-h3-size); line-height: var(--desktop-h3-line); }
 }
 
-/* ========== LINKS ========== */
-
+/* ========== LINKS (De base.css original) ========== */
 a {
-  color: var(--color-primary-700);
+  color: var(--link-color);
   text-decoration: none;
   transition: color 0.2s ease;
 }
+a:hover { text-decoration: underline; opacity: 0.8; }
+a:focus { outline: 2px solid var(--link-color); outline-offset: 2px; border-radius: var(--radius-sm); }
 
-a:hover {
-  color: var(--color-info-600);
-  text-decoration: underline;
-}
-
-a:focus {
-  outline: 2px solid var(--color-primary-700);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
-/* ========== LAYOUT ========== */
-
+/* ========== LAYOUT GENERAL ========== */
 .container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--space-4);
 }
-
 main {
   flex: 1;
   width: 100%;
   padding: var(--space-4);
 }
 
-/* ========== UTILITY CLASSES ========== */
 
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+/* =========================================================
+   ESTILOS PRIORITARIOS EXTRAÍDOS DE LA ETIQUETA <STYLE>
+   ========================================================= */
+
+/* Barra Inferior Mobile */
+.bottom-navbar {
+    width: 100%;
+    height: 82px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: var(--bg-card, white);
+    z-index: 1050; /* Z-index alto para estar sobre todo */
+    border-top: 1px solid var(--border-color, #e5e7eb);
+    box-shadow: 0 -1px 3px rgba(0,0,0,0.05);
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
+.navbar-links a {
+    color: var(--text-secondary, #666);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.5rem;
+}
+
+.navbar-links a.active {
+    color: var(--link-color, #0A66C2);
+}
+
+.bottom-navbar a {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-secondary, #6b7280); /* Color gris suave para inactivos */
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+/* Aumentamos significativamente el tamaño del icono */
+.bottom-navbar a i {
+    font-size: 1.75rem; /* Aproximadamente 28px */
+    transition: transform 0.2s ease;
+}
+
+/* Estado activo: Color más vibrante y un ligero efecto de escala */
+.bottom-navbar a.active {
+    color: var(--link-color, #0A66C2); /* El azul de LinkedIn/LinkingX */
+}
+
+.bottom-navbar a.active i {
+    transform: scale(1.1); /* Efecto visual de resaltado */
+}
+
+/* Media Query para dispositivos móviles (menos de 768px) */
+@media (max-width: 767.98px) {
+    /* Aumentar el tamaño general de los botones */
+    .btn {
+        padding: 12px 20px; /* Más espacio interno para que sea fácil de tocar */
+        font-size: 16px;    /* Fuente un poco más grande */
+        font-weight: 600;   /* Texto más legible */
+        border-radius: 10px; /* Bordes un poco más redondeados para móvil */
+        width: 100%;        /* Opcional: hace que los botones ocupen todo el ancho */
+        margin-bottom: 0.5rem; /* Separación entre botones si están apilados */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Si tienes iconos dentro de los botones, hazlos un poco más grandes */
+    .btn i {
+        font-size: 1rem;
+        margin-right: 8px;
+    }
+    
+    /* Si tu sticky bar tiene una clase específica como .mobile-navbar */
+    .sticky-bottom-nav {
+        height: 75px !important; /* Aumentamos la altura total de la barra */
+        padding-bottom: env(safe-area-inset-bottom); /* Respetar "notch" en iPhone */
+    }
+
+    /* Aumentar el tamaño de los enlaces/botones internos */
+    .sticky-bottom-nav .nav-link, 
+    .sticky-bottom-nav button {
+        padding: 12px 5px !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px !important; /* Texto un poco más legible */
+        min-width: 60px;
+    }
+
+    /* Aumentar específicamente el tamaño del icono */
+    .sticky-bottom-nav i, 
+    .sticky-bottom-nav .bi {
+        font-size: 1.6rem !important; /* Íconos mucho más grandes */
+        margin-bottom: 4px;
+    }
+
+    /* Si tienes un botón central de "Acción" (como el de Nueva Oferta) */
+    .btn-mobile-principal {
+        width: 55px;
+        height: 55px;
+        border-radius: 50% !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: -20px; /* Efecto flotante hacia arriba */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+}
+
+
+/* =========================================================
+   Diseño de Escritorio (min-width: 992px)
+   ========================================================= */
+@media (min-width: 992px) {
+    body {
+        padding-bottom: 0; /* Sin padding bottom en desktop */
+        position: relative;
+    }
+
+    /* Ocultar barra inferior en desktop */
+    .bottom-navbar {
+        display: none !important;
+    }
+
+    /* Franja azul */
+    .top-blue-bg {
+        position: absolute;
+        top: -30px;
+        left: 0;
+        width: 100%;
+        height: 70px; /* Ajustado para cubrir header */
+        background-color: var(--brand-primary, #0A66C2);
+        z-index: -1;
+    }
+
+    /* Header flotante */
+    .header-floating {
+        margin: 24px auto 0 !important;
+        max-width: 1400px;
+        width: calc(100% - 48px);
+        border-radius: 12px;
+        border: none !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+        top: 24px !important; 
+        background-color: var(--bg-header, white) !important;
+    }
+
+    /* Main flotante */
+    .main-floating {
+        max-width: 1400px;
+        width: calc(100% - 48px);
+        margin: 32px auto !important;
+        min-height: calc(100vh - 220px);
+    }
+
+    /* Footer flotante */
+    .footer-floating {
+        max-width: 1400px;
+        width: calc(100% - 48px);
+        margin: 0 auto 24px auto !important;
+        border-radius: 12px;
+        background-color: var(--bg-card, white) !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+}
+
+/* ========== UTILITY CLASSES (De base.css original) ========== */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
 .text-center { text-align: center; }
 .text-right { text-align: right; }
 .text-left { text-align: left; }
-
 .mt-1 { margin-top: var(--space-1); }
 .mt-2 { margin-top: var(--space-2); }
 .mt-4 { margin-top: var(--space-4); }
 .mt-6 { margin-top: var(--space-6); }
-
 .mb-1 { margin-bottom: var(--space-1); }
 .mb-2 { margin-bottom: var(--space-2); }
 .mb-4 { margin-bottom: var(--space-4); }
 .mb-6 { margin-bottom: var(--space-6); }
-
 .hidden { display: none; }
 .block { display: block; }
 .flex { display: flex; }

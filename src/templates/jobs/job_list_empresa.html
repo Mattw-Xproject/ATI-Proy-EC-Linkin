@@ -19,26 +19,26 @@
     }
     
     .jobs-list-column {
-        background: white;
+        background: var(--bg-card, white);
         border-radius: 8px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border-color, #e5e7eb);
         max-height: calc(100vh - 120px);
         overflow-y: auto;
     }
     
     .jobs-list-header {
         padding: 1.5rem;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid var(--border-color, #e5e7eb);
         position: sticky;
         top: 0;
-        background: white;
+        background: var(--bg-card, white);
         z-index: 10;
     }
     
     .empty-state-card {
-        background: white;
+        background: var(--bg-card, white);
         border-radius: 8px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border-color, #e5e7eb);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -46,33 +46,34 @@
     
     .job-list-item {
         padding: 1.25rem 1.5rem;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid var(--border-color, #e5e7eb);
         cursor: pointer;
         transition: all 0.2s;
         display: block;
+        color: var(--text-primary, #111827);
     }
     
     .job-list-item:hover {
-        background: #f9fafb;
+        background: var(--bg-body, #f9fafb);
     }
     
     .job-list-item.active {
-        background: #E7F3FF;
-        border-left: 3px solid #0A66C2;
+        background: var(--bg-body, #E7F3FF);
+        border-left: 3px solid var(--link-color, #0A66C2);
     }
     
     .job-item-title {
         font-size: 16px;
         font-weight: 600;
         margin-bottom: 0.5rem;
-        color: #111827;
+        color: var(--text-primary, #111827);
     }
     
     .job-item-meta {
         display: flex;
         gap: 1rem;
         font-size: 13px;
-        color: #6b7280;
+        color: var(--text-secondary, #6b7280);
         margin-bottom: 0.5rem;
     }
     
@@ -80,29 +81,48 @@
         display: flex;
         gap: 1.5rem;
         font-size: 13px;
-        color: #6b7280;
+        color: var(--text-secondary, #6b7280);
     }
     
     .empty-state {
         text-align: center;
         padding: 4rem 2rem;
-        color: #9ca3af;
+        color: var(--text-secondary, #9ca3af);
     }
     
     .empty-state i {
         font-size: 64px;
         margin-bottom: 1rem;
     }
+
+    /* ===== ADAPTACIÓN DE CLASES BOOTSTRAP ===== */
+    .card {
+        background-color: var(--bg-card, white) !important;
+        border-color: var(--border-color, #e5e7eb) !important;
+        color: var(--text-primary, #111827) !important;
+    }
+    .text-muted {
+        color: var(--text-secondary, #6c757d) !important;
+    }
+    .h3, h3, h2 {
+        color: var(--text-primary, #111827) !important;
+    }
     
     /* ===== ESTILOS PARA MODAL DE BOOTSTRAP ===== */
     .modal-content {
+        background-color: var(--bg-card, white) !important;
+        color: var(--text-primary, #111827) !important;
         border-radius: 12px;
-        border: none;
+        border: 1px solid var(--border-color, transparent);
     }
     
     .modal-header {
         padding: 1.5rem 2rem;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid var(--border-color, #e5e7eb);
+    }
+
+    .btn-close {
+        filter: var(--invert-icon, none);
     }
     
     .modal-title {
@@ -125,21 +145,23 @@
         font-weight: 600;
         font-size: 14px;
         margin-bottom: 0.5rem;
-        color: #374151;
+        color: var(--text-primary, #374151);
     }
     
     .form-control, .form-select {
         width: 100%;
         padding: 0.75rem;
-        border: 1px solid #d1d5db;
+        background-color: var(--bg-body, white) !important;
+        color: var(--text-primary, black) !important;
+        border: 1px solid var(--border-color, #d1d5db) !important;
         border-radius: 8px;
         font-size: 15px;
     }
     
     .form-control:focus, .form-select:focus {
         outline: none;
-        border-color: #0A66C2;
-        box-shadow: 0 0 0 3px #E7F3FF;
+        border-color: var(--link-color, #0A66C2) !important;
+        box-shadow: 0 0 0 3px rgba(10, 102, 194, 0.1) !important;
     }
     
     textarea.form-control {
@@ -152,8 +174,9 @@
         align-items: center;
         gap: 0.75rem;
         padding: 1rem;
-        background: #f9fafb;
+        background: var(--bg-body, #f9fafb);
         border-radius: 8px;
+        border: 1px solid var(--border-color, transparent);
     }
     
     .form-check-input {
@@ -165,11 +188,12 @@
     .form-check-label {
         cursor: pointer;
         margin: 0;
+        color: var(--text-primary, inherit);
     }
     
     .modal-footer {
         padding: 1.5rem 2rem;
-        border-top: 1px solid #e5e7eb;
+        border-top: 1px solid var(--border-color, #e5e7eb);
     }
     
     @media (max-width: 991px) {
@@ -187,7 +211,6 @@
 {% block content %}
 <div class="jobs-container">
     
-    <!-- Header with Stats -->
     <div class="mb-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h1 class="h3">{% trans "Gestión de Ofertas" %}</h1>
@@ -244,18 +267,17 @@
     
     <div class="jobs-layout">
         
-        <!-- Left Column - Jobs List -->
         <div class="jobs-list-column">
             <div class="jobs-list-header">
-                <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 1rem;">{% trans "Mis Ofertas" %}</h2>
+                <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">{% trans "Mis Ofertas" %}</h2>
                 <div class="btn-group w-100" role="group">
                     <input type="radio" class="btn-check" name="jobStatus" id="activeJobs" checked>
-                    <label class="btn btn-outline-primary" for="activeJobs">
+                    <label class="btn btn-outline-primary" for="activeJobs" style="background-color: transparent;">
                         {% trans "Activas" %} ({{ ofertas_activas.count }})
                     </label>
                     
                     <input type="radio" class="btn-check" name="jobStatus" id="inactiveJobs">
-                    <label class="btn btn-outline-primary" for="inactiveJobs">
+                    <label class="btn btn-outline-primary" for="inactiveJobs" style="background-color: transparent;">
                         {% trans "Inactivas" %} ({{ ofertas_inactivas.count }})
                     </label>
                 </div>
@@ -312,11 +334,10 @@
             </div>
         </div>
         
-        <!-- Right Column - Empty State -->
         <div class="empty-state-card">
             <div class="empty-state">
                 <i class="bi bi-arrow-left-circle"></i>
-                <h5>{% trans "Selecciona una oferta" %}</h5>
+                <h5 style="color: var(--text-primary);">{% trans "Selecciona una oferta" %}</h5>
                 <p>{% trans "Haz clic en una oferta para ver detalles" %}</p>
             </div>
         </div>
@@ -324,7 +345,6 @@
     </div>
 </div>
 
-<!-- ===== MODAL BOOTSTRAP CREAR OFERTA ===== -->
 <div class="modal fade" id="createJobModal" tabindex="-1" aria-labelledby="createJobModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">

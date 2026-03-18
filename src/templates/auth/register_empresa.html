@@ -9,7 +9,7 @@
     .auth-page {
         min-height: 100vh;
         display: flex;
-        background: var(--lx-gray-50);
+        background: var(--bg-body, var(--lx-gray-50));
     }
     
     /* Left Side - Form */
@@ -19,7 +19,7 @@
         align-items: center;
         justify-content: center;
         padding: 2rem;
-        background: white;
+        background: var(--bg-card, white);
         overflow-y: auto;
     }
     
@@ -37,12 +37,12 @@
     .auth-header h1 {
         font-size: 28px;
         font-weight: 700;
-        color: var(--lx-gray-900);
+        color: var(--text-primary, var(--lx-gray-900));
         margin-bottom: 0.5rem;
     }
     
     .auth-header p {
-        color: var(--lx-gray-600);
+        color: var(--text-secondary, var(--lx-gray-600));
         font-size: 15px;
     }
     
@@ -130,7 +130,7 @@
         display: block;
         font-weight: 600;
         font-size: 14px;
-        color: var(--lx-gray-700);
+        color: var(--text-primary, var(--lx-gray-700));
         margin-bottom: 0.5rem;
     }
     
@@ -141,7 +141,9 @@
     .form-control, .form-select {
         width: 100%;
         padding: 12px 16px;
-        border: 1px solid var(--lx-gray-300);
+        background-color: var(--bg-body, white);
+        color: var(--text-primary, black);
+        border: 1px solid var(--border-color, var(--lx-gray-300));
         border-radius: 8px;
         font-size: 15px;
         transition: all 0.2s ease;
@@ -149,8 +151,8 @@
     
     .form-control:focus, .form-select:focus {
         outline: none;
-        border-color: var(--lx-primary);
-        box-shadow: 0 0 0 3px var(--lx-primary-light);
+        border-color: var(--link-color, var(--lx-primary));
+        box-shadow: 0 0 0 3px rgba(10, 102, 194, 0.1);
     }
     
     .form-control.error, .form-select.error {
@@ -164,7 +166,7 @@
         transform: translateY(-50%);
         background: none;
         border: none;
-        color: var(--lx-gray-500);
+        color: var(--text-secondary, var(--lx-gray-500));
         cursor: pointer;
         padding: 4px;
         border-radius: 4px;
@@ -172,8 +174,8 @@
     }
     
     .password-toggle:hover {
-        background: var(--lx-gray-100);
-        color: var(--lx-gray-700);
+        background: var(--bg-body, var(--lx-gray-100));
+        color: var(--text-primary, var(--lx-gray-700));
     }
     
     .form-error {
@@ -185,7 +187,7 @@
     
     .form-helper {
         display: block;
-        color: var(--lx-gray-600);
+        color: var(--text-secondary, var(--lx-gray-600));
         font-size: 13px;
         margin-top: 0.5rem;
     }
@@ -193,7 +195,7 @@
     .btn-submit {
         width: 100%;
         padding: 14px;
-        background: var(--lx-primary);
+        background: var(--link-color, var(--lx-primary));
         color: white;
         border: none;
         border-radius: 8px;
@@ -205,26 +207,27 @@
     }
     
     .btn-submit:hover {
-        background: var(--lx-primary-hover);
+        opacity: 0.9;
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(10, 102, 194, 0.3);
     }
     
     .auth-footer {
         text-align: center;
-        color: var(--lx-gray-600);
+        color: var(--text-secondary, var(--lx-gray-600));
         font-size: 15px;
         margin-top: 1.5rem;
     }
     
     .auth-footer a {
-        color: var(--lx-primary);
+        color: var(--link-color, var(--lx-primary));
         text-decoration: none;
         font-weight: 600;
     }
     
     .auth-footer a:hover {
         text-decoration: underline;
+        opacity: 0.8;
     }
     
     /* Responsive */
@@ -269,21 +272,17 @@
 
 {% block content %}
 <div class="auth-page">
-    <!-- Left Side - Form -->
     <div class="auth-form-container">
         <div class="auth-form-wrapper">
             
-            <!-- Header -->
             <div class="auth-header">
                 <h1>{% trans "Registro Empresa" %}</h1>
                 <p>{% trans "Completa los datos corporativos para crear tu perfil" %}</p>
             </div>
             
-            <!-- Form -->
             <form method="post" novalidate>
                 {% csrf_token %}
                 
-                <!-- Nombre Empresa -->
                 <div class="form-group">
                     <label for="{{ form.nombre_empresa.id_for_label }}" class="form-label">
                         {{ form.nombre_empresa.label }} *
@@ -302,7 +301,6 @@
                     {% endif %}
                 </div>
                 
-                <!-- RIF -->
                 <div class="form-group">
                     <label for="{{ form.rif.id_for_label }}" class="form-label">
                         {{ form.rif.label }} *
@@ -323,7 +321,6 @@
                     {% endif %}
                 </div>
                 
-                <!-- Tipo Empresa -->
                 <div class="form-group">
                     <label for="{{ form.tipo_empresa.id_for_label }}" class="form-label">
                         {{ form.tipo_empresa.label }} *
@@ -344,7 +341,6 @@
                     {% endif %}
                 </div>
                 
-                <!-- Email -->
                 <div class="form-group">
                     <label for="{{ form.email.id_for_label }}" class="form-label">
                         {{ form.email.label }} *
@@ -363,7 +359,6 @@
                     {% endif %}
                 </div>
                 
-                <!-- Password 1 -->
                 <div class="form-group">
                     <label for="{{ form.password1.id_for_label }}" class="form-label">
                         {{ form.password1.label }} *
@@ -388,7 +383,6 @@
                     {% endif %}
                 </div>
                 
-                <!-- Password 2 -->
                 <div class="form-group">
                     <label for="{{ form.password2.id_for_label }}" class="form-label">
                         {{ form.password2.label }} *
@@ -411,13 +405,11 @@
                     {% endif %}
                 </div>
                 
-                <!-- Submit Button -->
                 <button type="submit" class="btn-submit">
                     <i class="bi bi-building me-2"></i>
                     {% trans "Registrar Empresa" %}
                 </button>
                 
-                <!-- Login Link -->
                 <div class="auth-footer">
                     {% trans "¿Ya tienes cuenta?" %}
                     <a href="{% url 'auth_login' %}">{% trans "Inicia sesión" %}</a>
@@ -428,7 +420,6 @@
         </div>
     </div>
     
-    <!-- Right Side - Brand Panel -->
     <div class="auth-brand-panel">
         <div class="brand-content">
             <div class="brand-logo">
@@ -457,5 +448,34 @@ function togglePassword(inputId, button) {
         icon.classList.add('bi-eye');
     }
 }
+
+// ===== Lógica del Botón de Modo Oscuro del Header =====
+document.addEventListener('DOMContentLoaded', () => {
+    const themeToggleHeaderBtn = document.getElementById('theme-toggle-header');
+    if (themeToggleHeaderBtn) {
+        const themeIconHeader = document.getElementById('theme-icon-header');
+        const htmlElement = document.documentElement;
+
+        const updateHeaderButtonUI = (isDark) => {
+            if (isDark) {
+                themeIconHeader.classList.remove('bi-moon');
+                themeIconHeader.classList.add('bi-sun');
+            } else {
+                themeIconHeader.classList.remove('bi-sun');
+                themeIconHeader.classList.add('bi-moon');
+            }
+        };
+
+        const isCurrentlyDark = htmlElement.classList.contains('dark-mode');
+        updateHeaderButtonUI(isCurrentlyDark);
+
+        themeToggleHeaderBtn.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark-mode');
+            const isDarkNow = htmlElement.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDarkNow ? 'dark' : 'light');
+            updateHeaderButtonUI(isDarkNow);
+        });
+    }
+});
 </script>
 {% endblock %}

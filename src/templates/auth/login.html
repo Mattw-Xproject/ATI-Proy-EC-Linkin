@@ -10,7 +10,7 @@
     .auth-page {
         min-height: 100vh;
         display: flex;
-        background: var(--lx-gray-50);
+        background: var(--bg-body, var(--lx-gray-50));
     }
     
     /* Columna Izquierda - Formulario */
@@ -20,7 +20,7 @@
         align-items: center;
         justify-content: center;
         padding: 2rem;
-        background: white;
+        background: var(--bg-card, white);
     }
     
     .auth-form-wrapper {
@@ -36,12 +36,12 @@
     .auth-header h1 {
         font-size: 28px;
         font-weight: 700;
-        color: var(--lx-gray-900);
+        color: var(--text-primary, var(--lx-gray-900));
         margin-bottom: 0.5rem;
     }
     
     .auth-header p {
-        color: var(--lx-gray-600);
+        color: var(--text-secondary, var(--lx-gray-600));
         font-size: 15px;
     }
     
@@ -126,28 +126,28 @@
     
     /* --- ESTILOS DEL FORMULARIO DE LOGIN --- */
     .form-group { margin-bottom: 1.5rem; }
-    .form-label { display: block; font-weight: 600; font-size: 14px; color: var(--lx-gray-700); margin-bottom: 0.5rem; }
+    .form-label { display: block; font-weight: 600; font-size: 14px; color: var(--text-primary, var(--lx-gray-700)); margin-bottom: 0.5rem; }
     .form-control-wrapper { position: relative; }
-    .form-control { width: 100%; padding: 12px 16px; padding-left: 44px; border: 1px solid var(--lx-gray-300); border-radius: 8px; font-size: 15px; transition: all 0.2s ease; }
-    .form-control:focus { outline: none; border-color: var(--lx-primary); box-shadow: 0 0 0 3px var(--lx-primary-light); }
+    .form-control { width: 100%; padding: 12px 16px; padding-left: 44px; border: 1px solid var(--border-color, var(--lx-gray-300)); border-radius: 8px; font-size: 15px; transition: all 0.2s ease; background-color: var(--bg-body, white); color: var(--text-primary, black); }
+    .form-control:focus { outline: none; border-color: var(--link-color, var(--lx-primary)); box-shadow: 0 0 0 3px rgba(10, 102, 194, 0.1); }
     .form-control.error { border-color: var(--lx-danger); }
-    .form-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--lx-gray-500); pointer-events: none; }
-    .password-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--lx-gray-500); cursor: pointer; padding: 4px; border-radius: 4px; transition: all 0.2s ease; }
-    .password-toggle:hover { background: var(--lx-gray-100); color: var(--lx-gray-700); }
+    .form-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-secondary, var(--lx-gray-500)); pointer-events: none; }
+    .password-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary, var(--lx-gray-500)); cursor: pointer; padding: 4px; border-radius: 4px; transition: all 0.2s ease; }
+    .password-toggle:hover { background: var(--bg-body, var(--lx-gray-100)); color: var(--text-primary, var(--lx-gray-700)); }
     .form-error { display: block; color: var(--lx-danger); font-size: 13px; margin-top: 0.5rem; }
     .forgot-link { text-align: right; margin-bottom: 1.5rem; }
-    .forgot-link a { color: var(--lx-primary); text-decoration: none; font-size: 14px; font-weight: 500; }
+    .forgot-link a { color: var(--link-color, var(--lx-primary)); text-decoration: none; font-size: 14px; font-weight: 500; }
     .forgot-link a:hover { text-decoration: underline; }
     
-    .btn-submit { width: 100%; padding: 14px; background: var(--lx-primary); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
-    .btn-submit:hover { background: var(--lx-primary-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(10, 102, 194, 0.3); }
+    .btn-submit { width: 100%; padding: 14px; background: var(--link-color, var(--lx-primary)); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(10, 102, 194, 0.3); }
     
     .divider { text-align: center; margin: 2rem 0; position: relative; }
-    .divider::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--lx-gray-200); }
-    .divider span { position: relative; background: white; padding: 0 1rem; color: var(--lx-gray-400); font-size: 14px; }
+    .divider::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--border-color, var(--lx-gray-200)); }
+    .divider span { position: relative; background: var(--bg-card, white); padding: 0 1rem; color: var(--text-secondary, var(--lx-gray-400)); font-size: 14px; }
     
-    .auth-footer { text-align: center; color: var(--lx-gray-600); font-size: 15px; }
-    .auth-footer a { color: var(--lx-primary); text-decoration: none; font-weight: 600; }
+    .auth-footer { text-align: center; color: var(--text-secondary, var(--lx-gray-600)); font-size: 15px; }
+    .auth-footer a { color: var(--link-color, var(--lx-primary)); text-decoration: none; font-weight: 600; }
     .auth-footer a:hover { text-decoration: underline; }
     
     /* Responsive */
@@ -204,10 +204,6 @@
                     {% endif %}
                 </div>
                 
-                <div class="forgot-link">
-                    <a href="#">{% trans "¿Olvidaste tu contraseña?" %}</a>
-                </div>
-                
                 <button type="submit" class="btn-submit">{% trans "Iniciar Sesión" %}</button>
                 
                 <div class="divider"><span>{% trans "o" %}</span></div>
@@ -251,5 +247,34 @@ function togglePassword(inputId, button) {
         icon.classList.add('bi-eye');
     }
 }
+
+// ===== Lógica del Botón de Modo Oscuro del Header =====
+document.addEventListener('DOMContentLoaded', () => {
+    const themeToggleHeaderBtn = document.getElementById('theme-toggle-header');
+    if (themeToggleHeaderBtn) {
+        const themeIconHeader = document.getElementById('theme-icon-header');
+        const htmlElement = document.documentElement;
+
+        const updateHeaderButtonUI = (isDark) => {
+            if (isDark) {
+                themeIconHeader.classList.remove('bi-moon');
+                themeIconHeader.classList.add('bi-sun');
+            } else {
+                themeIconHeader.classList.remove('bi-sun');
+                themeIconHeader.classList.add('bi-moon');
+            }
+        };
+
+        const isCurrentlyDark = htmlElement.classList.contains('dark-mode');
+        updateHeaderButtonUI(isCurrentlyDark);
+
+        themeToggleHeaderBtn.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark-mode');
+            const isDarkNow = htmlElement.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDarkNow ? 'dark' : 'light');
+            updateHeaderButtonUI(isDarkNow);
+        });
+    }
+});
 </script>
 {% endblock %}

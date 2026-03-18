@@ -26,23 +26,23 @@
     }
     
     .sidebar-card {
-        background: white;
+        background: var(--bg-card, white);
         border-radius: 8px;
-        border: 1px solid var(--lx-gray-200);
+        border: 1px solid var(--border-color, #e5e7eb);
         padding: 1.25rem;
     }
     
     .sidebar-title {
         font-size: 16px;
         font-weight: 600;
-        color: var(--lx-gray-900);
+        color: var(--text-primary, #111827);
         margin-bottom: 1rem;
     }
     
     .similar-job-item {
         padding: 1rem;
         border-radius: 6px;
-        border: 1px solid var(--lx-gray-200);
+        border: 1px solid var(--border-color, #e5e7eb);
         margin-bottom: 0.75rem;
         cursor: pointer;
         transition: all 0.2s ease;
@@ -52,38 +52,38 @@
     }
     
     .similar-job-item:hover {
-        border-color: var(--lx-primary);
-        background: var(--lx-gray-50);
+        border-color: var(--link-color, #0A66C2);
+        background: var(--bg-body, #f9fafb);
     }
     
     .similar-job-title {
         font-size: 14px;
         font-weight: 600;
-        color: var(--lx-gray-900);
+        color: var(--text-primary, #111827);
         margin-bottom: 0.25rem;
     }
     
     .similar-job-company {
         font-size: 13px;
-        color: var(--lx-gray-600);
+        color: var(--text-secondary, #4b5563);
         margin-bottom: 0.5rem;
     }
     
     .similar-job-meta {
         font-size: 12px;
-        color: var(--lx-gray-500);
+        color: var(--text-secondary, #6b7280);
     }
     
     /* Main Content - Job Details */
     .job-detail-main {
-        background: white;
+        background: var(--bg-card, white);
         border-radius: 8px;
-        border: 1px solid var(--lx-gray-200);
+        border: 1px solid var(--border-color, #e5e7eb);
     }
     
     .job-detail-header {
         padding: 2rem;
-        border-bottom: 1px solid var(--lx-gray-200);
+        border-bottom: 1px solid var(--border-color, #e5e7eb);
     }
     
     .job-header-content {
@@ -97,7 +97,7 @@
         height: 80px;
         border-radius: 8px;
         object-fit: cover;
-        border: 1px solid var(--lx-gray-200);
+        border: 1px solid var(--border-color, #e5e7eb);
     }
     
     .job-header-info {
@@ -107,14 +107,23 @@
     .job-detail-title {
         font-size: 28px;
         font-weight: 700;
-        color: var(--lx-gray-900);
+        color: var(--text-primary, #111827);
         margin-bottom: 0.5rem;
     }
     
     .job-detail-company {
         font-size: 18px;
-        color: var(--lx-gray-600);
+        color: var(--text-secondary, #4b5563);
         margin-bottom: 1rem;
+    }
+    
+    .job-detail-company a {
+        color: inherit;
+        text-decoration: none;
+    }
+    
+    .job-detail-company a:hover {
+        color: var(--link-color, #0A66C2);
     }
     
     .job-detail-meta {
@@ -122,7 +131,7 @@
         flex-wrap: wrap;
         gap: 1.5rem;
         font-size: 14px;
-        color: var(--lx-gray-600);
+        color: var(--text-secondary, #4b5563);
     }
     
     .job-detail-meta-item {
@@ -132,7 +141,7 @@
     }
     
     .job-detail-meta-item i {
-        color: var(--lx-gray-500);
+        color: var(--text-secondary, #6b7280);
     }
     
     .job-actions {
@@ -143,6 +152,27 @@
     .btn-apply {
         flex: 1;
         max-width: 200px;
+        background: var(--link-color, #0A66C2);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 24px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        text-decoration: none;
+    }
+    
+    .btn-apply:hover {
+        opacity: 0.9;
+    }
+    
+    .btn-apply.btn-success {
+        background: #10B981;
     }
     
     .btn-save {
@@ -152,22 +182,22 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 1px solid var(--lx-gray-300);
-        background: white;
-        color: var(--lx-gray-600);
+        border: 1px solid var(--border-color, #d1d5db);
+        background: var(--bg-card, white);
+        color: var(--text-secondary, #4b5563);
         cursor: pointer;
         transition: all 0.2s ease;
     }
     
     .btn-save:hover {
-        background: var(--lx-gray-100);
-        color: var(--lx-primary);
+        background: var(--bg-body, #f3f4f6);
+        color: var(--link-color, #0A66C2);
     }
     
     .btn-save.saved {
-        background: var(--lx-primary-light);
-        color: var(--lx-primary);
-        border-color: var(--lx-primary);
+        background: var(--bg-body, #E7F3FF);
+        color: var(--link-color, #0A66C2);
+        border-color: var(--link-color, #0A66C2);
     }
     
     .job-detail-body {
@@ -185,14 +215,14 @@
     .job-section-title {
         font-size: 20px;
         font-weight: 600;
-        color: var(--lx-gray-900);
+        color: var(--text-primary, #111827);
         margin-bottom: 1rem;
     }
     
     .job-section-content {
         font-size: 15px;
         line-height: 1.7;
-        color: var(--lx-gray-700);
+        color: var(--text-primary, #374151);
         white-space: pre-wrap;
     }
     
@@ -204,10 +234,11 @@
     
     .job-requirements-list li {
         padding: 0.75rem 0;
-        border-bottom: 1px solid var(--lx-gray-100);
+        border-bottom: 1px solid var(--border-color, #f3f4f6);
         display: flex;
         align-items: start;
         gap: 0.75rem;
+        color: var(--text-primary, #374151);
     }
     
     .job-requirements-list li:last-child {
@@ -215,7 +246,7 @@
     }
     
     .job-requirements-list li i {
-        color: var(--lx-primary);
+        color: var(--link-color, #0A66C2);
         margin-top: 0.25rem;
         flex-shrink: 0;
     }
@@ -224,7 +255,7 @@
         display: flex;
         gap: 2rem;
         padding: 1.5rem;
-        background: var(--lx-gray-50);
+        background: var(--bg-body, #f9fafb);
         border-radius: 8px;
         margin-top: 1.5rem;
     }
@@ -236,14 +267,14 @@
     .job-stat-value {
         font-size: 24px;
         font-weight: 700;
-        color: var(--lx-primary);
+        color: var(--link-color, #0A66C2);
         display: block;
         margin-bottom: 0.25rem;
     }
     
     .job-stat-label {
         font-size: 13px;
-        color: var(--lx-gray-600);
+        color: var(--text-secondary, #4b5563);
     }
     
     /* Application Modal */
@@ -266,18 +297,19 @@
     }
     
     .application-modal-content {
-        background: white;
+        background: var(--bg-card, white);
         border-radius: 12px;
         width: 100%;
         max-width: 600px;
         max-height: 90vh;
         overflow-y: auto;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--border-color, transparent);
     }
     
     .modal-header {
         padding: 1.5rem 2rem;
-        border-bottom: 1px solid var(--lx-gray-200);
+        border-bottom: 1px solid var(--border-color, #e5e7eb);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -286,7 +318,7 @@
     .modal-title {
         font-size: 22px;
         font-weight: 700;
-        color: var(--lx-gray-900);
+        color: var(--text-primary, #111827);
     }
     
     .modal-close {
@@ -295,7 +327,7 @@
         border-radius: 50%;
         border: none;
         background: transparent;
-        color: var(--lx-gray-500);
+        color: var(--text-secondary, #6b7280);
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -304,8 +336,8 @@
     }
     
     .modal-close:hover {
-        background: var(--lx-gray-100);
-        color: var(--lx-gray-900);
+        background: var(--bg-body, #f3f4f6);
+        color: var(--text-primary, #111827);
     }
     
     .modal-progress {
@@ -316,14 +348,14 @@
     .progress-bar-container {
         width: 100%;
         height: 8px;
-        background: var(--lx-gray-200);
+        background: var(--border-color, #e5e7eb);
         border-radius: 4px;
         overflow: hidden;
     }
     
     .progress-bar-fill {
         height: 100%;
-        background: var(--lx-primary);
+        background: var(--link-color, #0A66C2);
         border-radius: 4px;
         transition: width 0.3s ease;
     }
@@ -333,7 +365,7 @@
         justify-content: space-between;
         margin-top: 0.75rem;
         font-size: 13px;
-        color: var(--lx-gray-600);
+        color: var(--text-secondary, #4b5563);
     }
     
     .progress-step {
@@ -341,7 +373,7 @@
     }
     
     .progress-step.active {
-        color: var(--lx-primary);
+        color: var(--link-color, #0A66C2);
         font-weight: 600;
     }
     
@@ -365,14 +397,16 @@
         display: block;
         font-weight: 600;
         font-size: 14px;
-        color: var(--lx-gray-700);
+        color: var(--text-primary, #374151);
         margin-bottom: 0.5rem;
     }
     
     .form-control-modal {
         width: 100%;
         padding: 12px 16px;
-        border: 1px solid var(--lx-gray-300);
+        background-color: var(--bg-body, white);
+        color: var(--text-primary, black);
+        border: 1px solid var(--border-color, #d1d5db);
         border-radius: 8px;
         font-size: 15px;
         transition: all 0.2s ease;
@@ -380,12 +414,13 @@
     
     .form-control-modal:focus {
         outline: none;
-        border-color: var(--lx-primary);
-        box-shadow: 0 0 0 3px var(--lx-primary-light);
+        border-color: var(--link-color, #0A66C2);
+        box-shadow: 0 0 0 3px rgba(10, 102, 194, 0.1);
     }
     
     .upload-area {
-        border: 2px dashed var(--lx-gray-300);
+        border: 2px dashed var(--border-color, #d1d5db);
+        background-color: var(--bg-body, transparent);
         border-radius: 8px;
         padding: 3rem 2rem;
         text-align: center;
@@ -394,44 +429,46 @@
     }
     
     .upload-area:hover {
-        border-color: var(--lx-primary);
-        background: var(--lx-primary-light);
+        border-color: var(--link-color, #0A66C2);
+        background: var(--bg-body, #E7F3FF);
     }
     
     .upload-area.has-file {
-        border-color: var(--lx-primary);
-        background: var(--lx-primary-light);
+        border-color: var(--link-color, #0A66C2);
+        background: var(--bg-body, #E7F3FF);
     }
     
     .upload-icon {
         width: 64px;
         height: 64px;
         margin: 0 auto 1rem;
-        background: white;
+        background: var(--bg-card, white);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--lx-primary);
+        color: var(--link-color, #0A66C2);
         font-size: 28px;
+        border: 1px solid var(--border-color, transparent);
     }
     
     .upload-text {
         font-size: 16px;
         font-weight: 600;
-        color: var(--lx-gray-900);
+        color: var(--text-primary, #111827);
         margin-bottom: 0.5rem;
     }
     
     .upload-subtext {
         font-size: 14px;
-        color: var(--lx-gray-600);
+        color: var(--text-secondary, #6b7280);
     }
     
     .file-name-display {
         margin-top: 1rem;
         padding: 1rem;
-        background: white;
+        background: var(--bg-card, white);
+        border: 1px solid var(--border-color, transparent);
         border-radius: 6px;
         display: flex;
         align-items: center;
@@ -439,16 +476,63 @@
     }
     
     .file-name-display i {
-        color: var(--lx-primary);
+        color: var(--link-color, #0A66C2);
         font-size: 24px;
     }
     
     .modal-footer {
         padding: 1.5rem 2rem;
-        border-top: 1px solid var(--lx-gray-200);
+        border-top: 1px solid var(--border-color, #e5e7eb);
         display: flex;
         justify-content: space-between;
         gap: 1rem;
+    }
+    
+    .btn-secondary {
+        background: transparent;
+        color: var(--text-primary, #374151);
+        border: 1px solid var(--border-color, #d1d5db);
+        padding: 0.75rem 1.5rem;
+        border-radius: 24px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .btn-secondary:hover {
+        background: var(--bg-body, #f9fafb);
+    }
+
+    .btn-outline-primary {
+        background: transparent;
+        color: var(--link-color, #0A66C2);
+        border: 1px solid var(--link-color, #0A66C2);
+        padding: 0.75rem 1.5rem;
+        border-radius: 24px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .btn-outline-primary:hover {
+        background: var(--bg-body, #E7F3FF);
+    }
+    
+    .btn-primary {
+        background: var(--link-color, #0A66C2);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 24px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .btn-primary:hover {
+        opacity: 0.9;
     }
     
     /* Responsive */
@@ -498,75 +582,6 @@
             padding: 1.5rem;
         }
     }
-    .warning-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        z-index: 10000;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .warning-overlay.active {
-        display: flex;
-    }
-    
-    .warning-dialog {
-        background: white;
-        border-radius: 12px;
-        padding: 2rem;
-        max-width: 400px;
-        text-align: center;
-    }
-    
-    .warning-icon {
-        font-size: 48px;
-        color: #EF4444;
-        margin-bottom: 1rem;
-    }
-    
-    .warning-title {
-        font-size: 20px;
-        font-weight: 700;
-        color: var(--lx-gray-900);
-        margin-bottom: 0.5rem;
-    }
-    
-    .warning-message {
-        font-size: 14px;
-        color: var(--lx-gray-600);
-        margin-bottom: 1.5rem;
-    }
-    
-    .warning-actions {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-    }
-    
-    .btn-warning-cancel {
-        padding: 0.75rem 1.5rem;
-        background: white;
-        color: var(--lx-gray-700);
-        border: 1px solid var(--lx-gray-300);
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-    }
-    
-    .btn-warning-confirm {
-        padding: 0.75rem 1.5rem;
-        background: #EF4444;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-    }
 </style>
 {% endblock %}
 
@@ -574,7 +589,6 @@
 <div class="job-detail-container">
     <div class="job-detail-layout">
         
-        <!-- Left Sidebar - Similar Jobs -->
         <aside class="similar-jobs-sidebar">
             <div class="sidebar-card">
                 <h3 class="sidebar-title">
@@ -593,15 +607,13 @@
                     </div>
                 </a>
                 {% empty %}
-                <p class="text-muted small">{% trans "No hay empleos similares disponibles" %}</p>
+                <p class="text-muted small" style="color: var(--text-secondary) !important;">{% trans "No hay empleos similares disponibles" %}</p>
                 {% endfor %}
             </div>
         </aside>
         
-        <!-- Main Content - Job Details -->
         <main class="job-detail-main">
             
-            <!-- Job Header -->
             <div class="job-detail-header">
                 <div class="job-header-content">
                     <img src="{{ oferta.empresa.user.get_avatar_url }}" alt="Logo" class="company-logo-large">
@@ -635,10 +647,9 @@
                     </div>
                 </div>
                 
-                <!-- Banner de Estado (solo para empresas dueñas) -->
                 {% if user.tipo_usuario == 'empresa' and user.empresa == oferta.empresa %}
                     {% if not oferta.activa %}
-                    <div style="padding: 1rem 2rem; background: #FEF3C7; border-bottom: 1px solid #FDE68A; display: flex; align-items: center; justify-content: space-between;">
+                    <div style="padding: 1rem 2rem; background: #FEF3C7; border-bottom: 1px solid #FDE68A; display: flex; align-items: center; justify-content: space-between; border-radius: 8px; margin-bottom: 1.5rem;">
                         <div style="display: flex; align-items: center; gap: 1rem;">
                             <i class="bi bi-pause-circle" style="font-size: 24px; color: #92400E;"></i>
                             <div>
@@ -652,7 +663,7 @@
                         </div>
                         <form method="post" action="{% url 'toggle_job_status' oferta.id %}" style="display: inline;">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-success">
+                            <button type="submit" class="btn btn-apply btn-success" style="padding: 0.5rem 1rem;">
                                 <i class="bi bi-play-circle me-2"></i>
                                 {% trans "Activar" %}
                             </button>
@@ -660,10 +671,9 @@
                     </div>
                     {% endif %}
                 {% endif %}
-                <!-- Action Buttons -->
+                
                 <div class="job-actions">
                     {% if user.tipo_usuario == 'empresa' and user.empresa == oferta.empresa %}
-                        <!-- Botones para la empresa dueña de la oferta -->
                         <a href="{% url 'job_applicants' oferta.id %}" class="btn btn-primary btn-apply">
                             <i class="bi bi-people me-2"></i>
                             {% trans "Ver postulantes" %} ({{ oferta.postulaciones.count }})
@@ -677,12 +687,12 @@
                         <form method="post" action="{% url 'toggle_job_status' oferta.id %}" style="display: inline;">
                             {% csrf_token %}
                             {% if oferta.activa %}
-                                <button type="submit" class="btn btn-outline-danger">
+                                <button type="submit" class="btn btn-secondary" style="color: #ef4444; border-color: #ef4444;">
                                     <i class="bi bi-pause-circle me-2"></i>
                                     {% trans "Pausar" %}
                                 </button>
                             {% else %}
-                                <button type="submit" class="btn btn-outline-success">
+                                <button type="submit" class="btn btn-secondary" style="color: #10b981; border-color: #10b981;">
                                     <i class="bi bi-play-circle me-2"></i>
                                     {% trans "Activar" %}
                                 </button>
@@ -690,9 +700,8 @@
                         </form>
                         
                     {% elif user.tipo_usuario == 'profesional' %}
-                        <!-- Botones para profesionales -->
                         {% if ya_postulo %}
-                            <button class="btn btn-success btn-apply" disabled>
+                            <button class="btn btn-apply btn-success" disabled>
                                 <i class="bi bi-check-circle me-2"></i>
                                 {% trans "Ya aplicaste" %}
                             </button>
@@ -710,16 +719,13 @@
                 </div>
             </div>
             
-            <!-- Job Body -->
             <div class="job-detail-body">
                 
-                <!-- Description -->
                 <div class="job-section">
                     <h2 class="job-section-title">{% trans "Descripción del puesto" %}</h2>
                     <div class="job-section-content">{{ oferta.descripcion }}</div>
                 </div>
                 
-                <!-- Responsibilities -->
                 {% if oferta.responsabilidades %}
                 <div class="job-section">
                     <h2 class="job-section-title">{% trans "Responsabilidades" %}</h2>
@@ -727,7 +733,6 @@
                 </div>
                 {% endif %}
                 
-                <!-- Requirements -->
                 <div class="job-section">
                     <h2 class="job-section-title">{% trans "Requisitos" %}</h2>
                     <ul class="job-requirements-list">
@@ -740,7 +745,6 @@
                     </ul>
                 </div>
                 
-                <!-- Salary & Benefits -->
                 <div class="job-section">
                     <h2 class="job-section-title">{% trans "Compensación y beneficios" %}</h2>
                     <div class="job-section-content">
@@ -752,7 +756,6 @@
                     </div>
                 </div>
                 
-                <!-- Stats -->
                 <div class="job-stats">
                     <div class="job-stat">
                         <span class="job-stat-value">{{ oferta.vistas }}</span>
@@ -775,13 +778,11 @@
     </div>
 </div>
 
-<!-- Application Modal -->
 <div class="application-modal" id="applicationModal">
     <div class="application-modal-content">
         <form id="applicationForm" method="post" action="{% url 'job_apply' oferta.id %}" enctype="multipart/form-data">
             {% csrf_token %}
             
-            <!-- Modal Header -->
             <div class="modal-header">
                 <h2 class="modal-title">{% trans "Aplicar a" %} {{ oferta.titulo }}</h2>
                 <button type="button" class="modal-close" onclick="closeApplicationModal()">
@@ -789,7 +790,6 @@
                 </button>
             </div>
             
-            <!-- Progress Bar -->
             <div class="modal-progress">
                 <div class="progress-bar-container">
                     <div class="progress-bar-fill" id="progressBar" style="width: 50%;"></div>
@@ -800,13 +800,10 @@
                 </div>
             </div>
             
-            <!-- Modal Body -->
             <div class="modal-body">
                 
-                <!-- Step 1: Information -->
                 <div class="application-step active" id="step1">
                     
-                    <!-- Tech Skills -->
                     <div class="form-group-modal">
                         <label class="form-label-modal">
                             {% trans "Habilidades técnicas" %} *
@@ -818,10 +815,9 @@
                             placeholder="{% trans 'Python, Django, React, PostgreSQL...' %}"
                             required
                         >
-                        <small class="text-muted">{% trans "Separa las habilidades con comas" %}</small>
+                        <small style="color: var(--text-secondary); font-size: 12px; margin-top: 4px; display: block;">{% trans "Separa las habilidades con comas" %}</small>
                     </div>
                     
-                    <!-- Years of Experience -->
                     <div class="form-group-modal">
                         <label class="form-label-modal">
                             {% trans "Años de experiencia" %} *
@@ -837,7 +833,6 @@
                         >
                     </div>
                     
-                    <!-- Skill Level -->
                     <div class="form-group-modal">
                         <label class="form-label-modal">
                             {% trans "Nivel de habilidad" %} *
@@ -850,7 +845,6 @@
                         </select>
                     </div>
                     
-                    <!-- Phone -->
                     <div class="form-group-modal">
                         <label class="form-label-modal">
                             {% trans "Número de teléfono" %} *
@@ -864,7 +858,6 @@
                         >
                     </div>
                     
-                    <!-- Email -->
                     <div class="form-group-modal">
                         <label class="form-label-modal">
                             {% trans "Email de contacto" %} *
@@ -880,15 +873,14 @@
                     
                 </div>
                 
-                <!-- Step 2: Resume Upload -->
                 <div class="application-step" id="step2">
                     
-                    <div class="text-center mb-4">
-                        <div class="upload-icon">
+                    <div class="text-center mb-4" style="text-align: center; margin-bottom: 1.5rem;">
+                        <div class="upload-icon" style="margin: 0 auto 1rem;">
                             <i class="bi bi-file-earmark-text"></i>
                         </div>
-                        <h3 class="mb-2">{% trans "Adjunta tu currículum" %}</h3>
-                        <p class="text-muted">{% trans "Sube tu CV actualizado para completar tu aplicación" %}</p>
+                        <h3 class="mb-2" style="color: var(--text-primary);">{% trans "Adjunta tu currículum" %}</h3>
+                        <p style="color: var(--text-secondary); font-size: 14px;">{% trans "Sube tu CV actualizado para completar tu aplicación" %}</p>
                     </div>
                     
                     <div class="upload-area" id="uploadArea" onclick="document.getElementById('curriculumInput').click()">
@@ -898,11 +890,11 @@
                         <div class="upload-text">{% trans "Haz clic para subir tu CV" %}</div>
                         <div class="upload-subtext">{% trans "PDF, DOC, DOCX (máx. 5MB)" %}</div>
                         
-                        <div class="file-name-display d-none" id="fileNameDisplay">
+                        <div class="file-name-display d-none" id="fileNameDisplay" style="display: none;">
                             <i class="bi bi-file-earmark-check-fill"></i>
-                            <div class="flex-grow-1">
-                                <div class="fw-semibold" id="fileName"></div>
-                                <small class="text-muted" id="fileSize"></small>
+                            <div style="flex-grow: 1; text-align: left;">
+                                <div style="font-weight: 600; color: var(--text-primary);" id="fileName"></div>
+                                <small style="color: var(--text-secondary);" id="fileSize"></small>
                             </div>
                         </div>
                     </div>
@@ -921,24 +913,23 @@
                 
             </div>
             
-            <!-- Modal Footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeApplicationModal()">
+                <button type="button" class="btn-secondary" onclick="closeApplicationModal()">
                     {% trans "Cancelar" %}
                 </button>
                 
-                <div class="ms-auto d-flex gap-2">
-                    <button type="button" class="btn btn-outline-primary" id="backBtn" onclick="previousStep()" style="display: none;">
+                <div style="display: flex; gap: 0.5rem; margin-left: auto;">
+                    <button type="button" class="btn-outline-primary" id="backBtn" onclick="previousStep()" style="display: none;">
                         <i class="bi bi-arrow-left me-2"></i>
                         {% trans "Atrás" %}
                     </button>
                     
-                    <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextStep()">
+                    <button type="button" class="btn-primary" id="nextBtn" onclick="nextStep()">
                         {% trans "Siguiente" %}
                         <i class="bi bi-arrow-right ms-2"></i>
                     </button>
                     
-                    <button type="submit" class="btn btn-primary" id="submitBtn" style="display: none;">
+                    <button type="submit" class="btn-primary" id="submitBtn" style="display: none;">
                         <i class="bi bi-send me-2"></i>
                         {% trans "Enviar aplicación" %}
                     </button>
@@ -976,6 +967,10 @@ function resetForm() {
     document.getElementById('nextBtn').style.display = 'block';
     document.getElementById('submitBtn').style.display = 'none';
     document.getElementById('applicationForm').reset();
+    
+    // Reset file upload UI
+    document.getElementById('uploadArea').classList.remove('has-file');
+    document.getElementById('fileNameDisplay').style.display = 'none';
 }
 
 function nextStep() {
@@ -987,9 +982,9 @@ function nextStep() {
     inputs.forEach(input => {
         if (!input.value) {
             valid = false;
-            input.classList.add('is-invalid');
+            input.style.borderColor = '#ef4444';
         } else {
-            input.classList.remove('is-invalid');
+            input.style.borderColor = 'var(--border-color)';
         }
     });
     
@@ -1004,9 +999,9 @@ function nextStep() {
     document.getElementById('step1Label').classList.remove('active');
     document.getElementById('step2Label').classList.add('active');
     document.getElementById('progressBar').style.width = '100%';
-    document.getElementById('backBtn').style.display = 'block';
+    document.getElementById('backBtn').style.display = 'inline-flex';
     document.getElementById('nextBtn').style.display = 'none';
-    document.getElementById('submitBtn').style.display = 'block';
+    document.getElementById('submitBtn').style.display = 'inline-flex';
 }
 
 function previousStep() {
@@ -1017,7 +1012,7 @@ function previousStep() {
     document.getElementById('step2Label').classList.remove('active');
     document.getElementById('progressBar').style.width = '50%';
     document.getElementById('backBtn').style.display = 'none';
-    document.getElementById('nextBtn').style.display = 'block';
+    document.getElementById('nextBtn').style.display = 'inline-flex';
     document.getElementById('submitBtn').style.display = 'none';
 }
 
@@ -1030,11 +1025,12 @@ function handleFileSelect(input) {
         const fileSize = document.getElementById('fileSize');
         
         uploadArea.classList.add('has-file');
-        fileNameDisplay.classList.remove('d-none');
+        fileNameDisplay.style.display = 'flex';
+        fileNameDisplay.classList.remove('d-none'); // Just in case
         fileName.textContent = file.name;
         fileSize.textContent = formatFileSize(file.size);
     }
-}z
+}
 
 function formatFileSize(bytes) {
     if (bytes === 0) return '0 Bytes';
@@ -1077,7 +1073,7 @@ function toggleSaveJob(jobId) {
 
 // Close modal on ESC key
 document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
+    if (event.key === 'Escape' && document.getElementById('applicationModal').classList.contains('active')) {
         closeApplicationModal();
     }
 });

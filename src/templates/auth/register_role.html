@@ -10,7 +10,7 @@
     .auth-page {
         min-height: 100vh;
         display: flex;
-        background: var(--lx-gray-50);
+        background: var(--bg-body, var(--lx-gray-50));
     }
     
     /* Columna Izquierda - Opciones de Registro */
@@ -20,7 +20,7 @@
         align-items: center;
         justify-content: center;
         padding: 2rem;
-        background: white;
+        background: var(--bg-card, white);
     }
     
     .auth-form-wrapper {
@@ -36,12 +36,12 @@
     .auth-header h1 {
         font-size: 28px;
         font-weight: 700;
-        color: var(--lx-gray-900);
+        color: var(--text-primary, var(--lx-gray-900));
         margin-bottom: 0.5rem;
     }
     
     .auth-header p {
-        color: var(--lx-gray-600);
+        color: var(--text-secondary, var(--lx-gray-600));
         font-size: 16px;
     }
     
@@ -132,22 +132,22 @@
     }
     
     .role-card {
-        background: var(--color-white);
-        border: 2px solid var(--color-gray-300);
+        background: transparent;
+        border: 2px solid transparent;
         border-radius: var(--radius-md);
         padding: var(--space-6);
         text-align: center;
         text-decoration: none;
-        color: var(--color-black-800);
+        color: var(--text-primary, var(--color-black-800));
         transition: all 0.2s ease;
         display: block;
     }
     
     .role-card:hover {
-        border-color: var(--color-primary-700);
-        background: var(--color-primary-100);
+        border-color: var(--link-color, var(--color-primary-700));
+        background: var(--bg-card, var(--color-primary-100));
         transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         text-decoration: none;
     }
     
@@ -155,7 +155,7 @@
         width: 64px;
         height: 64px;
         margin: 0 auto var(--space-4);
-        background: var(--color-primary-100);
+        background: var(--border-color, var(--color-primary-100));
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -165,7 +165,7 @@
     }
     
     .role-card:hover .role-icon {
-        background: var(--color-primary-700);
+        background: var(--link-color, var(--color-primary-700));
         transform: scale(1.1);
     }
     
@@ -173,31 +173,33 @@
         font-size: 20px;
         font-weight: 600;
         margin-bottom: var(--space-2);
+        color: var(--text-primary, var(--color-black-800));
     }
     
     .role-description {
         font-size: 14px;
-        color: var(--color-gray-600);
+        color: var(--text-secondary, var(--color-gray-600));
         line-height: 1.5;
     }
 
     .auth-footer {
         text-align: center;
-        color: var(--lx-gray-600);
+        color: var(--text-secondary, var(--lx-gray-600));
         font-size: 15px;
         margin-top: 2rem;
         padding-top: 2rem;
-        border-top: 1px solid var(--lx-gray-200);
+        border-top: 1px solid var(--border-color, var(--lx-gray-200));
     }
     
     .auth-footer a {
-        color: var(--lx-primary);
+        color: var(--link-color, var(--lx-primary));
         text-decoration: none;
         font-weight: 600;
     }
     
     .auth-footer a:hover {
         text-decoration: underline;
+        opacity: 0.8;
     }
 
     /* Responsive */
@@ -224,7 +226,7 @@
             <div class="role-buttons">
                 <a href="{% url 'auth_register_profesional' %}" class="role-card">
                     <div class="role-icon" aria-hidden="true">🎓</div>
-                    <h2 class="role-title">{% trans "Estoy buscando trabajo" %}</h2>
+                    <h2 class="role-title">{% trans "Estoy buscando Empleo" %}</h2>
                     <p class="role-description">
                         {% trans "Soy estudiante o profesional buscando oportunidades laborales" %}
                     </p>
@@ -232,7 +234,7 @@
                 
                 <a href="{% url 'auth_register_empresa' %}" class="role-card">
                     <div class="role-icon" aria-hidden="true">🏢</div>
-                    <h2 class="role-title">{% trans "Estoy buscando un equipo de trabajo" %}</h2>
+                    <h2 class="role-title">{% trans "Estoy buscando un equipo de Trabajo" %}</h2>
                     <p class="role-description">
                         {% trans "Represento una empresa y quiero contratar talento" %}
                     </p>
@@ -249,12 +251,47 @@
     
     <div class="auth-brand-panel">
         <div class="brand-content">
-            <div class="brand-logo">
-                <img src="{% static 'img/logo-icon.png' %}" alt="Linking X Logo" style="max-width:84%; max-height:84%; object-fit:contain;">
+            <div class="brand-content">
+                <div class="brand-logo">
+                    <img src="{% static 'img/logo-icon.png' %}" alt="Linking X Logo" style="max-width:84%; max-height:84%; object-fit:contain;">
+                </div>
+                <h2>Linking X</h2>
+                <p>{% trans "Conectando talento con oportunidades. Tu futuro profesional comienza aquí." %}</p>
             </div>
-            <h2>Linking X</h2>
-            <p>{% trans "Conectando talento con oportunidades. Tu futuro profesional comienza aquí." %}</p>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// ===== Lógica del Botón de Modo Oscuro del Header =====
+document.addEventListener('DOMContentLoaded', () => {
+    const themeToggleHeaderBtn = document.getElementById('theme-toggle-header');
+    if (themeToggleHeaderBtn) {
+        const themeIconHeader = document.getElementById('theme-icon-header');
+        const htmlElement = document.documentElement;
+
+        const updateHeaderButtonUI = (isDark) => {
+            if (isDark) {
+                themeIconHeader.classList.remove('bi-moon');
+                themeIconHeader.classList.add('bi-sun');
+            } else {
+                themeIconHeader.classList.remove('bi-sun');
+                themeIconHeader.classList.add('bi-moon');
+            }
+        };
+
+        const isCurrentlyDark = htmlElement.classList.contains('dark-mode');
+        updateHeaderButtonUI(isCurrentlyDark);
+
+        themeToggleHeaderBtn.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark-mode');
+            const isDarkNow = htmlElement.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDarkNow ? 'dark' : 'light');
+            updateHeaderButtonUI(isDarkNow);
+        });
+    }
+});
+</script>
 {% endblock %}

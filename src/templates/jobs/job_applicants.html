@@ -12,7 +12,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: #f9fafb;
+        background: var(--bg-body, #f9fafb);
     }
     
     .applicants-layout {
@@ -25,8 +25,8 @@
     
     /* Left Column - Applicants List */
     .applicants-sidebar {
-        background: white;
-        border-right: 1px solid #e5e7eb;
+        background: var(--bg-card, white);
+        border-right: 1px solid var(--border-color, #e5e7eb);
         display: flex;
         flex-direction: column;
         overflow: hidden;
@@ -34,14 +34,14 @@
     
     .applicants-header {
         padding: 1.5rem;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid var(--border-color, #e5e7eb);
     }
     
     .back-button {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        color: #0A66C2;
+        color: var(--link-color, #0A66C2);
         text-decoration: none;
         font-weight: 600;
         font-size: 14px;
@@ -49,38 +49,40 @@
     }
     
     .back-button:hover {
-        color: #004182;
+        opacity: 0.8;
     }
     
     .job-title-header {
         font-size: 18px;
         font-weight: 700;
         margin-bottom: 0.5rem;
+        color: var(--text-primary, #111827);
     }
     
     .applicants-count {
         font-size: 14px;
-        color: #6b7280;
+        color: var(--text-secondary, #6b7280);
     }
     
     .search-bar {
         padding: 1rem 1.5rem;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid var(--border-color, #e5e7eb);
     }
     
     .search-input {
         width: 100%;
         padding: 0.75rem 1rem 0.75rem 2.5rem;
-        border: 1px solid #d1d5db;
+        border: 1px solid var(--border-color, #d1d5db);
         border-radius: 20px;
         font-size: 14px;
-        background: #f9fafb;
+        background: var(--bg-body, #f9fafb);
+        color: var(--text-primary, black);
     }
     
     .search-input:focus {
         outline: none;
-        border-color: #0A66C2;
-        background: white;
+        border-color: var(--link-color, #0A66C2);
+        background: var(--bg-card, white);
     }
     
     .search-icon {
@@ -88,13 +90,13 @@
         left: 2.5rem;
         top: 50%;
         transform: translateY(-50%);
-        color: #9ca3af;
+        color: var(--text-secondary, #9ca3af);
     }
     
     .filter-tabs {
         display: flex;
         padding: 0 1.5rem;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid var(--border-color, #e5e7eb);
     }
     
     .filter-tab {
@@ -103,15 +105,15 @@
         text-align: center;
         font-size: 14px;
         font-weight: 600;
-        color: #6b7280;
+        color: var(--text-secondary, #6b7280);
         border-bottom: 3px solid transparent;
         cursor: pointer;
         transition: all 0.2s;
     }
     
     .filter-tab.active {
-        color: #0A66C2;
-        border-bottom-color: #0A66C2;
+        color: var(--link-color, #0A66C2);
+        border-bottom-color: var(--link-color, #0A66C2);
     }
     
     .applicants-list {
@@ -121,21 +123,22 @@
     
     .applicant-item {
         padding: 1rem 1.5rem;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid var(--border-color, #e5e7eb);
         cursor: pointer;
         transition: all 0.2s;
         display: flex;
         gap: 1rem;
         align-items: start;
+        color: var(--text-primary, #111827);
     }
     
     .applicant-item:hover {
-        background: #f9fafb;
+        background: var(--bg-body, #f9fafb);
     }
     
     .applicant-item.active {
-        background: #E7F3FF;
-        border-left: 3px solid #0A66C2;
+        background: var(--bg-body, #E7F3FF);
+        border-left: 3px solid var(--link-color, #0A66C2);
     }
     
     .applicant-avatar {
@@ -158,11 +161,12 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        color: var(--text-primary, #111827);
     }
     
     .applicant-title {
         font-size: 13px;
-        color: #6b7280;
+        color: var(--text-secondary, #6b7280);
         margin-bottom: 0.5rem;
         white-space: nowrap;
         overflow: hidden;
@@ -173,7 +177,7 @@
         display: flex;
         gap: 0.75rem;
         font-size: 12px;
-        color: #9ca3af;
+        color: var(--text-secondary, #9ca3af);
     }
     
     .status-badge {
@@ -215,9 +219,9 @@
     }
     
     .detail-card {
-        background: white;
+        background: var(--bg-card, white);
         border-radius: 12px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border-color, #e5e7eb);
         padding: 2rem;
     }
     
@@ -243,11 +247,12 @@
         font-size: 24px;
         font-weight: 700;
         margin-bottom: 0.5rem;
+        color: var(--text-primary, #111827);
     }
     
     .applicant-subtitle {
         font-size: 16px;
-        color: #6b7280;
+        color: var(--text-secondary, #6b7280);
         margin-bottom: 1rem;
     }
     
@@ -279,13 +284,13 @@
     }
     
     .btn-message {
-        background: white;
-        color: #0A66C2;
-        border: 1px solid #0A66C2;
+        background: transparent;
+        color: var(--link-color, #0A66C2);
+        border: 1px solid var(--link-color, #0A66C2);
     }
     
     .btn-message:hover {
-        background: #E7F3FF;
+        background: var(--bg-body, #E7F3FF);
     }
     
     .detail-section {
@@ -300,7 +305,7 @@
         font-size: 16px;
         font-weight: 700;
         margin-bottom: 1rem;
-        color: #111827;
+        color: var(--text-primary, #111827);
     }
     
     .detail-grid {
@@ -318,14 +323,14 @@
     .detail-label {
         font-size: 13px;
         font-weight: 600;
-        color: #6b7280;
+        color: var(--text-secondary, #6b7280);
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
     
     .detail-value {
         font-size: 15px;
-        color: #111827;
+        color: var(--text-primary, #111827);
     }
     
     .skills-list {
@@ -335,12 +340,13 @@
     }
     
     .skill-chip {
-        background: #E7F3FF;
-        color: #0A66C2;
+        background: var(--bg-body, #E7F3FF);
+        color: var(--link-color, #0A66C2);
         padding: 0.5rem 1rem;
         border-radius: 20px;
         font-size: 13px;
         font-weight: 600;
+        border: 1px solid var(--border-color, transparent);
     }
     
     .resume-link {
@@ -348,24 +354,24 @@
         align-items: center;
         gap: 0.5rem;
         padding: 0.75rem 1.5rem;
-        background: #f9fafb;
-        border: 1px solid #e5e7eb;
+        background: var(--bg-body, #f9fafb);
+        border: 1px solid var(--border-color, #e5e7eb);
         border-radius: 8px;
-        color: #0A66C2;
+        color: var(--link-color, #0A66C2);
         text-decoration: none;
         font-weight: 600;
         transition: all 0.2s;
     }
     
     .resume-link:hover {
-        background: white;
-        border-color: #0A66C2;
+        background: var(--bg-card, white);
+        border-color: var(--link-color, #0A66C2);
     }
     
     .other-jobs-section {
-        background: white;
+        background: var(--bg-card, white);
         border-radius: 12px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border-color, #e5e7eb);
         padding: 1.5rem;
     }
     
@@ -373,11 +379,12 @@
         font-size: 16px;
         font-weight: 700;
         margin-bottom: 1rem;
+        color: var(--text-primary, #111827);
     }
     
     .job-card-mini {
         padding: 1rem;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border-color, #e5e7eb);
         border-radius: 8px;
         margin-bottom: 0.75rem;
         cursor: pointer;
@@ -388,19 +395,23 @@
     }
     
     .job-card-mini:hover {
-        border-color: #0A66C2;
-        background: #f9fafb;
+        border-color: var(--link-color, #0A66C2);
+        background: var(--bg-body, #f9fafb);
     }
     
     .empty-state {
         text-align: center;
         padding: 4rem 2rem;
-        color: #9ca3af;
+        color: var(--text-secondary, #9ca3af);
     }
     
     .empty-state i {
         font-size: 64px;
         margin-bottom: 1rem;
+    }
+    
+    .text-muted {
+        color: var(--text-secondary, #6c757d) !important;
     }
     
     /* Responsive */
@@ -428,10 +439,8 @@
 <div class="applicants-container">
     <div class="applicants-layout">
         
-        <!-- Left Sidebar - Applicants List -->
         <aside class="applicants-sidebar">
             
-            <!-- Header -->
             <div class="applicants-header">
                 <a href="{% url 'job_detail' oferta.id %}" class="back-button">
                     <i class="bi bi-arrow-left"></i>
@@ -442,7 +451,6 @@
                     {{ postulaciones.count }} {% trans "postulante" %}{{ postulaciones.count|pluralize:"s" }}
                 </p>
             </div>
-            <!-- Banner de Estado -->
             {% if not oferta.activa %}
             <div style="padding: 1rem 1.5rem; background: #FEF3C7; border-bottom: 1px solid #FDE68A; display: flex; align-items: center; gap: 1rem;">
                 <i class="bi bi-pause-circle" style="font-size: 20px; color: #92400E;"></i>
@@ -464,7 +472,6 @@
             </div>
             {% endif %}
             
-            <!-- Search -->
             <div class="search-bar position-relative">
                 <i class="bi bi-search search-icon"></i>
                 <input 
@@ -476,7 +483,6 @@
                 >
             </div>
             
-            <!-- Filter Tabs -->
             <div class="filter-tabs">
                 <div class="filter-tab active" data-filter="all" onclick="filterByStatus('all')">
                     {% trans "Todos" %} ({{ postulaciones.count }})
@@ -489,7 +495,6 @@
                 </div>
             </div>
             
-            <!-- Applicants List -->
             <div class="applicants-list" id="applicantsList">
                 {% for postulacion in postulaciones %}
                 <div class="applicant-item {% if forloop.first %}active{% endif %}" 
@@ -526,13 +531,11 @@
             
         </aside>
         
-        <!-- Right Column - Applicant Detail -->
         <main class="applicant-detail" id="applicantDetail">
             
             {% if postulaciones.first %}
             {% with postulacion=postulaciones.first %}
             
-            <!-- Applicant Profile Card -->
             <div class="detail-card">
                 <div class="applicant-header-detail">
                     <img 
@@ -569,7 +572,6 @@
                     </div>
                 </div>
                 
-                <!-- Application Details -->
                 <div class="detail-section">
                     <h3 class="detail-section-title">{% trans "Información de la aplicación" %}</h3>
                     <div class="detail-grid">
@@ -592,7 +594,6 @@
                     </div>
                 </div>
                 
-                <!-- Skills -->
                 {% if postulacion.habilidades_tecnicas %}
                 <div class="detail-section">
                     <h3 class="detail-section-title">{% trans "Habilidades técnicas" %}</h3>
@@ -605,7 +606,6 @@
                 </div>
                 {% endif %}
                 
-                <!-- Resume -->
                 {% if postulacion.curriculum %}
                 <div class="detail-section">
                     <h3 class="detail-section-title">{% trans "Currículum" %}</h3>
@@ -616,7 +616,6 @@
                 </div>
                 {% endif %}
                 
-                <!-- Cover Letter -->
                 {% if postulacion.carta_presentacion %}
                 <div class="detail-section">
                     <h3 class="detail-section-title">{% trans "Carta de presentación" %}</h3>
@@ -628,7 +627,6 @@
             {% endwith %}
             {% endif %}
             
-            <!-- Other Jobs -->
             <div class="other-jobs-section">
                 <h3 class="section-title-small">{% trans "Otras ofertas activas" %}</h3>
                 
@@ -636,7 +634,7 @@
                 <a href="{% url 'job_applicants' job.id %}" class="job-card-mini">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <div class="fw-semibold mb-1">{{ job.titulo }}</div>
+                            <div class="fw-semibold mb-1" style="color: var(--text-primary);">{{ job.titulo }}</div>
                             <div class="text-muted small">
                                 {{ job.postulaciones.count }} {% trans "postulante" %}{{ job.postulaciones.count|pluralize:"s" }}
                             </div>
