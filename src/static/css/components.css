@@ -4,23 +4,54 @@
    Depende de las variables definidas en variables.css
    ============================================================ */
 
-
 /* ============================================================
    LAYOUT HELPERS
    ============================================================ */
 
 .page-container {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 1.5rem 1rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
 }
 
 .page-container--narrow {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1.5rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+.nav-items-mobile a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+  color: #999999;
+}
+.nav-items-mobile a i {
+  font-size: 20px;
 }
 
+.bottom-navbar {
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 30px;
+  background-color: white;
+  width: 100%;
+  left: 0;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+}
+.bottom-navbar a {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.bottom-navbar i {
+  font-size: 25px;
+}
 
 /* ============================================================
    CARD BASE
@@ -29,28 +60,27 @@
    ============================================================ */
 
 .card {
-    background: white;
-    border-radius: var(--lx-radius);
-    border: 1px solid var(--lx-gray-200);
-    overflow: hidden;
+  background: white;
+  border-radius: var(--lx-radius);
+  border: 1px solid var(--lx-gray-200);
+  overflow: hidden;
 }
 
 .card--padded {
-    padding: 1.5rem;
+  padding: 1.5rem;
 }
 
 .card--padded-sm {
-    padding: 1rem;
+  padding: 1rem;
 }
 
 .card--mb {
-    margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .card--mb-sm {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
-
 
 /* ============================================================
    SECTION HEADER
@@ -58,33 +88,32 @@
    ============================================================ */
 
 .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
 }
 
 .section-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--lx-gray-900);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--lx-gray-900);
 }
 
 .section-action {
-    color: var(--lx-primary);
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    transition: color 0.2s;
+  color: var(--lx-primary);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: color 0.2s;
 }
 
 .section-action:hover {
-    color: var(--lx-primary-hover);
+  color: var(--lx-primary-hover);
 }
-
 
 /* ============================================================
    TIMELINE ITEM
@@ -92,62 +121,61 @@
    ============================================================ */
 
 .timeline-item {
-    display: flex;
-    gap: 1rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--lx-gray-100);
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--lx-gray-100);
 }
 
 .timeline-item:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .timeline-icon {
-    width: 48px;
-    height: 48px;
-    background: var(--lx-gray-100);
-    border-radius: var(--lx-radius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  background: var(--lx-gray-100);
+  border-radius: var(--lx-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .timeline-icon i {
-    font-size: 24px;
-    color: var(--lx-gray-500);
+  font-size: 24px;
+  color: var(--lx-gray-500);
 }
 
 .timeline-content {
-    flex: 1;
+  flex: 1;
 }
 
 .timeline-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--lx-gray-900);
-    margin-bottom: 0.25rem;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--lx-gray-900);
+  margin-bottom: 0.25rem;
 }
 
 .timeline-subtitle {
-    font-size: 14px;
-    color: var(--lx-gray-500);
-    margin-bottom: 0.25rem;
+  font-size: 14px;
+  color: var(--lx-gray-500);
+  margin-bottom: 0.25rem;
 }
 
 .timeline-date {
-    font-size: 13px;
-    color: var(--lx-gray-400);
+  font-size: 13px;
+  color: var(--lx-gray-400);
 }
 
 .timeline-description {
-    font-size: 14px;
-    color: var(--lx-gray-700);
-    margin-top: 0.5rem;
-    line-height: 1.5;
+  font-size: 14px;
+  color: var(--lx-gray-700);
+  margin-top: 0.5rem;
+  line-height: 1.5;
 }
-
 
 /* ============================================================
    CONTACT ITEM
@@ -155,53 +183,52 @@
    ============================================================ */
 
 .contact-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid var(--lx-gray-100);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--lx-gray-100);
 }
 
 .contact-item:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .contact-icon {
-    width: 40px;
-    height: 40px;
-    background: var(--lx-gray-100);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background: var(--lx-gray-100);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .contact-icon i {
-    font-size: 18px;
-    color: var(--lx-gray-500);
+  font-size: 18px;
+  color: var(--lx-gray-500);
 }
 
 .contact-info {
-    flex: 1;
+  flex: 1;
 }
 
 .contact-label {
-    font-size: 12px;
-    color: var(--lx-gray-400);
+  font-size: 12px;
+  color: var(--lx-gray-400);
 }
 
 .contact-value {
-    font-size: 14px;
-    color: var(--lx-gray-700);
-    font-weight: 500;
-    text-decoration: none;
+  font-size: 14px;
+  color: var(--lx-gray-700);
+  font-weight: 500;
+  text-decoration: none;
 }
 
 .contact-value:hover {
-    color: var(--lx-primary);
+  color: var(--lx-primary);
 }
-
 
 /* ============================================================
    SKILLS GRID
@@ -209,20 +236,19 @@
    ============================================================ */
 
 .skills-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 .skill-badge {
-    padding: 0.5rem 1rem;
-    background: var(--lx-gray-100);
-    border-radius: var(--lx-radius-full);
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--lx-gray-700);
+  padding: 0.5rem 1rem;
+  background: var(--lx-gray-100);
+  border-radius: var(--lx-radius-full);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--lx-gray-700);
 }
-
 
 /* ============================================================
    STATS ROW
@@ -230,26 +256,25 @@
    ============================================================ */
 
 .stats-row {
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
 }
 
 .stat-item {
-    text-align: center;
+  text-align: center;
 }
 
 .stat-value {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--lx-gray-900);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--lx-gray-900);
 }
 
 .stat-label {
-    font-size: 14px;
-    color: var(--lx-gray-500);
-    margin-top: 0.25rem;
+  font-size: 14px;
+  color: var(--lx-gray-500);
+  margin-top: 0.25rem;
 }
-
 
 /* ============================================================
    COVER PHOTO
@@ -257,15 +282,18 @@
    ============================================================ */
 
 .cover-photo {
-    height: 200px;
-    background: linear-gradient(135deg, var(--lx-primary) 0%, var(--lx-primary-hover) 100%);
+  height: 200px;
+  background: linear-gradient(
+    135deg,
+    var(--lx-primary) 0%,
+    var(--lx-primary-hover) 100%
+  );
 }
 
 .cover-photo--sm {
-    height: 50px;
-    background: linear-gradient(135deg, var(--lx-primary), #0077B5);
+  height: 50px;
+  background: linear-gradient(135deg, var(--lx-primary), #0077b5);
 }
-
 
 /* ============================================================
    PROFILE AVATAR
@@ -273,34 +301,33 @@
    ============================================================ */
 
 .profile-avatar {
-    width: 128px;
-    height: 128px;
-    border-radius: 50%;
-    border: 4px solid white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    object-fit: cover;
-    background: white;
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  border: 4px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+  background: white;
 }
 
 .profile-avatar--sm {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 3px solid white;
-    object-fit: cover;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid white;
+  object-fit: cover;
 }
 
 .profile-avatar-section {
-    margin-top: -80px;
-    margin-bottom: 1rem;
+  margin-top: -80px;
+  margin-bottom: 1rem;
 }
 
 .profile-avatar-section--sm {
-    margin-top: -30px;
-    margin-bottom: 0.5rem;
-    text-align: center;
+  margin-top: -30px;
+  margin-bottom: 0.5rem;
+  text-align: center;
 }
-
 
 /* ============================================================
    PROFILE META
@@ -308,45 +335,44 @@
    ============================================================ */
 
 .profile-name {
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--lx-gray-900);
-    margin-bottom: 0.25rem;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--lx-gray-900);
+  margin-bottom: 0.25rem;
 }
 
 .profile-name--sm {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 0.25rem;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
 }
 
 .profile-headline {
-    font-size: 18px;
-    color: var(--lx-gray-700);
-    margin-bottom: 0.5rem;
+  font-size: 18px;
+  color: var(--lx-gray-700);
+  margin-bottom: 0.5rem;
 }
 
 .profile-headline--sm {
-    font-size: 13px;
-    color: var(--lx-gray-500);
-    margin-bottom: 0.75rem;
+  font-size: 13px;
+  color: var(--lx-gray-500);
+  margin-bottom: 0.75rem;
 }
 
 .profile-location {
-    font-size: 14px;
-    color: var(--lx-gray-500);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  font-size: 14px;
+  color: var(--lx-gray-500);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .profile-actions {
-    display: flex;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
 }
-
 
 /* ============================================================
    ACTION BUTTONS (estilo pill)
@@ -354,50 +380,49 @@
    ============================================================ */
 
 .btn-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.6rem 1.5rem;
-    border-radius: var(--lx-radius-full);
-    font-weight: 600;
-    font-size: 14px;
-    border: none;
-    cursor: pointer;
-    transition: var(--lx-transition);
-    text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.5rem;
+  border-radius: var(--lx-radius-full);
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  transition: var(--lx-transition);
+  text-decoration: none;
 }
 
 .btn-pill--primary {
-    background: var(--lx-primary);
-    color: white;
+  background: var(--lx-primary);
+  color: white;
 }
 
 .btn-pill--primary:hover {
-    background: var(--lx-primary-hover);
-    color: white;
+  background: var(--lx-primary-hover);
+  color: white;
 }
 
 .btn-pill--primary.following {
-    background: var(--lx-gray-500);
-    color: white;
+  background: var(--lx-gray-500);
+  color: white;
 }
 
 .btn-pill--primary.following:hover {
-    background: var(--lx-danger);
+  background: var(--lx-danger);
 }
 
 .btn-pill--secondary {
-    background: white;
-    color: var(--lx-gray-700);
-    border: 1px solid var(--lx-gray-300);
+  background: white;
+  color: var(--lx-gray-700);
+  border: 1px solid var(--lx-gray-300);
 }
 
 .btn-pill--secondary:hover {
-    background: var(--lx-gray-50);
-    border-color: var(--lx-gray-400);
-    color: var(--lx-gray-700);
+  background: var(--lx-gray-50);
+  border-color: var(--lx-gray-400);
+  color: var(--lx-gray-700);
 }
-
 
 /* ============================================================
    ICON BUTTON (circular)
@@ -405,25 +430,24 @@
    ============================================================ */
 
 .btn-icon-round {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: none;
-    background: transparent;
-    color: var(--lx-gray-500);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--lx-transition);
-    flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--lx-gray-500);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--lx-transition);
+  flex-shrink: 0;
 }
 
 .btn-icon-round:hover {
-    background: var(--lx-gray-100);
-    color: var(--lx-gray-900);
+  background: var(--lx-gray-100);
+  color: var(--lx-gray-900);
 }
-
 
 /* ============================================================
    SIDEBAR MENU ITEM
@@ -431,39 +455,38 @@
    ============================================================ */
 
 .sidebar-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem;
-    border-radius: var(--lx-radius);
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--lx-gray-700);
-    transition: var(--lx-transition);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: var(--lx-radius);
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--lx-gray-700);
+  transition: var(--lx-transition);
 }
 
 .sidebar-item:hover {
-    background: var(--lx-gray-100);
-    color: var(--lx-gray-900);
+  background: var(--lx-gray-100);
+  color: var(--lx-gray-900);
 }
 
 .sidebar-item.active {
-    background: var(--lx-primary-light);
-    color: var(--lx-primary);
+  background: var(--lx-primary-light);
+  color: var(--lx-primary);
 }
 
 .sidebar-item i {
-    font-size: 18px;
-    color: var(--lx-gray-500);
-    flex-shrink: 0;
+  font-size: 18px;
+  color: var(--lx-gray-500);
+  flex-shrink: 0;
 }
 
 .sidebar-item.active i {
-    color: var(--lx-primary);
+  color: var(--lx-primary);
 }
-
 
 /* ============================================================
    EMPTY STATE
@@ -471,29 +494,28 @@
    ============================================================ */
 
 .empty-state {
-    text-align: center;
-    padding: 3rem 2rem;
-    color: var(--lx-gray-400);
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--lx-gray-400);
 }
 
 .empty-state i {
-    font-size: 48px;
-    display: block;
-    margin-bottom: 1rem;
-    color: var(--lx-gray-300);
+  font-size: 48px;
+  display: block;
+  margin-bottom: 1rem;
+  color: var(--lx-gray-300);
 }
 
 .empty-state h3 {
-    font-size: 18px;
-    color: var(--lx-gray-500);
-    margin-bottom: 0.5rem;
+  font-size: 18px;
+  color: var(--lx-gray-500);
+  margin-bottom: 0.5rem;
 }
 
 .empty-state p {
-    font-size: 14px;
-    color: var(--lx-gray-400);
+  font-size: 14px;
+  color: var(--lx-gray-400);
 }
-
 
 /* ============================================================
    AD CARD
@@ -501,42 +523,41 @@
    ============================================================ */
 
 .ad-card {
-    padding: 1.5rem;
+  padding: 1.5rem;
 }
 
 .ad-label {
-    font-size: 12px;
-    color: var(--lx-gray-400);
-    text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    margin-bottom: 1rem;
+  font-size: 12px;
+  color: var(--lx-gray-400);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 1rem;
 }
 
 .ad-placeholder {
-    width: 100%;
-    height: 120px;
-    background: var(--lx-gray-100);
-    border-radius: var(--lx-radius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1rem;
+  width: 100%;
+  height: 120px;
+  background: var(--lx-gray-100);
+  border-radius: var(--lx-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
 }
 
 .ad-placeholder span {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--lx-gray-300);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--lx-gray-300);
 }
 
 .ad-text {
-    font-size: 14px;
-    color: var(--lx-gray-500);
-    margin-bottom: 1rem;
-    text-align: center;
+  font-size: 14px;
+  color: var(--lx-gray-500);
+  margin-bottom: 1rem;
+  text-align: center;
 }
-
 
 /* ============================================================
    ABOUT TEXT
@@ -544,8 +565,8 @@
    ============================================================ */
 
 .about-text {
-    font-size: 15px;
-    line-height: 1.6;
-    color: var(--lx-gray-700);
-    white-space: pre-wrap;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--lx-gray-700);
+  white-space: pre-wrap;
 }

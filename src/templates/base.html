@@ -1,150 +1,272 @@
-{% load i18n %}
-{% load static %}
-<!DOCTYPE html>
+{% load i18n %} {% load static %}
+<!doctype html>
 <html lang="{{ LANGUAGE_CODE }}">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{% block meta_description %}{% trans 'Linking X - Red profesional para conectar empresas y estudiantes' %}{% endblock %}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="{% block meta_description %}{% trans 'Linking X - Red profesional para conectar empresas y estudiantes' %}{% endblock %}"
+    />
     <title>{% block title %} ATI-Linking X{% endblock %}</title>
-    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
-    <link rel="manifest" href="{% static 'img/site.webmanifest' %}">
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{% static 'img/favicon.ico' %}"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="{% static 'img/apple-touch-icon.png' %}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="{% static 'img/favicon-32x32.png' %}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="{% static 'img/favicon-16x16.png' %}"
+    />
+    <link rel="manifest" href="{% static 'img/site.webmanifest' %}" />
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
 
     <!-- Linking X CSS — orden importa: variables → base → componentes → sección -->
-    <link rel="stylesheet" href="{% static 'css/variables.css' %}">
-    <link rel="stylesheet" href="{% static 'css/customs.css' %}">
-    <link rel="stylesheet" href="{% static 'css/components.css' %}">
+    <link rel="stylesheet" href="{% static 'css/variables.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/customs.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/components.css' %}" />
 
     {% block extra_css %}{% endblock %}
-</head>
+  </head>
 
-<body {% block body_attrs %}{% endblock %}>
+  <body {% block body_attrs %}{% endblock %}>
     <div class="top-blue-bg d-none d-lg-block"></div>
 
     {% if user.is_authenticated %}
     <div class="bottom-navbar d-lg-none">
-        <a href="{% url 'message_list' %}" class="{% if 'message' in request.path %}active{% endif %}">
-            <i class="bi bi-chat-dots-fill"></i>
-        </a>
-        <a href="{% url 'job_list' %}" class="{% if 'job' in request.path %}active{% endif %}">
-            <i class="bi bi-briefcase-fill"></i>
-        </a>
-        <a href="{% url 'profile_detail' user.id %}" class="{% if 'profile' in request.path %}active{% endif %}">
-            <i class="bi bi-person-fill"></i>
-        </a>
+      <a
+        href="{% url 'message_list' %}"
+        class="{% if 'message' in request.path %}active{% endif %}"
+      >
+        <i class="bi bi-chat-dots-fill"></i>
+      </a>
+      <a
+        href="{% url 'job_list' %}"
+        class="{% if 'job' in request.path %}active{% endif %}"
+      >
+        <i class="bi bi-briefcase-fill"></i>
+      </a>
+      <a
+        href="{% url 'profile_detail' user.id %}"
+        class="{% if 'profile' in request.path %}active{% endif %}"
+      >
+        <i class="bi bi-person-fill"></i>
+      </a>
     </div>
     {% endif %}
 
-    <header class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top shadow-sm header-floating">
-        <div class="container-fluid px-3 px-lg-4">
-            {% if request.path != '/' and user.is_authenticated %}
-            <button onclick="history.back()" class="btn btn-link text-primary p-2 d-lg-none me-2"
-                aria-label="{% trans 'Volver' %}">
-                <i class="bi bi-arrow-left fs-4"></i>
-            </button>
-            {% endif %}
+    <header
+      class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top shadow-sm header-floating"
+    >
+      <div class="container-fluid px-3 px-lg-4">
+        <div class="d-flex">
+          {% if request.path != '/' and user.is_authenticated %}
+          <button
+            onclick="history.back()"
+            class="btn btn-link text-primary p-2 d-lg-none me-2"
+            aria-label="{% trans 'Volver' %}"
+          >
+            <i class="bi bi-arrow-left fs-4"></i>
+          </button>
+          {% endif %}
 
-            <a href="{% if user.is_authenticated %}{% url 'feed_home' %}{% else %}{% url 'auth_login' %}{% endif %}"
-                class="navbar-brand fw-bold text-primary d-flex align-items-center">
-                <div class="logo-circle me-2"
-                    style="width: 40px; height: 40px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: transparent;">
-                    <img src="{% static 'img/LX-logo.png' %}" alt="Linking X Logo"
-                        style="max-width: 100%; max-height: 100%; object-fit: contain;">
-                </div>
-                <span class="d-none d-sm-inline">Linking X</span>
-            </a>
-
-            {% if user.is_authenticated %}
-            <form class="d-none d-lg-flex flex-grow-1 mx-4" style="max-width: 400px;">
-                <div class="input-group">
-                    <span class="input-group-text bg-light border-0">
-                        <i class="bi bi-search text-muted"></i>
-                    </span>
-                    <input type="search" class="form-control border-0 bg-light" placeholder="{% trans 'Buscar' %}...">
-                </div>
-            </form>
-            {% endif %}
-
-            <div class="d-none d-lg-flex align-items-center gap-1">
-                {% if user.is_authenticated %}
-                <div class="navbar-links d-flex align-items-center gap-3 me-3">
-                    <a href="{% url 'feed_home' %}"
-                        class="nav-link-custom {% if 'feed' in request.path or request.path == '/' %}active{% endif %}">
-                        <i class="bi bi-house-door-fill"></i>
-                    </a>
-                    <a href="{% url 'job_list' %}"
-                        class="nav-link-custom {% if 'job' in request.path %}active{% endif %}">
-                        <i class="bi bi-briefcase-fill"></i>
-                    </a>
-                    <a href="{% url 'message_list' %}"
-                        class="nav-link-custom {% if 'message' in request.path %}active{% endif %}">
-                        <i class="bi bi-chat-dots-fill"></i>
-                    </a>
-                </div>
-
-                <div class="dropdown">
-                    <a href="#" class="nav-link-custom {% if 'profile' in request.path %}active{% endif %}"
-                        data-bs-toggle="dropdown" aria-expanded="false"
-                        style="display: flex; align-items: center; gap: 4px;">
-                        <div style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden; flex-shrink: 0;">
-                            <img src="{{ user.get_avatar_url }}" alt="Avatar"
-                                style="width: 100%; height: 100%; object-fit: cover;">
-                        </div>
-                        <i class="bi bi-caret-down-fill" style="font-size: 10px;"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end shadow">
-                        <li>
-                            <a class="dropdown-item" href="{% url 'profile_detail' user.id %}">
-                                <i class="bi bi-person me-2"></i>{% trans "Ver perfil" %}
-                            </a>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <form method="post" action="{% url 'auth_logout' %}" class="d-inline">
-                                {% csrf_token %}
-                                <button type="submit" class="dropdown-item text-danger">
-                                    <i class="bi bi-box-arrow-right me-2"></i>{% trans "Cerrar sesión" %}
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-                {% else %}
-                <a href="{% url 'auth_login' %}" class="btn btn-outline-primary me-2">
-                    {% trans "Iniciar sesión" %}
-                </a>
-                <a href="{% url 'auth_register_role' %}" class="btn btn-primary">
-                    {% trans "Registrarse" %}
-                </a>
-                {% endif %}
+          <a
+            href="{% if user.is_authenticated %}{% url 'feed_home' %}{% else %}{% url 'auth_login' %}{% endif %}"
+            class="navbar-brand fw-bold text-primary d-flex align-items-center"
+          >
+            <div
+              class="logo-circle me-2"
+              style="
+                width: 40px;
+                height: 40px;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: transparent;
+              "
+            >
+              <img
+                src="{% static 'img/LX-logo.png' %}"
+                alt="Linking X Logo"
+                style="max-width: 100%; max-height: 100%; object-fit: contain"
+              />
             </div>
+            <span class="d-none d-sm-inline">Linking X</span>
+          </a>
         </div>
+        <div class="nav-items-mobile d-flex d-lg-none justify-end gap-3">
+          <a href="#" class="{% if 'job' in request.path %}active{% endif %}">
+            <i class="bi bi-search"></i>
+          </a>
+          <a
+            href="#"
+            class="{% if 'message' in request.path %}active{% endif %}"
+          >
+            <i class="bi bi-bell-fill"></i>
+          </a>
+          <a
+            href="{% url 'message_list' %}"
+            class="{% if 'message' in request.path %}active{% endif %}"
+          >
+            <i class="bi bi-send-fill"></i>
+          </a>
+        </div>
+        {% if user.is_authenticated %}
+        <form
+          class="d-none d-lg-flex flex-grow-1 mx-4"
+          style="max-width: 400px"
+        >
+          <div class="input-group">
+            <span class="input-group-text bg-light border-0">
+              <i class="bi bi-search text-muted"></i>
+            </span>
+            <input
+              type="search"
+              class="form-control border-0 bg-light"
+              placeholder="{% trans 'Buscar' %}..."
+            />
+          </div>
+        </form>
+        {% endif %}
+
+        <div class="d-none d-lg-flex align-items-center gap-1">
+          {% if user.is_authenticated %}
+          <div class="navbar-links d-flex align-items-center gap-3 me-3">
+            <a
+              href="{% url 'feed_home' %}"
+              class="nav-link-custom {% if 'feed' in request.path or request.path == '/' %}active{% endif %}"
+            >
+              <i class="bi bi-house-door-fill"></i>
+            </a>
+            <a
+              href="{% url 'job_list' %}"
+              class="nav-link-custom {% if 'job' in request.path %}active{% endif %}"
+            >
+              <i class="bi bi-briefcase-fill"></i>
+            </a>
+            <a
+              href="{% url 'message_list' %}"
+              class="nav-link-custom {% if 'message' in request.path %}active{% endif %}"
+            >
+              <i class="bi bi-chat-dots-fill"></i>
+            </a>
+          </div>
+
+          <div class="dropdown">
+            <a
+              href="#"
+              class="nav-link-custom {% if 'profile' in request.path %}active{% endif %}"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              style="display: flex; align-items: center; gap: 4px"
+            >
+              <div
+                style="
+                  width: 32px;
+                  height: 32px;
+                  border-radius: 50%;
+                  overflow: hidden;
+                  flex-shrink: 0;
+                "
+              >
+                <img
+                  src="{{ user.get_avatar_url }}"
+                  alt="Avatar"
+                  style="width: 100%; height: 100%; object-fit: cover"
+                />
+              </div>
+              <i class="bi bi-caret-down-fill" style="font-size: 10px"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow">
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="{% url 'profile_detail' user.id %}"
+                >
+                  <i class="bi bi-person me-2"></i>{% trans "Ver perfil" %}
+                </a>
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <form
+                  method="post"
+                  action="{% url 'auth_logout' %}"
+                  class="d-inline"
+                >
+                  {% csrf_token %}
+                  <button type="submit" class="dropdown-item text-danger">
+                    <i class="bi bi-box-arrow-right me-2"></i>{% trans "Cerrar
+                    sesión" %}
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </div>
+          {% else %}
+          <a href="{% url 'auth_login' %}" class="btn btn-outline-primary me-2">
+            {% trans "Iniciar sesión" %}
+          </a>
+          <a href="{% url 'auth_register_role' %}" class="btn btn-primary">
+            {% trans "Registrarse" %}
+          </a>
+          {% endif %}
+        </div>
+      </div>
     </header>
 
-    <main class="main-content main-floating" {% block main_attrs %}{% endblock %}>
-        {% block content %}{% endblock %}
+    <main
+      class="main-content main-floating"
+      {%
+      block
+      main_attrs
+      %}{%
+      endblock
+      %}
+    >
+      {% block content %}{% endblock %}
     </main>
 
     {% if not user.is_authenticated %}
     <footer class="bg-light py-2 mt-5 footer-floating">
-        <div class="container text-center text-muted">
-            <small>© {% now "Y" %} Linking X. {% trans "Todos los derechos reservados." %}</small>
-        </div>
+      <div class="container text-center text-muted">
+        <small
+          >© {% now "Y" %} Linking X. {% trans "Todos los derechos reservados."
+          %}</small
+        >
+      </div>
     </footer>
     {% endif %}
 
@@ -152,5 +274,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
     {% block extra_js %}{% endblock %}
-</body>
+  </body>
 </html>
