@@ -11,36 +11,36 @@
         margin: 2rem auto;
         padding: 0 1rem;
     }
-    
+
     .edit-card {
         background: white;
         border-radius: 8px;
         border: 1px solid #e5e7eb;
         padding: 2rem;
     }
-    
+
     .edit-header {
         margin-bottom: 2rem;
     }
-    
+
     .edit-title {
         font-size: 24px;
         font-weight: 700;
         margin-bottom: 0.5rem;
     }
-    
+
     .edit-subtitle {
         color: #6b7280;
         font-size: 14px;
     }
-    
+
     .avatar-upload-section {
         text-align: center;
         margin-bottom: 2rem;
         padding-bottom: 2rem;
         border-bottom: 1px solid #e5e7eb;
     }
-    
+
     .avatar-preview {
         width: 120px;
         height: 120px;
@@ -50,11 +50,11 @@
         margin: 0 auto 1rem;
         object-fit: cover;
     }
-    
+
     .form-group {
         margin-bottom: 1.5rem;
     }
-    
+
     .form-label {
         display: block;
         font-weight: 600;
@@ -76,12 +76,12 @@
         border-color: #0A66C2;
         box-shadow: 0 0 0 3px #E7F3FF;
     }
-    
+
     textarea.form-control {
         min-height: 100px;
         resize: vertical;
     }
-    
+
     .form-actions {
         display: flex;
         gap: 1rem;
@@ -89,7 +89,7 @@
         padding-top: 2rem;
         border-top: 1px solid #e5e7eb;
     }
-    
+
     .btn {
         padding: 0.75rem 1.5rem;
         border-radius: 8px;
@@ -102,23 +102,23 @@
         text-decoration: none;
         transition: all 0.2s;
     }
-    
+
     .btn-primary {
         background: #0A66C2;
         color: white;
         border: none;
     }
-    
+
     .btn-primary:hover {
         background: #004182;
     }
-    
+
     .btn-secondary {
         background: white;
         color: #374151;
         border: 1px solid #d1d5db;
     }
-    
+
     .btn-secondary:hover {
         background: #f9fafb;
     }
@@ -128,15 +128,15 @@
 {% block content %}
 <div class="edit-container">
     <div class="edit-card">
-        
+
         <div class="edit-header">
             <h1 class="edit-title">{% trans "Editar perfil profesional" %}</h1>
             <p class="edit-subtitle">{% trans "Actualiza tu información profesional" %}</p>
         </div>
-        
+
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            
+
             <!-- Avatar Upload -->
             <div class="avatar-upload-section">
                 <img 
@@ -164,72 +164,83 @@
                     </button>
                 </div>
             </div>
-            
+
             <!-- Basic Info -->
             <div class="form-group">
                 <label class="form-label">{% trans "Nombre" %}</label>
                 <input type="text" name="first_name" class="form-control" value="{{ user.first_name }}" required>
             </div>
-            
+
             <div class="form-group">
                 <label class="form-label">{% trans "Apellido" %}</label>
                 <input type="text" name="last_name" class="form-control" value="{{ user.last_name }}" required>
             </div>
-            
+
             <div class="form-group">
                 <label class="form-label">{% trans "Ubicación" %}</label>
                 <input type="text" name="ubicacion" class="form-control" value="{{ user.ubicacion|default:'' }}" placeholder="Ej: Caracas, Venezuela">
             </div>
-            
+
             <!-- Professional Info -->
             <div class="form-group">
                 <label class="form-label">{% trans "Título profesional" %}</label>
-                <input type="text" name="titulo_actual" class="form-control" value="{{ profesional.titulo_actual|default:'' }}" placeholder="Ej: Desarrollador Full Stack">
+                <input type="text" name="titulo_actual" class="form-control"
+                    value="{{ profesional.titulo_actual|default:'' }}"
+                    placeholder="{% trans 'Ej: Desarrollador Full Stack' %}">
             </div>
-            
+
             <div class="form-group">
                 <label class="form-label">{% trans "Descripción personal" %}</label>
-                <textarea name="descripcion_personal" class="form-control" placeholder="Cuéntanos sobre ti...">{{ profesional.descripcion_personal|default:'' }}</textarea>
+                <textarea name="descripcion_personal" class="form-control"
+                    placeholder="{% trans 'Cuéntanos sobre ti...' %}">{{ profesional.descripcion_personal|default:'' }}</textarea>
             </div>
-            
+
             <!-- Personal Info -->
             <div class="form-group">
                 <label class="form-label">{% trans "Cédula" %}</label>
                 <input type="text" name="cedula" class="form-control" value="{{ profesional.cedula|default:'' }}">
             </div>
-            
+
             <div class="form-group">
                 <label class="form-label">{% trans "Fecha de nacimiento" %}</label>
-                <input type="date" name="fecha_nacimiento" class="form-control" value="{{ profesional.fecha_nacimiento|date:'Y-m-d' }}">
+                <input type="date" name="fecha_nacimiento" class="form-control"
+                    value="{{ profesional.fecha_nacimiento|date:'Y-m-d' }}">
             </div>
-            
+
             <div class="form-group">
                 <label class="form-label">{% trans "Género" %}</label>
                 <select name="genero" class="form-select">
                     <option value="">{% trans "Seleccionar" %}</option>
-                    <option value="masculino" {% if profesional.genero == 'masculino' %}selected{% endif %}>{% trans "Masculino" %}</option>
-                    <option value="femenino" {% if profesional.genero == 'femenino' %}selected{% endif %}>{% trans "Femenino" %}</option>
-                    <option value="otro" {% if profesional.genero == 'otro' %}selected{% endif %}>{% trans "Otro" %}</option>
-                    <option value="prefiero_no_decir" {% if profesional.genero == 'prefiero_no_decir' %}selected{% endif %}>{% trans "Prefiero no decir" %}</option>
+                    <option value="masculino" {% if profesional.genero=='masculino' %}selected{% endif %}>{% trans
+                        "Masculino" %}</option>
+                    <option value="femenino" {% if profesional.genero=='femenino' %}selected{% endif %}>{% trans
+                        "Femenino" %}</option>
+                    <option value="otro" {% if profesional.genero=='otro' %}selected{% endif %}>{% trans "Otro" %}
+                    </option>
+                    <option value="prefiero_no_decir" {% if profesional.genero=='prefiero_no_decir' %}selected{% endif
+                        %}>{% trans "Prefiero no decir" %}</option>
                 </select>
             </div>
-            
+
             <!-- Social Links -->
             <div class="form-group">
                 <label class="form-label">{% trans "LinkedIn" %}</label>
-                <input type="url" name="linkedin_url" class="form-control" value="{{ profesional.linkedin_url|default:'' }}" placeholder="https://linkedin.com/in/tu-perfil">
+                <input type="url" name="linkedin_url" class="form-control"
+                    value="{{ profesional.linkedin_url|default:'' }}" placeholder="https://linkedin.com/in/tu-perfil">
             </div>
-            
+
             <div class="form-group">
                 <label class="form-label">{% trans "GitHub" %}</label>
-                <input type="url" name="github_url" class="form-control" value="{{ profesional.github_url|default:'' }}" placeholder="https://github.com/tu-usuario">
+                <input type="url" name="github_url" class="form-control" value="{{ profesional.github_url|default:'' }}"
+                    placeholder="https://github.com/tu-usuario">
             </div>
-            
+
             <div class="form-group">
                 <label class="form-label">{% trans "Portafolio" %}</label>
-                <input type="url" name="portfolio_url" class="form-control" value="{{ profesional.portfolio_url|default:'' }}" placeholder="https://tu-sitio.com">
+                <input type="url" name="portfolio_url" class="form-control"
+                    value="{{ profesional.portfolio_url|default:'' }}" placeholder="https://tu-sitio.com">
             </div>
-            
+
             <!-- Actions -->
             <div class="form-actions">
                 <a href="{% url 'profile_detail' user.id %}" class="btn btn-secondary">
@@ -240,7 +251,7 @@
                     {% trans "Guardar cambios" %}
                 </button>
             </div>
-            
+
         </form>
     </div>
 </div>
@@ -256,6 +267,5 @@ function previewAvatar(input) {
         };
         reader.readAsDataURL(input.files[0]);
     }
-}
 </script>
 {% endblock %}
