@@ -1,551 +1,446 @@
-/* ============================================================
-   LINKING X — components.css
-   Componentes reutilizables compartidos entre todos los templates.
-   Depende de las variables definidas en variables.css
-   ============================================================ */
+/* ============================================
+   LINKING X - COMPONENTS
+   ============================================ */
 
+/* ========== BUTTONS ========== */
 
-/* ============================================================
-   LAYOUT HELPERS
-   ============================================================ */
-
-.page-container {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 1.5rem 1rem;
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-family: var(--font-family);
+  font-size: var(--mobile-body-size);
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: var(--button-height-mobile);
+  white-space: nowrap;
 }
 
-.page-container--narrow {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1.5rem 1rem;
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
+.btn:focus {
+  outline: 2px solid var(--color-primary-700);
+  outline-offset: 2px;
+}
 
-/* ============================================================
-   CARD BASE
-   Contenedor blanco con borde y sombra sutil.
-   Usado en feed, perfil, empleos, mensajes.
-   ============================================================ */
+/* Primary Button */
+.btn-primary {
+  background-color: var(--color-primary-700);
+  color: var(--color-white);
+  box-shadow: 0 2px 4px rgba(10, 102, 194, 0.2);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-info-600);
+  text-decoration: none;
+}
+
+.btn-primary:active {
+  background-color: #003366;
+}
+
+/* Secondary Button (Outline) */
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-primary-700);
+  border: 1px solid var(--color-primary-700);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: rgba(10, 102, 194, 0.08);
+  text-decoration: none;
+}
+
+/* Ghost Button */
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-primary-700);
+  padding: 8px 12px;
+  height: auto;
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background-color: rgba(10, 102, 194, 0.08);
+  text-decoration: none;
+}
+
+/* Full Width Button */
+.btn-block {
+  width: 100%;
+}
+
+/* ========== INPUTS ========== */
+
+.form-group {
+  margin-bottom: var(--space-4);
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #6b6b6b;
+  margin-bottom: var(--space-1);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: var(--color-white);
+  border: 1px solid #e4e2e2;
+  border-radius: 9px;
+  padding: 11px 16px;
+  height: 52px;
+  transition: all 0.2s ease;
+}
+
+.form-input-wrapper:focus-within {
+  border-color: var(--color-primary-700);
+  box-shadow: 0 0 0 3px rgba(10, 102, 194, 0.1);
+}
+
+.form-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'Montserrat', var(--font-family);
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--color-black-800);
+  padding: 0;
+}
+
+.form-input::placeholder {
+  color: #b1b1b1;
+}
+
+.form-input-icon {
+  flex-shrink: 0;
+  margin-right: var(--space-3);
+  color: var(--color-gray-600);
+  width: 20px;
+  height: 20px;
+}
+
+.form-input-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+/* Password Toggle */
+.password-toggle {
+  flex-shrink: 0;
+  margin-left: var(--space-2);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gray-600);
+}
+
+.password-toggle:hover {
+  color: var(--color-primary-700);
+}
+
+.password-toggle:focus {
+  outline: 2px solid var(--color-primary-700);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Input States */
+.form-input-wrapper.error {
+  border-color: var(--color-error-600);
+}
+
+.form-input-wrapper.success {
+  border-color: var(--color-success-600);
+}
+
+.form-helper {
+  display: block;
+  font-size: var(--mobile-caption-size);
+  color: var(--color-gray-600);
+  margin-top: var(--space-1);
+}
+
+.form-error {
+  display: block;
+  font-size: var(--mobile-caption-size);
+  color: var(--color-error-600);
+  margin-top: var(--space-1);
+}
+
+/* ========== CARDS ========== */
 
 .card {
-    background: white;
-    border-radius: var(--lx-radius);
-    border: 1px solid var(--lx-gray-200);
-    overflow: hidden;
+  background-color: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-4);
+  margin-bottom: var(--space-3);
 }
 
-.card--padded {
-    padding: 1.5rem;
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
 }
 
-.card--padded-sm {
-    padding: 1rem;
+.card-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
-.card--mb {
-    margin-bottom: 1.5rem;
+.card-user-info {
+  flex: 1;
 }
 
-.card--mb-sm {
-    margin-bottom: 1rem;
+.card-user-name {
+  font-size: var(--mobile-small-size);
+  font-weight: 600;
+  color: var(--color-black-800);
+  line-height: 1.2;
 }
 
+.card-timestamp {
+  font-size: var(--mobile-caption-size);
+  color: var(--color-gray-600);
+}
 
-/* ============================================================
-   SECTION HEADER
-   Fila título + acción usada en secciones de perfil y listas.
-   ============================================================ */
+.card-content {
+  font-size: var(--mobile-body-size);
+  line-height: var(--mobile-body-line);
+  color: var(--color-black-800);
+  margin-bottom: var(--space-3);
+}
 
-.section-header {
+.card-footer {
+  display: flex;
+  gap: var(--space-6);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-gray-200);
+}
+
+.card-action {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-gray-600);
+  font-size: var(--mobile-small-size);
+  cursor: pointer;
+  padding: var(--space-1) 0;
+  background: none;
+  border: none;
+  transition: color 0.2s ease;
+}
+
+.card-action:hover {
+  color: var(--color-primary-700);
+}
+
+.card-action-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* ========== NAVIGATION ========== */
+
+/* Top Header (Desktop) */
+.header {
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-gray-200);
+  box-shadow: var(--shadow-md);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--nav-height);
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 var(--space-4);
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.header-logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-primary-700);
+  text-decoration: none;
+}
+
+.header-nav {
+  display: none;
+  gap: var(--space-4);
+}
+
+.header-nav a {
+  font-size: var(--mobile-small-size);
+  color: var(--color-gray-600);
+  text-decoration: none;
+  padding: var(--space-2);
+  transition: color 0.2s ease;
+}
+
+.header-nav a:hover {
+  color: var(--color-primary-700);
+}
+
+/* Bottom Navigation (Mobile) */
+.bottom-nav {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--color-white);
+  border-top: 1px solid var(--color-gray-200);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+  height: var(--nav-height);
+  z-index: 100;
+}
+
+.bottom-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  text-decoration: none;
+  color: var(--color-gray-600);
+  font-size: 10px;
+  transition: color 0.2s ease;
+}
+
+.bottom-nav-item.active {
+  color: var(--color-primary-700);
+}
+
+.bottom-nav-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Desktop: Show header nav, hide bottom nav */
+@media (min-width: 768px) {
+  .header-nav {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
+  }
+  
+  .bottom-nav {
+    display: none;
+  }
 }
 
-.section-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--lx-gray-900);
+/* ========== MODALS ========== */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--space-4);
 }
 
-.section-action {
-    color: var(--lx-primary);
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    transition: color 0.2s;
+.modal {
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: var(--space-6);
 }
 
-.section-action:hover {
-    color: var(--lx-primary-hover);
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
 }
 
-
-/* ============================================================
-   TIMELINE ITEM
-   Fila con icono + contenido. Usado en experiencia y educación.
-   ============================================================ */
-
-.timeline-item {
-    display: flex;
-    gap: 1rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--lx-gray-100);
+.modal-title {
+  font-size: var(--mobile-h3-size);
+  font-weight: 600;
 }
 
-.timeline-item:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--color-gray-600);
+  cursor: pointer;
+  padding: var(--space-1);
+  line-height: 1;
 }
 
-.timeline-icon {
-    width: 48px;
-    height: 48px;
-    background: var(--lx-gray-100);
-    border-radius: var(--lx-radius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+.modal-close:hover {
+  color: var(--color-black-800);
 }
 
-.timeline-icon i {
-    font-size: 24px;
-    color: var(--lx-gray-500);
+/* ========== ALERTS ========== */
+
+.alert {
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-4);
 }
 
-.timeline-content {
-    flex: 1;
+.alert-success {
+  background-color: var(--color-success-100);
+  color: var(--color-success-600);
+  border: 1px solid var(--color-success-600);
 }
 
-.timeline-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--lx-gray-900);
-    margin-bottom: 0.25rem;
+.alert-error {
+  background-color: var(--color-error-100);
+  color: var(--color-error-600);
+  border: 1px solid var(--color-error-600);
 }
 
-.timeline-subtitle {
-    font-size: 14px;
-    color: var(--lx-gray-500);
-    margin-bottom: 0.25rem;
+.alert-warning {
+  background-color: var(--color-warning-100);
+  color: var(--color-warning-600);
+  border: 1px solid var(--color-warning-600);
 }
 
-.timeline-date {
-    font-size: 13px;
-    color: var(--lx-gray-400);
-}
-
-.timeline-description {
-    font-size: 14px;
-    color: var(--lx-gray-700);
-    margin-top: 0.5rem;
-    line-height: 1.5;
-}
-
-
-/* ============================================================
-   CONTACT ITEM
-   Fila icono + etiqueta + valor. Usado en sidebar de perfil.
-   ============================================================ */
-
-.contact-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid var(--lx-gray-100);
-}
-
-.contact-item:last-child {
-    border-bottom: none;
-}
-
-.contact-icon {
-    width: 40px;
-    height: 40px;
-    background: var(--lx-gray-100);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.contact-icon i {
-    font-size: 18px;
-    color: var(--lx-gray-500);
-}
-
-.contact-info {
-    flex: 1;
-}
-
-.contact-label {
-    font-size: 12px;
-    color: var(--lx-gray-400);
-}
-
-.contact-value {
-    font-size: 14px;
-    color: var(--lx-gray-700);
-    font-weight: 500;
-    text-decoration: none;
-}
-
-.contact-value:hover {
-    color: var(--lx-primary);
-}
-
-
-/* ============================================================
-   SKILLS GRID
-   Conjunto de badges de habilidades.
-   ============================================================ */
-
-.skills-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-}
-
-.skill-badge {
-    padding: 0.5rem 1rem;
-    background: var(--lx-gray-100);
-    border-radius: var(--lx-radius-full);
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--lx-gray-700);
-}
-
-
-/* ============================================================
-   STATS ROW
-   Fila de métricas (seguidores, siguiendo, etc.)
-   ============================================================ */
-
-.stats-row {
-    display: flex;
-    justify-content: space-around;
-}
-
-.stat-item {
-    text-align: center;
-}
-
-.stat-value {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--lx-gray-900);
-}
-
-.stat-label {
-    font-size: 14px;
-    color: var(--lx-gray-500);
-    margin-top: 0.25rem;
-}
-
-
-/* ============================================================
-   COVER PHOTO
-   Franja de portada usada en perfiles.
-   ============================================================ */
-
-.cover-photo {
-    height: 200px;
-    background: linear-gradient(135deg, var(--lx-primary) 0%, var(--lx-primary-hover) 100%);
-}
-
-.cover-photo--sm {
-    height: 50px;
-    background: linear-gradient(135deg, var(--lx-primary), #0077B5);
-}
-
-
-/* ============================================================
-   PROFILE AVATAR
-   Avatar circular con borde blanco. Usado en cabeceras de perfil.
-   ============================================================ */
-
-.profile-avatar {
-    width: 128px;
-    height: 128px;
-    border-radius: 50%;
-    border: 4px solid white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    object-fit: cover;
-    background: white;
-}
-
-.profile-avatar--sm {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 3px solid white;
-    object-fit: cover;
-}
-
-.profile-avatar-section {
-    margin-top: -80px;
-    margin-bottom: 1rem;
-}
-
-.profile-avatar-section--sm {
-    margin-top: -30px;
-    margin-bottom: 0.5rem;
-    text-align: center;
-}
-
-
-/* ============================================================
-   PROFILE META
-   Nombre, título y ubicación en cabecera de perfil.
-   ============================================================ */
-
-.profile-name {
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--lx-gray-900);
-    margin-bottom: 0.25rem;
-}
-
-.profile-name--sm {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-}
-
-.profile-headline {
-    font-size: 18px;
-    color: var(--lx-gray-700);
-    margin-bottom: 0.5rem;
-}
-
-.profile-headline--sm {
-    font-size: 13px;
-    color: var(--lx-gray-500);
-    margin-bottom: 0.75rem;
-}
-
-.profile-location {
-    font-size: 14px;
-    color: var(--lx-gray-500);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.profile-actions {
-    display: flex;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
-    flex-wrap: wrap;
-}
-
-
-/* ============================================================
-   ACTION BUTTONS (estilo pill)
-   Botones primario y secundario con forma de píldora.
-   ============================================================ */
-
-.btn-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.6rem 1.5rem;
-    border-radius: var(--lx-radius-full);
-    font-weight: 600;
-    font-size: 14px;
-    border: none;
-    cursor: pointer;
-    transition: var(--lx-transition);
-    text-decoration: none;
-}
-
-.btn-pill--primary {
-    background: var(--lx-primary);
-    color: white;
-}
-
-.btn-pill--primary:hover {
-    background: var(--lx-primary-hover);
-    color: white;
-}
-
-.btn-pill--primary.following {
-    background: var(--lx-gray-500);
-    color: white;
-}
-
-.btn-pill--primary.following:hover {
-    background: var(--lx-danger);
-}
-
-.btn-pill--secondary {
-    background: white;
-    color: var(--lx-gray-700);
-    border: 1px solid var(--lx-gray-300);
-}
-
-.btn-pill--secondary:hover {
-    background: var(--lx-gray-50);
-    border-color: var(--lx-gray-400);
-    color: var(--lx-gray-700);
-}
-
-
-/* ============================================================
-   ICON BUTTON (circular)
-   Botón redondo solo icono. Usado en headers y toolbars.
-   ============================================================ */
-
-.btn-icon-round {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: none;
-    background: transparent;
-    color: var(--lx-gray-500);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--lx-transition);
-    flex-shrink: 0;
-}
-
-.btn-icon-round:hover {
-    background: var(--lx-gray-100);
-    color: var(--lx-gray-900);
-}
-
-
-/* ============================================================
-   SIDEBAR MENU ITEM
-   Fila de navegación lateral con icono + texto.
-   ============================================================ */
-
-.sidebar-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem;
-    border-radius: var(--lx-radius);
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--lx-gray-700);
-    transition: var(--lx-transition);
-}
-
-.sidebar-item:hover {
-    background: var(--lx-gray-100);
-    color: var(--lx-gray-900);
-}
-
-.sidebar-item.active {
-    background: var(--lx-primary-light);
-    color: var(--lx-primary);
-}
-
-.sidebar-item i {
-    font-size: 18px;
-    color: var(--lx-gray-500);
-    flex-shrink: 0;
-}
-
-.sidebar-item.active i {
-    color: var(--lx-primary);
-}
-
-
-/* ============================================================
-   EMPTY STATE
-   Mensaje cuando no hay contenido que mostrar.
-   ============================================================ */
-
-.empty-state {
-    text-align: center;
-    padding: 3rem 2rem;
-    color: var(--lx-gray-400);
-}
-
-.empty-state i {
-    font-size: 48px;
-    display: block;
-    margin-bottom: 1rem;
-    color: var(--lx-gray-300);
-}
-
-.empty-state h3 {
-    font-size: 18px;
-    color: var(--lx-gray-500);
-    margin-bottom: 0.5rem;
-}
-
-.empty-state p {
-    font-size: 14px;
-    color: var(--lx-gray-400);
-}
-
-
-/* ============================================================
-   AD CARD
-   Bloque de publicidad en sidebar.
-   ============================================================ */
-
-.ad-card {
-    padding: 1.5rem;
-}
-
-.ad-label {
-    font-size: 12px;
-    color: var(--lx-gray-400);
-    text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    margin-bottom: 1rem;
-}
-
-.ad-placeholder {
-    width: 100%;
-    height: 120px;
-    background: var(--lx-gray-100);
-    border-radius: var(--lx-radius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1rem;
-}
-
-.ad-placeholder span {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--lx-gray-300);
-}
-
-.ad-text {
-    font-size: 14px;
-    color: var(--lx-gray-500);
-    margin-bottom: 1rem;
-    text-align: center;
-}
-
-
-/* ============================================================
-   ABOUT TEXT
-   Bloque de texto descriptivo largo.
-   ============================================================ */
-
-.about-text {
-    font-size: 15px;
-    line-height: 1.6;
-    color: var(--lx-gray-700);
-    white-space: pre-wrap;
+.alert-info {
+  background-color: var(--color-info-100);
+  color: var(--color-info-600);
+  border: 1px solid var(--color-info-600);
 }

@@ -5,21 +5,690 @@
 {% block title %}{% trans "Feed - Linking X" %}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/feed.css' %}">
+<style>
+    /* ========== LAYOUT PRINCIPAL ========== */
+    .feed-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem;
+    }
+    
+    .feed-layout {
+        display: grid;
+        grid-template-columns: 240px 1fr 300px;
+        gap: 1.5rem;
+    }
+    
+    /* ========== AVATARES FIJOS 128x128 ========== */
+    .avatar-xs {
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+    }
+    
+    .avatar-sm {
+        width: 36px !important;
+        height: 36px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+    }
+    
+    .avatar-md {
+        width: 48px !important;
+        height: 48px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+    }
+    
+    .avatar-lg {
+        width: 80px !important;
+        height: 80px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+    }
+    
+    /* ========== SIDEBAR IZQUIERDO ========== */
+    .left-sidebar {
+        position: sticky;
+        top: 80px;
+        height: fit-content;
+    }
+    
+    .profile-card {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        overflow: hidden;
+        margin-bottom: 1rem;
+    }
+    
+    .profile-card-header {
+        height: 60px;
+        background: linear-gradient(135deg, #0A66C2 0%, #004182 100%);
+    }
+    
+    .profile-card-body {
+        padding: 1rem;
+        text-align: center;
+        margin-top: -40px;
+    }
+    
+    .profile-name {
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 0.5rem;
+        color: #111827;
+    }
+    
+    .profile-title {
+        font-size: 13px;
+        color: #6b7280;
+        margin-top: 0.25rem;
+    }
+    
+    .sidebar-menu {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        margin-bottom: 1rem;
+    }
+    
+    .menu-item {
+        padding: 0.75rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: #374151;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        border-bottom: 1px solid #f3f4f6;
+        transition: background 0.2s;
+    }
+    
+    .menu-item:last-child {
+        border-bottom: none;
+    }
+    
+    .menu-item:hover {
+        background: #f9fafb;
+    }
+    
+    .menu-item i {
+        font-size: 18px;
+        color: #6b7280;
+    }
+    
+    /* ===== CONFIGURACIÓN E IDIOMA ===== */
+    .settings-card {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        padding: 1rem;
+    }
+    
+    .settings-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 0.75rem;
+    }
+    
+    .settings-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-size: 14px;
+        color: #374151;
+    }
+    
+    .settings-item:hover {
+        background: #f3f4f6;
+    }
+    
+    .settings-item i {
+        font-size: 16px;
+        color: #6b7280;
+    }
+    
+    /* ========== FEED CENTRAL ========== */
+    .feed-main {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    /* ========== CREAR PUBLICACIÓN ========== */
+    .create-post-card {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        padding: 1rem;
+    }
+    
+    .create-post-input {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    .create-post-button {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border: 1px solid #d1d5db;
+        border-radius: 24px;
+        background: #f9fafb;
+        text-align: left;
+        color: #6b7280;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .create-post-button:hover {
+        background: #f3f4f6;
+    }
+    
+    .create-post-actions {
+        display: flex;
+        gap: 0.5rem;
+        padding-top: 0.75rem;
+        border-top: 1px solid #e5e7eb;
+    }
+    
+    .post-action-btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem;
+        border: none;
+        background: transparent;
+        border-radius: 6px;
+        color: #6b7280;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    
+    .post-action-btn:hover {
+        background: #f3f4f6;
+    }
+    
+    .post-action-btn i {
+        font-size: 20px;
+    }
+    
+    /* ========== PUBLICACIÓN ========== */
+    .post-card {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .post-header {
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+    }
+    
+    .post-author {
+        display: flex;
+        gap: 0.75rem;
+        flex: 1;
+    }
+    
+    .post-author-info {
+        flex: 1;
+    }
+    
+    .post-author-name {
+        font-size: 15px;
+        font-weight: 600;
+        color: #111827;
+        text-decoration: none;
+    }
+    
+    .post-author-name:hover {
+        color: #0A66C2;
+    }
+    
+    .post-author-title {
+        font-size: 13px;
+        color: #6b7280;
+    }
+    
+    .post-time {
+        font-size: 12px;
+        color: #9ca3af;
+        margin-top: 0.25rem;
+    }
+    
+    .follow-btn {
+        padding: 0.5rem 1rem;
+        border: 1px solid #0A66C2;
+        background: white;
+        color: #0A66C2;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .follow-btn:hover {
+        background: #E7F3FF;
+    }
+    
+    .follow-btn.following {
+        background: #0A66C2;
+        color: white;
+    }
+    
+    .follow-btn.following:hover {
+        background: #004182;
+    }
+    
+    .post-content {
+        padding: 0 1rem 1rem;
+        font-size: 15px;
+        line-height: 1.5;
+        color: #111827;
+        white-space: pre-wrap;
+    }
+    
+    .post-media {
+        width: 100%;
+        max-height: 500px;
+        object-fit: cover;
+    }
+    
+    .post-stats {
+        padding: 0.75rem 1rem;
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid #e5e7eb;
+        font-size: 13px;
+        color: #6b7280;
+    }
+    
+    .post-actions {
+        display: flex;
+        padding: 0.5rem;
+        border-top: 1px solid #e5e7eb;
+    }
+    
+    .post-action {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem;
+        border: none;
+        background: transparent;
+        border-radius: 6px;
+        color: #6b7280;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .post-action:hover {
+        background: #f3f4f6;
+    }
+    
+    .post-action.liked {
+        color: #0A66C2;
+    }
+    
+    .post-action.liked i {
+        color: #0A66C2;
+    }
+    
+    /* ========== COMENTARIOS ========== */
+    .comments-section {
+        border-top: 1px solid #e5e7eb;
+        padding: 1rem;
+        display: none;
+    }
+    
+    .comments-section.active {
+        display: block;
+    }
+    
+    .comment-form {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    .comment-input-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .comment-input {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border: 1px solid #d1d5db;
+        border-radius: 20px;
+        font-size: 14px;
+        resize: none;
+        min-height: 36px;
+        max-height: 120px;
+    }
+    
+    .comment-input:focus {
+        outline: none;
+        border-color: #0A66C2;
+    }
+    
+    .comment-media-preview {
+        max-width: 200px;
+        border-radius: 8px;
+        margin-top: 0.5rem;
+        position: relative;
+    }
+    
+    .comment-media-preview img,
+    .comment-media-preview video {
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .remove-comment-media {
+        position: absolute;
+        top: 0.25rem;
+        right: 0.25rem;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .comment-actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+    
+    .comment-media-btns {
+        display: flex;
+        gap: 0.25rem;
+    }
+    
+    .comment-media-btn {
+        width: 32px;
+        height: 32px;
+        border: none;
+        background: transparent;
+        border-radius: 50%;
+        color: #6b7280;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .comment-media-btn:hover {
+        background: #f3f4f6;
+    }
+    
+    .comment-submit {
+        padding: 0.5rem 1.25rem;
+        background: #0A66C2;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-left: auto;
+    }
+    
+    .comment-submit:hover {
+        background: #004182;
+    }
+    
+    .comment-submit:disabled {
+        background: #d1d5db;
+        cursor: not-allowed;
+    }
+    
+    .comments-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .comment {
+        display: flex;
+        gap: 0.75rem;
+    }
+    
+    .comment.level-1 {
+        margin-left: 2.5rem;
+    }
+    
+    .comment.level-2 {
+        margin-left: 5rem;
+    }
+    
+    .comment.level-3 {
+        margin-left: 7.5rem;
+    }
+    
+    .comment-body {
+        flex: 1;
+        background: #f3f4f6;
+        padding: 0.75rem;
+        border-radius: 12px;
+    }
+    
+    .comment-author {
+        font-size: 14px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 0.25rem;
+    }
+    
+    .comment-text {
+        font-size: 14px;
+        color: #374151;
+        margin-bottom: 0.5rem;
+        white-space: pre-wrap;
+    }
+    
+    .comment-media-img {
+        max-width: 250px;
+        border-radius: 8px;
+        margin-top: 0.5rem;
+    }
+    
+    .comment-meta {
+        display: flex;
+        gap: 1rem;
+        font-size: 12px;
+        color: #6b7280;
+    }
+    
+    .comment-action {
+        cursor: pointer;
+        font-weight: 600;
+    }
+    
+    .comment-action:hover {
+        color: #0A66C2;
+    }
+    
+    .load-more-comments {
+        text-align: center;
+        padding: 1rem;
+    }
+    
+    .load-more-btn {
+        background: transparent;
+        border: none;
+        color: #0A66C2;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+    }
+    
+    .load-more-btn:hover {
+        text-decoration: underline;
+    }
+    
+    /* ========== MODAL RESPONDER COMENTARIO ========== */
+    .reply-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+    }
+    
+    .reply-modal.active {
+        display: flex;
+    }
+    
+    .reply-dialog {
+        background: white;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 500px;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+    
+    .reply-header {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .reply-title {
+        font-size: 18px;
+        font-weight: 700;
+    }
+    
+    .reply-close {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        color: #6b7280;
+    }
+    
+    .reply-close:hover {
+        background: #f3f4f6;
+    }
+    
+    .reply-body {
+        padding: 1.5rem;
+    }
+    
+    .reply-to-comment {
+        background: #f9fafb;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        border-left: 3px solid #0A66C2;
+    }
+    
+    .reply-to-author {
+        font-size: 13px;
+        font-weight: 600;
+        color: #6b7280;
+        margin-bottom: 0.5rem;
+    }
+    
+    .reply-to-text {
+        font-size: 14px;
+        color: #374151;
+    }
+    
+    /* ========== SIDEBAR DERECHO ========== */
+    .right-sidebar {
+        position: sticky;
+        top: 80px;
+        height: fit-content;
+    }
+    
+    .suggestions-card {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        padding: 1rem;
+    }
+    
+    .suggestions-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 2rem;
+        color: #9ca3af;
+    }
+    
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 1024px) {
+        .feed-layout {
+            grid-template-columns: 1fr;
+        }
+        
+        .left-sidebar,
+        .right-sidebar {
+            display: none;
+        }
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-<div class="page-container">
+<div class="feed-container">
     <div class="feed-layout">
-
+        
         <!-- ========== SIDEBAR IZQUIERDO ========== -->
-        <aside class="feed-left-sidebar">
-            <div class="card card--mb">
-                <div class="sidebar-profile-header"></div>
-                <div class="sidebar-profile-body">
-                    <img src="{{ user.get_avatar_url }}" alt="Avatar" class="profile-avatar--sm">
-                    <div class="profile-name--sm mt-2">{{ user.get_full_name }}</div>
-                    <div class="profile-headline--sm">
+        <aside class="left-sidebar">
+            <div class="profile-card">
+                <div class="profile-card-header"></div>
+                <div class="profile-card-body">
+                    <img src="{{ user.get_avatar_url }}" alt="Avatar" class="avatar-lg">
+                    <div class="profile-name">{{ user.get_full_name }}</div>
+                    <div class="profile-title">
                         {% if user.tipo_usuario == 'profesional' and user.profesional.titulo_actual %}
                             {{ user.profesional.titulo_actual }}
                         {% elif user.tipo_usuario == 'empresa' and user.empresa.nombre_empresa %}
@@ -28,64 +697,78 @@
                     </div>
                 </div>
             </div>
-
-            <div class="card card--padded-sm card--mb">
-                <a href="{% url 'profile_detail' user.id %}" class="sidebar-item">
-                    <i class="bi bi-person"></i><span>{% trans "Mi perfil" %}</span>
+            
+            <div class="sidebar-menu">
+                <a href="{% url 'profile_detail' user.id %}" class="menu-item">
+                    <i class="bi bi-person"></i>
+                    <span>{% trans "Mi perfil" %}</span>
                 </a>
-                <a href="{% url 'job_list' %}" class="sidebar-item">
-                    <i class="bi bi-briefcase"></i><span>{% trans "Empleos" %}</span>
+                <a href="{% url 'job_list' %}" class="menu-item">
+                    <i class="bi bi-briefcase"></i>
+                    <span>{% trans "Empleos" %}</span>
                 </a>
-                <a href="{% url 'message_list' %}" class="sidebar-item">
-                    <i class="bi bi-chat"></i><span>{% trans "Mensajes" %}</span>
+                <a href="{% url 'message_list' %}" class="menu-item">
+                    <i class="bi bi-chat"></i>
+                    <span>{% trans "Mensajes" %}</span>
                 </a>
-                <a href="#" class="sidebar-item">
-                    <i class="bi bi-bookmark"></i><span>{% trans "Guardados" %}</span>
+                <a href="#" class="menu-item">
+                    <i class="bi bi-bookmark"></i>
+                    <span>{% trans "Guardados" %}</span>
                 </a>
             </div>
-
-            <div class="card card--padded-sm">
+            
+            <!-- Configuración e Idioma -->
+            <div class="settings-card">
                 <div class="settings-title">{% trans "Configuración" %}</div>
-                <div class="settings-item"><i class="bi bi-gear"></i><span>{% trans "Preferencias" %}</span></div>
-                <div class="settings-item"><i class="bi bi-globe"></i><span>{% trans "Idioma" %}</span></div>
-                <div class="settings-item"><i class="bi bi-shield-check"></i><span>{% trans "Privacidad" %}</span></div>
+                <div class="settings-item">
+                    <i class="bi bi-gear"></i>
+                    <span>{% trans "Preferencias" %}</span>
+                </div>
+                <div class="settings-item">
+                    <i class="bi bi-globe"></i>
+                    <span>{% trans "Idioma" %}</span>
+                </div>
+                <div class="settings-item">
+                    <i class="bi bi-shield-check"></i>
+                    <span>{% trans "Privacidad" %}</span>
+                </div>
             </div>
         </aside>
-
+        
         <!-- ========== FEED CENTRAL ========== -->
         <main class="feed-main">
-
+            
             <!-- Crear Publicación -->
-            <div class="card card--padded-sm">
+            <div class="create-post-card">
                 <div class="create-post-input">
-                    <img src="{{ user.get_avatar_url }}" alt="Avatar" class="avatar avatar-md">
-                    <button type="button" class="create-post-button"
-                        data-bs-toggle="modal" data-bs-target="#createPostModal">
+                    <img src="{{ user.get_avatar_url }}" alt="Avatar" class="avatar-md">
+                    <button type="button" class="create-post-button" data-bs-toggle="modal" data-bs-target="#createPostModal">
                         {% trans "¿Qué quieres compartir?" %}
                     </button>
                 </div>
                 <div class="create-post-actions">
-                    <button type="button" class="post-action-btn"
-                        data-bs-toggle="modal" data-bs-target="#createPostModal">
-                        <i class="bi bi-image text-success"></i><span>{% trans "Foto" %}</span>
+                    <button type="button" class="post-action-btn" data-bs-toggle="modal" data-bs-target="#createPostModal">
+                        <i class="bi bi-image text-success"></i>
+                        <span>{% trans "Foto" %}</span>
                     </button>
-                    <button type="button" class="post-action-btn"
-                        data-bs-toggle="modal" data-bs-target="#createPostModal">
-                        <i class="bi bi-play-btn text-danger"></i><span>{% trans "Video" %}</span>
+                    <button type="button" class="post-action-btn" data-bs-toggle="modal" data-bs-target="#createPostModal">
+                        <i class="bi bi-play-btn text-danger"></i>
+                        <span>{% trans "Video" %}</span>
                     </button>
-                    <button type="button" class="post-action-btn"
-                        data-bs-toggle="modal" data-bs-target="#createPostModal">
-                        <i class="bi bi-pencil text-primary"></i><span>{% trans "Artículo" %}</span>
+                    <button type="button" class="post-action-btn" data-bs-toggle="modal" data-bs-target="#createPostModal">
+                        <i class="bi bi-pencil text-primary"></i>
+                        <span>{% trans "Artículo" %}</span>
                     </button>
                 </div>
             </div>
-
+            
             <!-- Publicaciones -->
             {% for pub in publicaciones %}
-            <article class="card" data-post-id="{{ pub.id }}">
+            <article class="post-card" data-post-id="{{ pub.id }}">
+                <!-- Header -->
                 <div class="post-header">
                     <div class="post-author">
-                        <img src="{{ pub.autor.get_avatar_url }}" alt="Avatar" class="avatar avatar-md">
+                        <img src="{{ pub.autor.get_avatar_url }}" alt="Avatar" class="avatar-md">
                         <div class="post-author-info">
                             <a href="{% url 'profile_detail' pub.autor.id %}" class="post-author-name">
                                 {{ pub.autor.get_full_name }}
@@ -100,30 +783,39 @@
                             <div class="post-time">{{ pub.fecha_creacion|timesince }}</div>
                         </div>
                     </div>
-
+                    
                     {% if pub.autor != user %}
-                    <button type="button"
+                    <button 
+                        type="button" 
                         class="follow-btn {% if pub.usuario_sigue_autor %}following{% endif %}"
-                        onclick="toggleFollow('{{ pub.autor.id }}', this)">
+                        onclick="toggleFollow('{{ pub.autor.id }}', this)"
+                    >
                         <span class="follow-text">
-                            {% if pub.usuario_sigue_autor %}{% trans "Siguiendo" %}{% else %}{% trans "Seguir" %}{% endif %}
+                            {% if pub.usuario_sigue_autor %}
+                                {% trans "Siguiendo" %}
+                            {% else %}
+                                {% trans "Seguir" %}
+                            {% endif %}
                         </span>
                     </button>
                     {% endif %}
                 </div>
-
+                
+                <!-- Contenido -->
                 {% if pub.contenido %}
                 <div class="post-content">{{ pub.contenido }}</div>
                 {% endif %}
-
+                
+                <!-- Media -->
                 {% if pub.imagen %}
                 <img src="{{ pub.imagen.url }}" alt="Imagen" class="post-media">
                 {% elif pub.video %}
                 <video src="{{ pub.video.url }}" controls class="post-media"></video>
                 {% endif %}
-
+                
+                <!-- Estadísticas -->
                 <div class="post-stats">
-                    <span>
+                    <span class="likes-count">
                         <i class="bi bi-hand-thumbs-up-fill text-primary"></i>
                         <span data-likes="{{ pub.id }}">{{ pub.total_likes }}</span>
                     </span>
@@ -131,56 +823,59 @@
                         <span data-comments="{{ pub.id }}">{{ pub.total_comentarios }}</span> {% trans "comentarios" %}
                     </span>
                 </div>
-
+                
+                <!-- Acciones -->
                 <div class="post-actions">
-                    <button type="button"
+                    <button 
+                        type="button" 
                         class="post-action {% if pub.usuario_dio_like %}liked{% endif %}"
-                        onclick="toggleLike('{{ pub.id }}', this)">
+                        onclick="toggleLike('{{ pub.id }}', this)"
+                    >
                         <i class="bi {% if pub.usuario_dio_like %}bi-hand-thumbs-up-fill{% else %}bi-hand-thumbs-up{% endif %}"></i>
                         <span>{% trans "Me gusta" %}</span>
                     </button>
                     <button type="button" class="post-action" onclick="toggleComments('{{ pub.id }}')">
-                        <i class="bi bi-chat"></i><span>{% trans "Comentar" %}</span>
+                        <i class="bi bi-chat"></i>
+                        <span>{% trans "Comentar" %}</span>
                     </button>
                     <button type="button" class="post-action">
-                        <i class="bi bi-share"></i><span>{% trans "Compartir" %}</span>
+                        <i class="bi bi-share"></i>
+                        <span>{% trans "Compartir" %}</span>
                     </button>
                 </div>
-
-                <!-- Comentarios -->
+                
+                <!-- Sección de Comentarios -->
                 <div class="comments-section" id="comments-{{ pub.id }}">
-                    <form class="comment-form" onsubmit="submitComment(event, '{{ pub.id }}')"
-                        enctype="multipart/form-data" id="comment-form-{{ pub.id }}">
-                        <img src="{{ user.get_avatar_url }}" alt="Avatar" class="avatar avatar-sm">
+                    <!-- Formulario de comentario -->
+                    <form class="comment-form" onsubmit="submitComment(event, '{{ pub.id }}')" enctype="multipart/form-data" id="comment-form-{{ pub.id }}">
+                        <img src="{{ user.get_avatar_url }}" alt="Avatar" class="avatar-sm">
                         <div class="comment-input-wrapper">
-                            <textarea class="comment-input" name="contenido"
-                                placeholder="{% trans 'Escribe un comentario...' %}" rows="1"
-                                oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';toggleCommentSubmit(this)"></textarea>
-
-                            <div class="comment-media-preview" id="comment-preview-{{ pub.id }}" style="display:none;">
-                                <button type="button" class="remove-comment-media"
-                                    onclick="removeCommentMedia('{{ pub.id }}')">
+                            <textarea 
+                                class="comment-input" 
+                                name="contenido"
+                                placeholder="{% trans 'Escribe un comentario...' %}"
+                                rows="1"
+                                oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px'; toggleCommentSubmit(this)"
+                            ></textarea>
+                            
+                            <!-- Preview de media -->
+                            <div class="comment-media-preview" id="comment-preview-{{ pub.id }}" style="display: none;">
+                                <button type="button" class="remove-comment-media" onclick="removeCommentMedia('{{ pub.id }}')">
                                     <i class="bi bi-x"></i>
                                 </button>
-                                <img id="comment-img-{{ pub.id }}" style="display:none;">
-                                <video id="comment-video-{{ pub.id }}" controls style="display:none;"></video>
+                                <img id="comment-img-{{ pub.id }}" style="display: none;">
+                                <video id="comment-video-{{ pub.id }}" controls style="display: none;"></video>
                             </div>
-
-                            <input type="file" name="imagen" id="comment-img-input-{{ pub.id }}"
-                                accept="image/*" style="display:none;"
-                                onchange="previewCommentMedia('{{ pub.id }}', 'image')">
-                            <input type="file" name="video" id="comment-video-input-{{ pub.id }}"
-                                accept="video/*" style="display:none;"
-                                onchange="previewCommentMedia('{{ pub.id }}', 'video')">
-
+                            
+                            <input type="file" name="imagen" id="comment-img-input-{{ pub.id }}" accept="image/*" style="display: none;" onchange="previewCommentMedia('{{ pub.id }}', 'image')">
+                            <input type="file" name="video" id="comment-video-input-{{ pub.id }}" accept="video/*" style="display: none;" onchange="previewCommentMedia('{{ pub.id }}', 'video')">
+                            
                             <div class="comment-actions">
                                 <div class="comment-media-btns">
-                                    <button type="button" class="comment-media-btn"
-                                        onclick="document.getElementById('comment-img-input-{{ pub.id }}').click()">
+                                    <button type="button" class="comment-media-btn" onclick="document.getElementById('comment-img-input-{{ pub.id }}').click()" title="{% trans 'Agregar imagen' %}">
                                         <i class="bi bi-image"></i>
                                     </button>
-                                    <button type="button" class="comment-media-btn"
-                                        onclick="document.getElementById('comment-video-input-{{ pub.id }}').click()">
+                                    <button type="button" class="comment-media-btn" onclick="document.getElementById('comment-video-input-{{ pub.id }}').click()" title="{% trans 'Agregar video' %}">
                                         <i class="bi bi-camera-video"></i>
                                     </button>
                                 </div>
@@ -190,84 +885,93 @@
                             </div>
                         </div>
                     </form>
-
+                    
+                    <!-- Lista de comentarios -->
                     <div class="comments-list" id="comments-list-{{ pub.id }}"></div>
-
-                    <div class="load-more-comments" id="load-more-{{ pub.id }}" style="display:none;">
-                        <button type="button" class="load-more-btn"
-                            onclick="loadMoreComments('{{ pub.id }}')">
+                    
+                    <!-- Botón Ver más comentarios -->
+                    <div class="load-more-comments" id="load-more-{{ pub.id }}" style="display: none;">
+                        <button type="button" class="load-more-btn" onclick="loadMoreComments('{{ pub.id }}')">
                             {% trans "Ver más comentarios" %}
                         </button>
                     </div>
                 </div>
             </article>
-
             {% empty %}
-            <div class="card empty-state">
-                <i class="bi bi-file-post"></i>
-                <h3>{% trans "No hay publicaciones aún" %}</h3>
-                <p>{% trans "Sé el primero en compartir algo" %}</p>
+            <div class="empty-state" style="background: white; border-radius: 8px; border: 1px solid #e5e7eb; padding: 3rem;">
+                <i class="bi bi-file-post" style="font-size: 64px; color: #d1d5db;"></i>
+                <h3 style="margin-top: 1rem; color: #6b7280;">{% trans "No hay publicaciones aún" %}</h3>
+                <p style="color: #9ca3af;">{% trans "Sé el primero en compartir algo" %}</p>
             </div>
             {% endfor %}
-
+            
         </main>
-
+        
         <!-- ========== SIDEBAR DERECHO ========== -->
-        <aside class="feed-right-sidebar">
-            <div class="card card--padded-sm">
-                <h3 class="section-title mb-3">{% trans "Personas que quizás conozcas" %}</h3>
+        <aside class="right-sidebar">
+            <div class="suggestions-card">
+                <h3 class="suggestions-title">{% trans "Personas que quizás conozcas" %}</h3>
                 <div class="empty-state">
-                    <i class="bi bi-people"></i>
-                    <p>{% trans "No hay sugerencias" %}</p>
+                    <i class="bi bi-people" style="font-size: 48px; color: #d1d5db;"></i>
+                    <p style="font-size: 14px; color: #9ca3af; margin-top: 0.5rem;">{% trans "No hay sugerencias" %}</p>
                 </div>
             </div>
         </aside>
-
+        
     </div>
 </div>
 
-<!-- Modal Crear Publicación -->
+<!-- ===== MODAL BOOTSTRAP CREAR PUBLICACIÓN ===== -->
 <div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form id="createPostForm" method="post" action="{% url 'crear_publicacion' %}" enctype="multipart/form-data">
                 {% csrf_token %}
+                
                 <div class="modal-header border-bottom">
                     <h5 class="modal-title fw-bold" id="createPostModalLabel">{% trans "Crear publicación" %}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                
                 <div class="modal-body">
                     <div class="d-flex align-items-center mb-3">
-                        <img src="{{ user.get_avatar_url }}" alt="Avatar" class="avatar avatar-md me-2">
+                        <div class="me-2">
+                            <img src="{{ user.get_avatar_url }}" alt="Avatar" class="avatar-md">
+                        </div>
                         <div>
                             <h6 class="mb-0 fw-bold">{{ user.get_full_name }}</h6>
-                            <small class="text-muted"><i class="bi bi-globe"></i> {% trans "Cualquiera" %}</small>
+                            <small class="text-muted">
+                                <i class="bi bi-globe"></i> {% trans "Cualquiera" %}
+                            </small>
                         </div>
                     </div>
-                    <textarea name="contenido" id="postContent" class="form-control border-0 px-0"
-                        rows="4" placeholder="{% trans '¿Sobre qué quieres hablar?' %}"
-                        style="box-shadow:none;resize:none;font-size:1.1rem;"></textarea>
-                    <div id="mediaPreviewContainer" class="position-relative mt-3" style="display:none;">
-                        <button type="button" class="btn btn-dark btn-sm position-absolute top-0 end-0 m-2 rounded-circle"
-                            onclick="removeMedia()" style="z-index:10;">
+                    
+                    <textarea 
+                        name="contenido" 
+                        id="postContent"
+                        class="form-control border-0 px-0" 
+                        rows="4" 
+                        placeholder="{% trans '¿Sobre qué quieres hablar?' %}" 
+                        style="box-shadow: none; resize: none; font-size: 1.1rem;"></textarea>
+                    
+                    <div id="mediaPreviewContainer" class="position-relative mt-3" style="display: none;">
+                        <button type="button" class="btn btn-dark btn-sm position-absolute top-0 end-0 m-2 rounded-circle" onclick="removeMedia()" style="z-index: 10;">
                             <i class="bi bi-x-lg"></i>
                         </button>
-                        <img id="previewImage" class="img-fluid rounded border" style="display:none;width:100%;">
-                        <video id="previewVideo" controls class="w-100 rounded border" style="display:none;"></video>
+                        <img id="previewImage" class="img-fluid rounded border" style="display: none; width: 100%;">
+                        <video id="previewVideo" controls class="w-100 rounded border" style="display: none;"></video>
                     </div>
-                    <input type="file" name="imagen" id="imageInput" accept="image/*"
-                        style="display:none;" onchange="previewMedia(this, 'image')">
-                    <input type="file" name="video" id="videoInput" accept="video/*"
-                        style="display:none;" onchange="previewMedia(this, 'video')">
+
+                    <input type="file" name="imagen" id="imageInput" accept="image/*" style="display: none;" onchange="previewMedia(this, 'image')">
+                    <input type="file" name="video" id="videoInput" accept="video/*" style="display: none;" onchange="previewMedia(this, 'video')">
                 </div>
+                
                 <div class="modal-footer justify-content-between border-top-0">
                     <div class="d-flex gap-2">
-                        <button type="button" class="btn btn-light rounded-circle p-2"
-                            onclick="document.getElementById('imageInput').click()">
+                        <button type="button" class="btn btn-light rounded-circle p-2" onclick="document.getElementById('imageInput').click()" title="{% trans 'Añadir foto' %}">
                             <i class="bi bi-image fs-5 text-success"></i>
                         </button>
-                        <button type="button" class="btn btn-light rounded-circle p-2"
-                            onclick="document.getElementById('videoInput').click()">
+                        <button type="button" class="btn btn-light rounded-circle p-2" onclick="document.getElementById('videoInput').click()" title="{% trans 'Añadir video' %}">
                             <i class="bi bi-camera-video fs-5 text-danger"></i>
                         </button>
                     </div>
@@ -280,45 +984,49 @@
     </div>
 </div>
 
-<!-- Modal Responder Comentario -->
+<!-- ===== MODAL RESPONDER COMENTARIO ===== -->
 <div class="reply-modal" id="replyModal">
     <div class="reply-dialog">
         <div class="reply-header">
             <h3 class="reply-title">{% trans "Responder comentario" %}</h3>
-            <button type="button" class="btn-icon-round" onclick="closeReplyModal()">
+            <button type="button" class="reply-close" onclick="closeReplyModal()">
                 <i class="bi bi-x-lg"></i>
             </button>
         </div>
+        
         <div class="reply-body">
             <div class="reply-to-comment" id="replyToComment"></div>
+            
             <form id="replyForm" enctype="multipart/form-data">
-                <textarea id="replyContent" class="comment-input w-100" rows="3"
+                <textarea 
+                    id="replyContent" 
+                    class="comment-input w-100" 
+                    rows="3" 
                     placeholder="{% trans 'Escribe tu respuesta...' %}"
-                    oninput="toggleReplySubmit()"></textarea>
-                <div class="comment-media-preview" id="replyPreview" style="display:none;">
+                    oninput="toggleReplySubmit()"
+                ></textarea>
+                
+                <div class="comment-media-preview" id="replyPreview" style="display: none;">
                     <button type="button" class="remove-comment-media" onclick="removeReplyMedia()">
                         <i class="bi bi-x"></i>
                     </button>
-                    <img id="replyImgPreview" style="display:none;">
-                    <video id="replyVideoPreview" controls style="display:none;"></video>
+                    <img id="replyImgPreview" style="display: none;">
+                    <video id="replyVideoPreview" controls style="display: none;"></video>
                 </div>
-                <input type="file" id="replyImgInput" accept="image/*" style="display:none;"
-                    onchange="previewReplyMedia('image')">
-                <input type="file" id="replyVideoInput" accept="video/*" style="display:none;"
-                    onchange="previewReplyMedia('video')">
+                
+                <input type="file" id="replyImgInput" accept="image/*" style="display: none;" onchange="previewReplyMedia('image')">
+                <input type="file" id="replyVideoInput" accept="video/*" style="display: none;" onchange="previewReplyMedia('video')">
+                
                 <div class="comment-actions mt-3">
                     <div class="comment-media-btns">
-                        <button type="button" class="comment-media-btn"
-                            onclick="document.getElementById('replyImgInput').click()">
+                        <button type="button" class="comment-media-btn" onclick="document.getElementById('replyImgInput').click()">
                             <i class="bi bi-image"></i>
                         </button>
-                        <button type="button" class="comment-media-btn"
-                            onclick="document.getElementById('replyVideoInput').click()">
+                        <button type="button" class="comment-media-btn" onclick="document.getElementById('replyVideoInput').click()">
                             <i class="bi bi-camera-video"></i>
                         </button>
                     </div>
-                    <button type="button" class="comment-submit" id="replySubmitBtn"
-                        onclick="submitReply()" disabled>
+                    <button type="button" class="comment-submit" id="replySubmitBtn" onclick="submitReply()" disabled>
                         {% trans "Responder" %}
                     </button>
                 </div>
@@ -329,173 +1037,336 @@
 {% endblock %}
 
 {% block extra_js %}
-{# El JS del feed no tenía CSS inline así que se conserva intacto #}
 <script>
+// ===== VARIABLES GLOBALES =====
 const csrftoken = '{{ csrf_token }}';
-let currentReplyData = { publicacionId: null, comentarioPadreId: null };
+let currentReplyData = {
+    publicacionId: null,
+    comentarioPadreId: null
+};
 let commentsOffset = {};
 
+// ===== VALIDACIÓN FORMULARIO PUBLICACIÓN =====
 const postContent = document.getElementById('postContent');
 const submitPost = document.getElementById('submitPost');
 const imageInput = document.getElementById('imageInput');
 const videoInput = document.getElementById('videoInput');
 
 function validatePostForm() {
-    submitPost.disabled = !(postContent.value.trim() || imageInput.files.length || videoInput.files.length);
+    const hasText = postContent.value.trim().length > 0;
+    const hasImage = imageInput.files.length > 0;
+    const hasVideo = videoInput.files.length > 0;
+    submitPost.disabled = !(hasText || hasImage || hasVideo);
 }
+
 postContent.addEventListener('input', validatePostForm);
 
+// ===== PREVISUALIZACIÓN DE MEDIA (PUBLICACIÓN) =====
 function previewMedia(input, type) {
     const file = input.files[0];
     if (!file) return;
+
     const container = document.getElementById('mediaPreviewContainer');
     const img = document.getElementById('previewImage');
     const video = document.getElementById('previewVideo');
+
     const reader = new FileReader();
-    reader.onload = e => {
+    reader.onload = function(e) {
         container.style.display = 'block';
-        if (type === 'image') { img.src = e.target.result; img.style.display = 'block'; video.style.display = 'none'; videoInput.value = ''; }
-        else { video.src = e.target.result; video.style.display = 'block'; img.style.display = 'none'; imageInput.value = ''; }
+        if (type === 'image') {
+            img.src = e.target.result;
+            img.style.display = 'block';
+            video.style.display = 'none';
+            videoInput.value = '';
+        } else {
+            video.src = e.target.result;
+            video.style.display = 'block';
+            img.style.display = 'none';
+            imageInput.value = '';
+        }
         validatePostForm();
-    };
+    }
     reader.readAsDataURL(file);
 }
 
 function removeMedia() {
     document.getElementById('mediaPreviewContainer').style.display = 'none';
-    imageInput.value = ''; videoInput.value = '';
+    imageInput.value = '';
+    videoInput.value = '';
     document.getElementById('previewImage').src = '';
     document.getElementById('previewVideo').src = '';
     validatePostForm();
 }
 
-document.getElementById('createPostModal').addEventListener('hidden.bs.modal', () => {
+// ===== RESET MODAL AL CERRAR =====
+const createPostModal = document.getElementById('createPostModal');
+createPostModal.addEventListener('hidden.bs.modal', function () {
     document.getElementById('createPostForm').reset();
     removeMedia();
 });
 
+// ===== PREVISUALIZACIÓN MEDIA COMENTARIOS =====
+
+function renderComments(comentarios, container) {
+    comentarios.forEach(comentario => {
+        const div = document.createElement('div');
+        div.className = `comment level-${comentario.nivel}`;
+        
+        let mediaHtml = '';
+        if (comentario.imagen) {
+            mediaHtml = `<img src="${comentario.imagen}" class="comment-media-img">`;
+        } else if (comentario.video) {
+            mediaHtml = `<video src="${comentario.video}" controls class="comment-media-img"></video>`;
+        }
+        
+        // ✅ Mostrar mensaje de bloqueado si no está activo
+        const contenidoDisplay = comentario.is_active ? comentario.contenido : '<em style="color: #9ca3af;">{% trans "[Comentario bloqueado por el Administrador]" %}</em>';
+        
+        div.innerHTML = `
+            <img src="${comentario.autor_avatar}" alt="Avatar" class="avatar-sm">
+            <div class="comment-body">
+                <div class="comment-author">${comentario.autor}</div>
+                <div class="comment-text">${contenidoDisplay}</div>
+                ${comentario.is_active ? mediaHtml : ''}
+                <div class="comment-meta">
+                    <span>${comentario.fecha}</span>
+                    ${comentario.is_active && comentario.nivel < 3 ? `<span class="comment-action" onclick="openReplyModal(${comentario.id}, '${comentario.autor}', '${comentario.contenido}')">{% trans "Responder" %}</span>` : ''}
+                    ${comentario.total_respuestas > 0 ? `<span>${comentario.total_respuestas} respuesta${comentario.total_respuestas > 1 ? 's' : ''}</span>` : ''}
+                </div>
+            </div>
+        `;
+        container.appendChild(div);
+        
+        if (comentario.respuestas && comentario.respuestas.length > 0) {
+            renderComments(comentario.respuestas, container);
+        }
+    });
+}
+
 function previewCommentMedia(pubId, type) {
     const input = document.getElementById(`comment-${type}-input-${pubId}`);
-    const file = input.files[0]; if (!file) return;
+    const file = input.files[0];
+    if (!file) return;
+
     const preview = document.getElementById(`comment-preview-${pubId}`);
     const img = document.getElementById(`comment-img-${pubId}`);
     const video = document.getElementById(`comment-video-${pubId}`);
+
     const reader = new FileReader();
-    reader.onload = e => {
+    reader.onload = function(e) {
         preview.style.display = 'block';
-        if (type === 'image') { img.src = e.target.result; img.style.display = 'block'; video.style.display = 'none'; document.getElementById(`comment-video-input-${pubId}`).value = ''; }
-        else { video.src = e.target.result; video.style.display = 'block'; img.style.display = 'none'; document.getElementById(`comment-img-input-${pubId}`).value = ''; }
-    };
+        if (type === 'image') {
+            img.src = e.target.result;
+            img.style.display = 'block';
+            video.style.display = 'none';
+            document.getElementById(`comment-video-input-${pubId}`).value = '';
+        } else {
+            video.src = e.target.result;
+            video.style.display = 'block';
+            img.style.display = 'none';
+            document.getElementById(`comment-img-input-${pubId}`).value = '';
+        }
+    }
     reader.readAsDataURL(file);
 }
 
 function removeCommentMedia(pubId) {
-    document.getElementById(`comment-preview-${pubId}`).style.display = 'none';
+    const preview = document.getElementById(`comment-preview-${pubId}`);
+    preview.style.display = 'none';
     document.getElementById(`comment-img-input-${pubId}`).value = '';
     document.getElementById(`comment-video-input-${pubId}`).value = '';
 }
 
 function toggleCommentSubmit(textarea) {
-    textarea.closest('form').querySelector('.comment-submit').disabled = !textarea.value.trim();
+    const form = textarea.closest('form');
+    const btn = form.querySelector('.comment-submit');
+    btn.disabled = textarea.value.trim().length === 0;
 }
 
+// ===== LIKES =====
 function toggleLike(publicacionId, button) {
-    fetch(`/feed/post/${publicacionId}/like/`, { method: 'POST', headers: { 'X-CSRFToken': csrftoken, 'Content-Type': 'application/json' } })
-        .then(r => r.json()).then(data => {
-            if (data.success) {
-                const icon = button.querySelector('i');
-                button.classList.toggle('liked', data.liked);
-                icon.className = data.liked ? 'bi bi-hand-thumbs-up-fill' : 'bi bi-hand-thumbs-up';
-                const span = document.querySelector(`[data-likes="${publicacionId}"]`);
-                if (span) span.textContent = data.total_likes;
+    fetch(`/feed/post/${publicacionId}/like/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken,
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const icon = button.querySelector('i');
+            if (data.liked) {
+                button.classList.add('liked');
+                icon.className = 'bi bi-hand-thumbs-up-fill';
+            } else {
+                button.classList.remove('liked');
+                icon.className = 'bi bi-hand-thumbs-up';
             }
-        });
+            
+            const likesSpan = document.querySelector(`[data-likes="${publicacionId}"]`);
+            if (likesSpan) {
+                likesSpan.textContent = data.total_likes;
+            }
+        }
+    })
+    .catch(error => console.error('Error:', error));
 }
 
+// ===== SEGUIR/DEJAR DE SEGUIR =====
 function toggleFollow(usuarioId, button) {
-    fetch(`/feed/user/${usuarioId}/follow/`, { method: 'POST', headers: { 'X-CSRFToken': csrftoken, 'Content-Type': 'application/json' } })
-        .then(r => r.json()).then(data => {
-            if (data.success) {
-                const text = button.querySelector('.follow-text');
-                button.classList.toggle('following', data.siguiendo);
-                text.textContent = data.siguiendo ? '{% trans "Siguiendo" %}' : '{% trans "Seguir" %}';
+    fetch(`/feed/user/${usuarioId}/follow/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken,
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const text = button.querySelector('.follow-text');
+            if (data.siguiendo) {
+                button.classList.add('following');
+                text.textContent = '{% trans "Siguiendo" %}';
+            } else {
+                button.classList.remove('following');
+                text.textContent = '{% trans "Seguir" %}';
             }
-        });
+        }
+    })
+    .catch(error => console.error('Error:', error));
 }
 
+// ===== COMENTARIOS =====
 function toggleComments(publicacionId) {
     const section = document.getElementById(`comments-${publicacionId}`);
-    section.classList.toggle('active');
-    if (section.classList.contains('active') && !commentsOffset[publicacionId]) {
-        commentsOffset[publicacionId] = 0;
-        loadComments(publicacionId);
+    const isActive = section.classList.contains('active');
+    
+    if (!isActive) {
+        section.classList.add('active');
+        if (!commentsOffset[publicacionId]) {
+            commentsOffset[publicacionId] = 0;
+            loadComments(publicacionId);
+        }
+    } else {
+        section.classList.remove('active');
     }
 }
 
 function loadComments(publicacionId, loadMore = false) {
-    if (!loadMore) commentsOffset[publicacionId] = 0;
+    if (!loadMore) {
+        commentsOffset[publicacionId] = 0;
+    }
+    
     const list = document.getElementById(`comments-list-${publicacionId}`);
-    const limit = 3, offset = commentsOffset[publicacionId];
+    const limit = 3;
+    const offset = commentsOffset[publicacionId];
+    
     fetch(`/feed/post/${publicacionId}/comments/?limit=${limit}&offset=${offset}`)
-        .then(r => r.json()).then(data => {
+        .then(response => response.json())
+        .then(data => {
             if (data.success) {
-                if (!loadMore) list.innerHTML = '';
+                if (!loadMore) {
+                    list.innerHTML = '';
+                }
+                
                 renderComments(data.comentarios, list);
-                const btn = document.getElementById(`load-more-${publicacionId}`);
-                btn.style.display = data.has_more ? 'block' : 'none';
-                if (data.has_more) commentsOffset[publicacionId] = offset + limit;
+                
+                const loadMoreBtn = document.getElementById(`load-more-${publicacionId}`);
+                if (data.has_more) {
+                    loadMoreBtn.style.display = 'block';
+                    commentsOffset[publicacionId] = offset + limit;
+                } else {
+                    loadMoreBtn.style.display = 'none';
+                }
             }
-        });
+        })
+        .catch(error => console.error('Error:', error));
 }
 
-function loadMoreComments(publicacionId) { loadComments(publicacionId, true); }
+function loadMoreComments(publicacionId) {
+    loadComments(publicacionId, true);
+}
 
 function renderComments(comentarios, container) {
-    comentarios.forEach(c => {
+    comentarios.forEach(comentario => {
         const div = document.createElement('div');
-        div.className = `comment level-${c.nivel}`;
-        const media = c.imagen ? `<img src="${c.imagen}" class="comment-media-img">` : c.video ? `<video src="${c.video}" controls class="comment-media-img"></video>` : '';
-        const contenido = c.is_active ? c.contenido : '<em style="color:#9ca3af;">{% trans "[Comentario bloqueado por el Administrador]" %}</em>';
+        div.className = `comment level-${comentario.nivel}`;
+        
+        let mediaHtml = '';
+        if (comentario.imagen) {
+            mediaHtml = `<img src="${comentario.imagen}" class="comment-media-img">`;
+        } else if (comentario.video) {
+            mediaHtml = `<video src="${comentario.video}" controls class="comment-media-img"></video>`;
+        }
+        
         div.innerHTML = `
-            <img src="${c.autor_avatar}" alt="Avatar" class="avatar avatar-sm">
+            <img src="${comentario.autor_avatar}" alt="Avatar" class="avatar-sm">
             <div class="comment-body">
-                <div class="comment-author">${c.autor}</div>
-                <div class="comment-text">${contenido}</div>
-                ${c.is_active ? media : ''}
+                <div class="comment-author">${comentario.autor}</div>
+                <div class="comment-text">${comentario.contenido}</div>
+                ${mediaHtml}
                 <div class="comment-meta">
-                    <span>${c.fecha}</span>
-                    ${c.is_active && c.nivel < 3 ? `<span class="comment-action" onclick="openReplyModal(${c.id},'${c.autor}','${c.contenido}')">{% trans "Responder" %}</span>` : ''}
-                    ${c.total_respuestas > 0 ? `<span>${c.total_respuestas} respuesta${c.total_respuestas > 1 ? 's' : ''}</span>` : ''}
+                    <span>${comentario.fecha}</span>
+                    ${comentario.nivel < 3 ? `<span class="comment-action" onclick="openReplyModal(${comentario.id}, '${comentario.autor}', '${comentario.contenido}')">{% trans "Responder" %}</span>` : ''}
+                    ${comentario.total_respuestas > 0 ? `<span>${comentario.total_respuestas} respuesta${comentario.total_respuestas > 1 ? 's' : ''}</span>` : ''}
                 </div>
-            </div>`;
+            </div>
+        `;
         container.appendChild(div);
-        if (c.respuestas?.length) renderComments(c.respuestas, container);
+        
+        if (comentario.respuestas && comentario.respuestas.length > 0) {
+            renderComments(comentario.respuestas, container);
+        }
     });
 }
 
 function submitComment(event, publicacionId) {
     event.preventDefault();
+    
     const form = event.target;
-    fetch(`/feed/post/${publicacionId}/comment/`, { method: 'POST', headers: { 'X-CSRFToken': csrftoken }, body: new FormData(form) })
-        .then(r => r.json()).then(data => {
-            if (data.success) {
-                loadComments(publicacionId);
-                const counter = document.querySelector(`[data-comments="${publicacionId}"]`);
-                if (counter) counter.textContent = data.total_comentarios;
-                form.reset();
-                form.querySelector('.comment-input').style.height = 'auto';
-                form.querySelector('.comment-submit').disabled = true;
-                removeCommentMedia(publicacionId);
+    const formData = new FormData(form);
+    
+    fetch(`/feed/post/${publicacionId}/comment/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken,
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            loadComments(publicacionId);
+            
+            const counter = document.querySelector(`[data-comments="${publicacionId}"]`);
+            if (counter) {
+                counter.textContent = data.total_comentarios;
             }
-        });
+            
+            form.reset();
+            form.querySelector('.comment-input').style.height = 'auto';
+            form.querySelector('.comment-submit').disabled = true;
+            removeCommentMedia(publicacionId);
+        }
+    })
+    .catch(error => console.error('Error:', error));
 }
 
+// ===== MODAL RESPONDER =====
 function openReplyModal(comentarioId, autorNombre, contenido) {
-    const publicacionId = document.querySelector('[data-post-id]').dataset.postId;
-    currentReplyData = { publicacionId, comentarioPadreId: comentarioId };
+    const publicacionId = document.querySelector(`[data-post-id]`).dataset.postId;
+    currentReplyData = {
+        publicacionId: publicacionId,
+        comentarioPadreId: comentarioId
+    };
+    
     document.getElementById('replyToComment').innerHTML = `
         <div class="reply-to-author">{% trans "Respondiendo a" %} ${autorNombre}</div>
-        <div class="reply-to-text">${contenido.substring(0, 100)}${contenido.length > 100 ? '...' : ''}</div>`;
+        <div class="reply-to-text">${contenido.substring(0, 100)}${contenido.length > 100 ? '...' : ''}</div>
+    `;
+    
     document.getElementById('replyModal').classList.add('active');
     document.body.style.overflow = 'hidden';
 }
@@ -509,16 +1380,28 @@ function closeReplyModal() {
 
 function previewReplyMedia(type) {
     const input = document.getElementById(type === 'image' ? 'replyImgInput' : 'replyVideoInput');
-    const file = input.files[0]; if (!file) return;
+    const file = input.files[0];
+    if (!file) return;
+
     const preview = document.getElementById('replyPreview');
     const img = document.getElementById('replyImgPreview');
     const video = document.getElementById('replyVideoPreview');
+
     const reader = new FileReader();
-    reader.onload = e => {
+    reader.onload = function(e) {
         preview.style.display = 'block';
-        if (type === 'image') { img.src = e.target.result; img.style.display = 'block'; video.style.display = 'none'; document.getElementById('replyVideoInput').value = ''; }
-        else { video.src = e.target.result; video.style.display = 'block'; img.style.display = 'none'; document.getElementById('replyImgInput').value = ''; }
-    };
+        if (type === 'image') {
+            img.src = e.target.result;
+            img.style.display = 'block';
+            video.style.display = 'none';
+            document.getElementById('replyVideoInput').value = '';
+        } else {
+            video.src = e.target.result;
+            video.style.display = 'block';
+            img.style.display = 'none';
+            document.getElementById('replyImgInput').value = '';
+        }
+    }
     reader.readAsDataURL(file);
 }
 
@@ -530,28 +1413,42 @@ function removeReplyMedia() {
 
 function toggleReplySubmit() {
     const content = document.getElementById('replyContent').value.trim();
-    const hasImg = document.getElementById('replyImgInput').files.length > 0;
+    const hasImage = document.getElementById('replyImgInput').files.length > 0;
     const hasVideo = document.getElementById('replyVideoInput').files.length > 0;
-    document.getElementById('replySubmitBtn').disabled = !(content || hasImg || hasVideo);
+    document.getElementById('replySubmitBtn').disabled = !(content.length > 0 || hasImage || hasVideo);
 }
 
 function submitReply() {
     const formData = new FormData();
     formData.append('contenido', document.getElementById('replyContent').value);
     formData.append('comentario_padre_id', currentReplyData.comentarioPadreId);
+    
     const imgFile = document.getElementById('replyImgInput').files[0];
     const videoFile = document.getElementById('replyVideoInput').files[0];
+    
     if (imgFile) formData.append('imagen', imgFile);
     if (videoFile) formData.append('video', videoFile);
-    fetch(`/feed/post/${currentReplyData.publicacionId}/comment/`, { method: 'POST', headers: { 'X-CSRFToken': csrftoken }, body: formData })
-        .then(r => r.json()).then(data => {
-            if (data.success) {
-                closeReplyModal();
-                loadComments(currentReplyData.publicacionId);
-                const counter = document.querySelector(`[data-comments="${currentReplyData.publicacionId}"]`);
-                if (counter) counter.textContent = data.total_comentarios;
+    
+    fetch(`/feed/post/${currentReplyData.publicacionId}/comment/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken,
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            closeReplyModal();
+            loadComments(currentReplyData.publicacionId);
+            
+            const counter = document.querySelector(`[data-comments="${currentReplyData.publicacionId}"]`);
+            if (counter) {
+                counter.textContent = data.total_comentarios;
             }
-        });
+        }
+    })
+    .catch(error => console.error('Error:', error));
 }
 </script>
 {% endblock %}
