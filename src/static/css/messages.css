@@ -141,7 +141,6 @@
     border-left: 3px solid var(--lx-primary);
 }
 
-/* Wrapper usado en message_list */
 .conversation-avatar {
     width: 56px;
     height: 56px;
@@ -162,7 +161,6 @@
     min-width: 0;
 }
 
-/* Nombre grande (message_list) */
 .conversation-name {
     font-size: 16px;
     font-weight: 600;
@@ -1099,9 +1097,9 @@
 }
 
 /* ========== VARIANTE: CONTACTO ACTIVO GRIS OSCURO ========== */
+/* Si prefieres gris oscuro en lugar de azul, usa esto: */
 
-
-
+/*
 .conversation-item.active {
     background: #374151;
     border-left: 3px solid #1f2937;
@@ -1123,6 +1121,7 @@
 .conversation-item.active:hover {
     background: #374151;
 }
+*/
 
 /* ========== RESPONSIVE DROPDOWN ========== */
 @media (max-width: 480px) {

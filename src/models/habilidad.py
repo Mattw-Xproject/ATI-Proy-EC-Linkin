@@ -15,7 +15,8 @@ class Habilidad(models.Model):
     
     nombre = models.CharField(
         max_length=100,
-        verbose_name=_("Nombre de la habilidad")
+        verbose_name=_("Nombre de la habilidad"),
+        db_index=True  # ✅ Índice para búsquedas rápidas
     )
     
     nivel = models.CharField(
@@ -34,12 +35,16 @@ class Habilidad(models.Model):
         auto_now_add=True,
         verbose_name=_("Fecha agregada")
     )
-    
+
     class Meta:
         verbose_name = _("Habilidad")
         verbose_name_plural = _("Habilidades")
         ordering = ['-fecha_agregada']
         unique_together = ['profesional', 'nombre']
+        indexes = [
+            models.Index(fields=['nombre']),  # ✅ Índice compuesto
+            models.Index(fields=['profesional', 'nombre']),
+        ]
     
     def __str__(self):
-        return f"{self.nombre} ({self.nivel})"
+        return f"{self.nombre} - {self.profesional.user.get_full_name()}"
