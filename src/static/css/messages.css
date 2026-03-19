@@ -141,6 +141,7 @@
     border-left: 3px solid var(--lx-primary);
 }
 
+/* Wrapper usado en message_list */
 .conversation-avatar {
     width: 56px;
     height: 56px;
@@ -161,6 +162,7 @@
     min-width: 0;
 }
 
+/* Nombre grande (message_list) */
 .conversation-name {
     font-size: 16px;
     font-weight: 600;

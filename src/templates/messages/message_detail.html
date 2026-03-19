@@ -15,9 +15,9 @@
 
 {% block content %}
 <div class="messenger-container">
-    <div class="messenger-layout" id="messengerLayout">
-
-        <!-- Columna izquierda — lista de conversaciones -->
+    <div class="messenger-layout messenger-layout--detail" id="messengerLayout">
+        
+        <!-- Columna izquierda — lista conversaciones -->
         <div class="conversations-column">
             <div class="conversations-header">
                 <div class="conversations-title-row">
@@ -36,7 +36,7 @@
                     <input type="text" placeholder="{% trans 'Buscar' %}" id="searchInput">
                 </div>
             </div>
-
+            
             <div class="conversations-list">
                 {% for conv_data in conversaciones_data %}
                 <a href="{% url 'message_detail' conv_data.conversacion.id %}"
@@ -70,10 +70,10 @@
                 {% endfor %}
             </div>
         </div>
-
-        <!-- Columna central — área de chat -->
+        
+        <!-- Columna central — chat -->
         <div class="chat-column">
-
+            
             <div class="chat-header">
                 <!-- Botón Atrás (visible solo en mobile) -->
                 <a href="{% url 'message_list' %}" class="header-btn" style="display: none;" id="backButton">
@@ -101,7 +101,7 @@
                     </button>
                 </div>
             </div>
-
+            
             {% if es_solicitud_pendiente %}
             <div class="request-banner">
                 <div class="request-banner-info">
@@ -112,13 +112,13 @@
                     </div>
                 </div>
                 <div class="request-banner-actions">
-                    <form method="post" action="{% url 'accept_conversation' conversacion.id %}">
+                    <form method="post" action="{% url 'accept_conversation' conversacion.id %}" style="display: inline;">
                         {% csrf_token %}
                         <button type="submit" class="btn-accept-request">
                             <i class="bi bi-check-lg me-1"></i> {% trans "Aceptar" %}
                         </button>
                     </form>
-                    <form method="post" action="{% url 'reject_conversation' conversacion.id %}">
+                    <form method="post" action="{% url 'reject_conversation' conversacion.id %}" style="display: inline;">
                         {% csrf_token %}
                         <button type="submit" class="btn-reject-request">
                             <i class="bi bi-x-lg me-1"></i> {% trans "Rechazar" %}
@@ -127,7 +127,7 @@
                 </div>
             </div>
             {% endif %}
-
+            
             {% if es_bloqueada %}
             <div class="blocked-banner">
                 <h4><i class="bi bi-slash-circle me-2"></i>{% trans "Conversación bloqueada" %}</h4>
@@ -137,7 +137,7 @@
                 </p>
             </div>
             {% endif %}
-
+            
             <div class="chat-messages" id="chatMessages">
                 {% regroup mensajes by fecha_envio.date as mensajes_por_dia %}
                 {% for dia in mensajes_por_dia %}
@@ -161,7 +161,7 @@
                 </div>
                 {% endfor %}
             </div>
-
+            
             {% if not es_bloqueada and conversacion.estado == 'aceptada' or conversacion.participante_1 == request.user %}
             <div class="chat-input-area">
                 <form id="messageForm" method="post" action="{% url 'send_message' conversacion.id %}">
@@ -180,7 +180,7 @@
                 </form>
             </div>
             {% endif %}
-
+            
         </div>
 
         <!-- Columna derecha — panel de perfil -->
@@ -188,11 +188,11 @@
             <button type="button" class="profile-close-btn" onclick="toggleProfilePanel()">
                 <i class="bi bi-x-lg"></i>
             </button>
-
-            <div class="profile-panel-header">
-                <img src="{{ otro_usuario.get_avatar_url }}" alt="Avatar" class="profile-panel-avatar">
-                <div class="profile-panel-name">{{ otro_usuario.get_full_name }}</div>
-                <div class="profile-panel-status">
+            
+            <div class="profile-header">
+                <img src="{{ otro_usuario.get_avatar_url }}" alt="Avatar" class="profile-header-avatar">
+                <div class="profile-header-name">{{ otro_usuario.get_full_name }}</div>
+                <div class="profile-header-status">
                     {% if otro_usuario.tipo_usuario == 'profesional' %}
                         {{ otro_usuario.profesional.titulo_actual|default:"Profesional" }}
                     {% elif otro_usuario.tipo_usuario == 'empresa' %}
@@ -269,7 +269,7 @@
             </div>
 
         </div>
-
+        
     </div>
 </div>
 

@@ -43,6 +43,7 @@
   bottom: 0;
 }
 .bottom-navbar a {
+  color: var(--lx-gray-600);
   width: 40px;
   height: 40px;
   display: flex;
@@ -51,6 +52,9 @@
 }
 .bottom-navbar i {
   font-size: 25px;
+}
+.navBarActive {
+  color: var(--lx-primary) !important;
 }
 
 /* ============================================================

@@ -10,14 +10,14 @@
 
 {% block content %}
 <div class="auth-page">
-    <div class="auth-form-col">
-        <div class="auth-form-wrapper auth-form-wrapper--wide">
-
+    <div class="auth-form-container">
+        <div class="auth-form-wrapper">
+            
             <div class="auth-header">
                 <h1>{% trans "Crear Cuenta" %}</h1>
                 <p>{% trans "¿Qué estás buscando?" %}</p>
             </div>
-
+            
             <div class="role-buttons">
                 <a href="{% url 'auth_register_profesional' %}" class="role-card">
                     <div class="role-icon" aria-hidden="true">🎓</div>
@@ -26,7 +26,7 @@
                         {% trans "Soy estudiante o profesional buscando oportunidades laborales" %}
                     </p>
                 </a>
-
+                
                 <a href="{% url 'auth_register_empresa' %}" class="role-card">
                     <div class="role-icon" aria-hidden="true">🏢</div>
                     <h2 class="role-title">{% trans "Estoy buscando un equipo de trabajo" %}</h2>
@@ -35,19 +35,19 @@
                     </p>
                 </a>
             </div>
-
+            
             <div class="auth-footer">
                 {% trans "¿Ya tienes cuenta?" %}
                 <a href="{% url 'auth_login' %}">{% trans "Inicia sesión" %}</a>
             </div>
-
+            
         </div>
     </div>
-
-    <div class="auth-brand-col">
+    
+    <div class="auth-brand-panel">
         <div class="brand-content">
             <div class="brand-logo">
-                <img src="{% static 'img/logo-icon.png' %}" alt="Linking X Logo">
+                <img src="{% static 'img/logo-icon.png' %}" alt="Linking X Logo" style="max-width:84%; max-height:84%; object-fit:contain;">
             </div>
             <h2>Linking X</h2>
             <p>{% trans "Conectando talento con oportunidades. Tu futuro profesional comienza aquí." %}</p>
