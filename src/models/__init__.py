@@ -13,8 +13,9 @@ from .experiencia_laboral import ExperienciaLaboral
 from .oferta_empleo import OfertaEmpleo
 from .postulacion import Postulacion
 #from .notificacion import Notificacion
-from .conversacion import Conversacion
 from .mensaje import Mensaje
+from .conversacion import Conversacion
+
 
 __all__ = [
     'Usuario',
@@ -30,8 +31,9 @@ __all__ = [
     'OfertaEmpleo',
     'Postulacion',
     'Notificacion',
-    'Conversacion',
     'Mensaje',
+    'Conversacion',
+    
     'message_list',
     'message_detail',
     'job_list',
