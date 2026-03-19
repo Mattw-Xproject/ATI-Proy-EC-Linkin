@@ -1,4 +1,7 @@
 from django.urls import path
+
+from .views import search
+from .views import notifications
 from .views import (
     auth_login,
     auth_logout,
@@ -19,9 +22,11 @@ from .views import (
     add_section,
     job_applicants,
     job_manage,
+    jobs,
     feed,
 )
 from .views import api
+
 urlpatterns = [
     # Authentication
     path('login/', auth_login.login_view, name='auth_login'),
@@ -54,7 +59,6 @@ urlpatterns = [
     path('jobs/', job_list, name='job_list'),
     path('jobs/<int:job_id>/', job_detail.job_detail, name='job_detail'),
     path('jobs/<int:job_id>/apply/', job_apply.job_apply, name='job_apply'),
-    path('jobs/<int:job_id>/save/', job_apply.job_save, name='job_save'),
     # Messages
     path('messages/', message_list.message_list, name='message_list'),
     path('messages/<int:conversation_id>/', message_detail.message_detail, name='message_detail'),
@@ -95,4 +99,19 @@ urlpatterns = [
     path('feed/post/<int:publicacion_id>/comment/', feed.crear_comentario, name='crear_comentario'),
     path('feed/post/<int:publicacion_id>/comments/', feed.cargar_comentarios, name='cargar_comentarios'),
     path('feed/user/<int:usuario_id>/follow/', feed.toggle_seguir, name='toggle_seguir'),
+
+     # Search
+    path('search/', search.search_general, name='search_general'),
+    path('search/jobs/', search.search_jobs, name='search_jobs'),
+    path('search/talent/', search.search_talent, name='search_talent'),
+    path('search/jobs/advanced/', jobs.busqueda_avanzada_empleos, name='busqueda_avanzada_empleos'),
+    
+    path('jobs/<int:job_id>/save/', jobs.guardar_empleo, name='guardar_empleo'),
+    path('jobs/saved/', jobs.empleos_guardados, name='empleos_guardados'),
+
+    path('notifications/', notifications.notifications_list, name='notifications_list'),
+    path('notifications/<int:notification_id>/read/', notifications.mark_as_read, name='mark_notification_read'),
+    path('notifications/mark-all-read/', notifications.mark_all_as_read, name='mark_all_notifications_read'),
+    path('notifications/<int:notification_id>/delete/', notifications.delete_notification, name='delete_notification'),
+    path('api/notifications/count/', notifications.get_notifications_count, name='notifications_count'),
 ]
