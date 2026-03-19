@@ -35,7 +35,7 @@ git clone https://github.com/Mattw-Xproject/ATI-Proy-EC-Linkin.git
 No necesitas instalar Python ni crear entornos virtuales manualmente. Docker se encarga de todo.
 
 - Para iniciar el servidor: ```bash sudo docker compose up ```
-- El sistema estará disponible en: http://localhost:8000
+- El sistema estará disponible en: http://localhost
 - Si no levanta o agregaste nuevas librerías: Si la imagen no carga o modificaste el requirements.txt, fuerza la reconstrucción: 
 ```bash
 sudo docker compose up -d --build

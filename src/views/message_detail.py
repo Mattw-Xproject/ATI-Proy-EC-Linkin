@@ -41,8 +41,6 @@ def message_detail(request, conversation_id):
     # Obtener todas las conversaciones para el sidebar
     conversaciones = Conversacion.objects.filter(
         Q(participante_1=request.user) | Q(participante_2=request.user)
-    ).exclude(
-        id=conversation_id
     ).order_by('-fecha_actualizacion')
     
     conversaciones_data = []

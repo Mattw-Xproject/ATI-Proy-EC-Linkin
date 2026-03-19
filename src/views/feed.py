@@ -3,7 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import Count, Exists, OuterRef, Q
 from django.utils.translation import gettext as _
+from django.contrib import messages
 from src.models import Publicacion, Comentario, Like, Seguidor, Usuario
+
 
 @login_required
 def feed_home(request):
@@ -45,6 +47,19 @@ def crear_publicacion(request):
         contenido = request.POST.get('contenido', '').strip()
         imagen = request.FILES.get('imagen')
         video = request.FILES.get('video')
+
+        # Límite de 10 MB en bytes
+        MAX_SIZE = 10 * 1024 * 1024
+
+        # Validar tamaño de imagen
+        if imagen and imagen.size > MAX_SIZE:
+            messages.error(request, _('La imagen excede el límite permitido de 10MB.'))
+            return redirect('feed_home')
+            
+        # Validar tamaño de video
+        if video and video.size > MAX_SIZE:
+            messages.error(request, _('El video excede el límite permitido de 10MB.'))
+            return redirect('feed_home')
         
         if contenido or imagen or video:
             publicacion = Publicacion.objects.create(
@@ -53,6 +68,7 @@ def crear_publicacion(request):
                 imagen=imagen,
                 video=video
             )
+            messages.success(request, _('Publicación creada exitosamente.'))
             return redirect('feed_home')
     
     return redirect('feed_home')

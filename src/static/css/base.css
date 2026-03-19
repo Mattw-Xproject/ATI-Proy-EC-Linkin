@@ -22,11 +22,13 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 /* ========== TYPOGRAPHY ========== */
 
-h1, .h1 {
+h1,
+.h1 {
   font-size: var(--mobile-h1-size);
   line-height: var(--mobile-h1-line);
   font-weight: var(--mobile-h1-weight);
@@ -34,24 +36,28 @@ h1, .h1 {
   color: var(--color-black-800);
 }
 
-h2, .h2 {
+h2,
+.h2 {
   font-size: var(--mobile-h2-size);
   line-height: var(--mobile-h2-line);
   font-weight: var(--mobile-h2-weight);
 }
 
-h3, .h3 {
+h3,
+.h3 {
   font-size: var(--mobile-h3-size);
   line-height: var(--mobile-h3-line);
   font-weight: var(--mobile-h3-weight);
 }
 
-p, .body {
+p,
+.body {
   font-size: var(--mobile-body-size);
   line-height: var(--mobile-body-line);
 }
 
-small, .small {
+small,
+.small {
   font-size: var(--mobile-small-size);
   line-height: var(--mobile-small-line);
 }
@@ -64,18 +70,21 @@ small, .small {
 
 /* Desktop Typography Override */
 @media (min-width: 1024px) {
-  h1, .h1 {
+  h1,
+  .h1 {
     font-size: var(--desktop-h1-size);
     line-height: var(--desktop-h1-line);
     letter-spacing: var(--desktop-h1-spacing);
   }
-  
-  h2, .h2 {
+
+  h2,
+  .h2 {
     font-size: var(--desktop-h2-size);
     line-height: var(--desktop-h2-line);
   }
-  
-  h3, .h3 {
+
+  h3,
+  .h3 {
     font-size: var(--desktop-h3-size);
     line-height: var(--desktop-h3-line);
   }
@@ -129,21 +138,51 @@ main {
   border-width: 0;
 }
 
-.text-center { text-align: center; }
-.text-right { text-align: right; }
-.text-left { text-align: left; }
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.text-left {
+  text-align: left;
+}
 
-.mt-1 { margin-top: var(--space-1); }
-.mt-2 { margin-top: var(--space-2); }
-.mt-4 { margin-top: var(--space-4); }
-.mt-6 { margin-top: var(--space-6); }
+.mt-1 {
+  margin-top: var(--space-1);
+}
+.mt-2 {
+  margin-top: var(--space-2);
+}
+.mt-4 {
+  margin-top: var(--space-4);
+}
+.mt-6 {
+  margin-top: var(--space-6);
+}
 
-.mb-1 { margin-bottom: var(--space-1); }
-.mb-2 { margin-bottom: var(--space-2); }
-.mb-4 { margin-bottom: var(--space-4); }
-.mb-6 { margin-bottom: var(--space-6); }
+.mb-1 {
+  margin-bottom: var(--space-1);
+}
+.mb-2 {
+  margin-bottom: var(--space-2);
+}
+.mb-4 {
+  margin-bottom: var(--space-4);
+}
+.mb-6 {
+  margin-bottom: var(--space-6);
+}
 
-.hidden { display: none; }
-.block { display: block; }
-.flex { display: flex; }
-.grid { display: grid; }
+.hidden {
+  display: none;
+}
+.block {
+  display: block;
+}
+.flex {
+  display: flex;
+}
+.grid {
+  display: grid;
+}
