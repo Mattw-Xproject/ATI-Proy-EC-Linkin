@@ -35,20 +35,21 @@
             </div>
             
             <div class="sidebar-section">
-                <a href="#" class="sidebar-item">
-                    <i class="bi bi-bookmark"></i>
+                <a href="{% url 'empleos_guardados' %}" class="sidebar-item">
+                    <i class="bi bi-bookmark-fill"></i>
                     <span>{% trans "Empleos guardados" %}</span>
                     <span class="ms-auto badge bg-primary">{{ ofertas_guardadas.count }}</span>
                 </a>
                 <a href="#" class="sidebar-item">
                     <i class="bi bi-list-task"></i>
-                    <span>{% trans "Job Tracker" %}</span>
+                    <span>{% trans "Mis aplicaciones" %}</span>
+                    <span class="ms-auto badge bg-success">{{ postulaciones_activas.count }}</span>
                 </a>
-                <a href="#" class="sidebar-item">
+                <a href="{% url 'search_jobs' %}" class="sidebar-item">
                     <i class="bi bi-sliders"></i>
-                    <span>{% trans "Preferencias" %}</span>
+                    <span>{% trans "Búsqueda avanzada" %}</span>
                 </a>
-                <a href="#" class="sidebar-item">
+                <a href="{% url 'feed_home' %}" class="sidebar-item">
                     <i class="bi bi-pencil-square"></i>
                     <span>{% trans "Crear publicación" %}</span>
                 </a>
@@ -57,16 +58,6 @@
         
         <!-- Main Content -->
         <main class="jobs-main">
-            
-            {% if user.tipo_usuario == 'empresa' %}
-            <div class="post-job-banner">
-                <h3><i class="bi bi-megaphone me-2"></i>{% trans "Publica un empleo gratis" %}</h3>
-                <p>{% trans "Encuentra al candidato perfecto para tu equipo" %}</p>
-                <button class="btn btn-primary">
-                    <i class="bi bi-plus-circle me-2"></i>{% trans "Publicar empleo" %}
-                </button>
-            </div>
-            {% endif %}
             
             {% if ofertas_destacadas %}
             <div class="job-section">
@@ -77,26 +68,35 @@
                     </h2>
                 </div>
                 {% for oferta in ofertas_destacadas %}
-                <a href="{% url 'job_detail' oferta.id %}" class="job-card">
-                    <div class="job-card-header">
-                        <img src="{{ oferta.empresa.user.get_avatar_url }}" alt="Logo" class="company-logo">
-                        <div class="job-info">
-                            <h3 class="job-title">{{ oferta.titulo }}</h3>
-                            <div class="company-name">{{ oferta.empresa.nombre_empresa }}</div>
-                            <div class="job-meta">
-                                <span class="job-meta-item"><i class="bi bi-geo-alt"></i> {{ oferta.ubicacion }}</span>
-                                <span class="job-meta-item"><i class="bi bi-briefcase"></i> {{ oferta.get_tipo_empleo_display }}</span>
-                                <span class="job-meta-item"><i class="bi bi-laptop"></i> {{ oferta.get_modalidad_display }}</span>
-                            </div>
-                            <div class="job-tags">
-                                <span class="job-tag highlighted">{{ oferta.get_nivel_display }}</span>
-                                {% if oferta.salario_min and oferta.mostrar_salario %}
-                                <span class="job-tag">{{ oferta.get_rango_salario }}</span>
-                                {% endif %}
+                <div class="job-card" style="position: relative;">
+                    <button class="btn btn-sm btn-outline-primary" 
+                            onclick="guardarEmpleo('{{ oferta.id }}', this)"
+                            style="position: absolute; top: 1rem; right: 1rem;"
+                            data-guardado="{% if oferta.id in empleos_guardados_ids %}true{% else %}false{% endif %}">
+                        <i class="bi {% if oferta.id in empleos_guardados_ids %}bi-bookmark-fill{% else %}bi-bookmark{% endif %}"></i>
+                    </button>
+                    
+                    <a href="{% url 'job_detail' oferta.id %}" style="text-decoration: none; color: inherit; display: block;">
+                        <div class="job-card-header">
+                            <img src="{{ oferta.empresa.user.get_avatar_url }}" alt="Logo" class="company-logo">
+                            <div class="job-info">
+                                <h3 class="job-title">{{ oferta.titulo }}</h3>
+                                <div class="company-name">{{ oferta.empresa.nombre_empresa }}</div>
+                                <div class="job-meta">
+                                    <span class="job-meta-item"><i class="bi bi-geo-alt"></i> {{ oferta.ubicacion }}</span>
+                                    <span class="job-meta-item"><i class="bi bi-briefcase"></i> {{ oferta.get_tipo_empleo_display }}</span>
+                                    <span class="job-meta-item"><i class="bi bi-laptop"></i> {{ oferta.get_modalidad_display }}</span>
+                                </div>
+                                <div class="job-tags">
+                                    <span class="job-tag highlighted">{{ oferta.get_nivel_display }}</span>
+                                    {% if oferta.salario_min and oferta.mostrar_salario %}
+                                    <span class="job-tag">${{ oferta.salario_min|floatformat:0 }} - ${{ oferta.salario_max|floatformat:0 }}</span>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
                 {% endfor %}
             </div>
             {% endif %}
@@ -104,26 +104,38 @@
             <div class="job-section">
                 <div class="section-header">
                     <h2 class="section-title">{% trans "More jobs for you" %}</h2>
+                    <a href="{% url 'search_jobs' %}" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-sliders me-1"></i>{% trans "Filtros" %}
+                    </a>
                 </div>
                 {% for oferta in ofertas_recomendadas %}
-                <a href="{% url 'job_detail' oferta.id %}" class="job-card">
-                    <div class="job-card-header">
-                        <img src="{{ oferta.empresa.user.get_avatar_url }}" alt="Logo" class="company-logo">
-                        <div class="job-info">
-                            <h3 class="job-title">{{ oferta.titulo }}</h3>
-                            <div class="company-name">{{ oferta.empresa.nombre_empresa }}</div>
-                            <div class="job-meta">
-                                <span class="job-meta-item"><i class="bi bi-geo-alt"></i> {{ oferta.ubicacion }}</span>
-                                <span class="job-meta-item"><i class="bi bi-briefcase"></i> {{ oferta.get_tipo_empleo_display }}</span>
-                                <span class="job-meta-item"><i class="bi bi-clock"></i> {{ oferta.fecha_publicacion|timesince }} {% trans "atrás" %}</span>
-                            </div>
-                            <div class="job-tags">
-                                <span class="job-tag">{{ oferta.get_nivel_display }}</span>
-                                <span class="job-tag">{{ oferta.get_modalidad_display }}</span>
+                <div class="job-card" style="position: relative;">
+                    <button class="btn btn-sm btn-outline-primary" 
+                            onclick="guardarEmpleo('{{ oferta.id }}', this)"
+                            style="position: absolute; top: 1rem; right: 1rem;"
+                            data-guardado="{% if oferta.id in empleos_guardados_ids %}true{% else %}false{% endif %}">
+                        <i class="bi {% if oferta.id in empleos_guardados_ids %}bi-bookmark-fill{% else %}bi-bookmark{% endif %}"></i>
+                    </button>
+                    
+                    <a href="{% url 'job_detail' oferta.id %}" style="text-decoration: none; color: inherit; display: block;">
+                        <div class="job-card-header">
+                            <img src="{{ oferta.empresa.user.get_avatar_url }}" alt="Logo" class="company-logo">
+                            <div class="job-info">
+                                <h3 class="job-title">{{ oferta.titulo }}</h3>
+                                <div class="company-name">{{ oferta.empresa.nombre_empresa }}</div>
+                                <div class="job-meta">
+                                    <span class="job-meta-item"><i class="bi bi-geo-alt"></i> {{ oferta.ubicacion }}</span>
+                                    <span class="job-meta-item"><i class="bi bi-briefcase"></i> {{ oferta.get_tipo_empleo_display }}</span>
+                                    <span class="job-meta-item"><i class="bi bi-clock"></i> {{ oferta.fecha_publicacion|timesince }} {% trans "atrás" %}</span>
+                                </div>
+                                <div class="job-tags">
+                                    <span class="job-tag">{{ oferta.get_nivel_display }}</span>
+                                    <span class="job-tag">{{ oferta.get_modalidad_display }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
                 {% empty %}
                 <div class="text-center py-5">
                     <i class="bi bi-inbox display-1 text-muted"></i>
@@ -137,4 +149,36 @@
         
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const csrftoken = '{{ csrf_token }}';
+
+function guardarEmpleo(jobId, button) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    fetch(`/jobs/${jobId}/save/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken,
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const icon = button.querySelector('i');
+            if (data.guardado) {
+                icon.className = 'bi bi-bookmark-fill';
+                button.dataset.guardado = 'true';
+            } else {
+                icon.className = 'bi bi-bookmark';
+                button.dataset.guardado = 'false';
+            }
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
 {% endblock %}
