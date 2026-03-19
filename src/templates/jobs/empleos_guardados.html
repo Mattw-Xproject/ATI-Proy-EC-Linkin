@@ -10,24 +10,26 @@
     .saved-jobs-header {
         margin-bottom: 2rem;
     }
-    
+
     .saved-job-card {
-        background: white;
-        border: 1px solid #e5e7eb;
+        background: var(--bg-card, white);
+        border: 1px solid var(--border-color, #e5e7eb);
         border-radius: 8px;
         padding: 1.5rem;
         margin-bottom: 1rem;
         position: relative;
+        color: var(--text-primary, #111827);
+        transition: background-color 0.3s ease, border-color 0.3s ease;
     }
-    
+
     .saved-date {
         position: absolute;
         top: 1rem;
         right: 1rem;
         font-size: 12px;
-        color: #9ca3af;
+        color: var(--text-secondary, #9ca3af);
     }
-    
+
     .remove-saved-btn {
         position: absolute;
         top: 1rem;
@@ -43,9 +45,64 @@
         align-items: center;
         justify-content: center;
     }
-    
+
     .remove-saved-btn:hover {
         background: #fee2e2;
+    }
+
+    /* Clases de datos del empleo guardado */
+    .job-company-logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+
+    .job-card-header {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .job-card-info { flex: 1; }
+
+    .job-card-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-primary, #111827);
+        margin-bottom: 0.25rem;
+    }
+
+    .job-card-company {
+        font-size: 14px;
+        color: var(--text-secondary, #6b7280);
+        margin-bottom: 0.5rem;
+    }
+
+    .job-card-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        font-size: 13px;
+        color: var(--text-secondary, #6b7280);
+    }
+
+    .job-card-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    /* Notas */
+    .saved-notes {
+        margin-top: 0.75rem;
+        padding: 0.75rem;
+        background: var(--bg-body, #f9fafb);
+        border-radius: 6px;
+        border: 1px solid var(--border-color, #e5e7eb);
+        font-size: 14px;
+        color: var(--text-primary, #374151);
     }
 </style>
 {% endblock %}
@@ -102,7 +159,7 @@
         </a>
         
         {% if empleo_guardado.notas %}
-        <div class="mt-3 p-2 bg-light rounded">
+        <div class="saved-notes">
             <strong class="small">{% trans "Notas:" %}</strong>
             <p class="small mb-0">{{ empleo_guardado.notas }}</p>
         </div>

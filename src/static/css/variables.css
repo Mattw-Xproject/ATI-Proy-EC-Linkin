@@ -48,6 +48,32 @@
   
   /* Transitions */
   --lx-transition: all 0.2s ease;
+
+  /* =========================================
+     PALETA DINÁMICA (MODO CLARO POR DEFECTO)
+     ========================================= */
+  --bg-body: var(--lx-gray-50);
+  --bg-card: #ffffff;
+  --bg-header: #ffffff;
+  --text-primary: var(--lx-gray-900);
+  --text-secondary: var(--lx-gray-500);
+  --border-color: var(--lx-gray-200);
+  --link-color: var(--lx-primary);
+  --invert-icon: none;
+}
+
+/* =========================================
+   PALETA DINÁMICA (MODO OSCURO)
+   ========================================= */
+html.dark-mode {
+  --bg-body: #18191a !important;
+  --bg-card: #242526 !important;
+  --bg-header: #242526 !important;
+  --text-primary: #e4e6eb !important;
+  --text-secondary: #b0b3b8 !important;
+  --border-color: #3e4042 !important;
+  --link-color: #459fff !important;
+  --invert-icon: invert(1) !important;
 }
 
 /* Bootstrap Color Overrides */
