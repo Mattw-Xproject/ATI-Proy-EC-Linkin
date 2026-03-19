@@ -68,19 +68,19 @@
     <div class="bottom-navbar d-lg-none">
       <a
         href="{% url 'message_list' %}"
-        class="{% if 'message' in request.path %}active{% endif %}"
+        class="{% if 'message' in request.path %}navBarActive{% endif %}"
       >
         <i class="bi bi-chat-dots-fill"></i>
       </a>
       <a
         href="{% url 'job_list' %}"
-        class="{% if 'job' in request.path %}active{% endif %}"
+        class="{% if 'job' in request.path %}navBarActive{% endif %}"
       >
         <i class="bi bi-briefcase-fill"></i>
       </a>
       <a
         href="{% url 'profile_detail' user.id %}"
-        class="{% if 'profile' in request.path %}active{% endif %}"
+        class="{% if 'profile' in request.path %}navBarActive{% endif %}"
       >
         <i class="bi bi-person-fill"></i>
       </a>
@@ -128,18 +128,15 @@
           </a>
         </div>
         <div class="nav-items-mobile d-flex d-lg-none justify-end gap-3">
-          <a href="#" class="{% if 'job' in request.path %}active{% endif %}">
+          <a href="#" class="{% if 'job' in request.path %}{% endif %}">
             <i class="bi bi-search"></i>
           </a>
-          <a
-            href="#"
-            class="{% if 'message' in request.path %}active{% endif %}"
-          >
+          <a href="#" class="{% if 'message' in request.path %}{% endif %}">
             <i class="bi bi-bell-fill"></i>
           </a>
           <a
             href="{% url 'message_list' %}"
-            class="{% if 'message' in request.path %}active{% endif %}"
+            class="{% if 'message' in request.path %}navBarActive{% endif %}"
           >
             <i class="bi bi-send-fill"></i>
           </a>
@@ -191,7 +188,13 @@
               class="nav-link-custom {% if 'profile' in request.path %}active{% endif %}"
               data-bs-toggle="dropdown"
               aria-expanded="false"
-              style="display: flex; align-items: center; gap: 4px"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                justify-content: center;
+                flex-direction: row;
+              "
             >
               <div
                 style="
@@ -228,8 +231,8 @@
                 >
                   {% csrf_token %}
                   <button type="submit" class="dropdown-item text-danger">
-                    <i class="bi bi-box-arrow-right me-2"></i>{% trans "Cerrar
-                    sesión" %}
+                    <i class="bi bi-box-arrow-right me-2"></i>
+                    {% trans "Cerrar sesión" %}
                   </button>
                 </form>
               </li>

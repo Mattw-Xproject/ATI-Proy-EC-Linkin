@@ -1,12 +1,22 @@
 /* ============================================================
    LINKING X — jobs.css
    Estilos para job_list_profesional.html, job_list_empresa.html
-   y job_detail.html
+   y job_detail.html.
+   Extraídos del <style> inline original sin cambiar clases.
    ============================================================ */
 
 
+/* ========== CONTENEDOR COMPARTIDO ========== */
+
+.jobs-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+}
+
+
 /* ============================================================
-   LAYOUT LISTA DE EMPLEOS (profesional y empresa)
+   JOB LIST PROFESIONAL
    ============================================================ */
 
 .jobs-layout {
@@ -27,120 +37,83 @@
     gap: 1rem;
 }
 
-@media (max-width: 991px) {
-    .jobs-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .jobs-sidebar {
-        display: none;
-    }
-}
-
-
-/* ============================================================
-   LAYOUT VISTA EMPRESA (columna izquierda + columna derecha)
-   ============================================================ */
-
-.jobs-layout--empresa {
-    display: grid;
-    grid-template-columns: 40% 1fr;
-    gap: 1.5rem;
-}
-
-.jobs-list-column {
-    border-radius: var(--lx-radius);
+/* Mini perfil en sidebar */
+.sidebar-profile-card {
+    background: white;
+    border-radius: 8px;
     border: 1px solid var(--lx-gray-200);
-    background: white;
-    max-height: calc(100vh - 120px);
-    overflow-y: auto;
+    overflow: hidden;
 }
 
-.jobs-list-header {
-    padding: 1.5rem;
-    border-bottom: 1px solid var(--lx-gray-200);
-    position: sticky;
-    top: 0;
-    background: white;
-    z-index: 10;
+.profile-header {
+    background: linear-gradient(135deg, var(--lx-primary), #0077B5);
+    height: 50px;
 }
 
-.jobs-empty-panel {
-    border-radius: var(--lx-radius);
-    border: 1px solid var(--lx-gray-200);
-    background: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.profile-content {
+    padding: 1rem;
+    text-align: center;
+    margin-top: -30px;
 }
 
-@media (max-width: 991px) {
-    .jobs-layout--empresa {
-        grid-template-columns: 1fr;
-    }
-
-    .jobs-empty-panel {
-        display: none;
-    }
+.profile-avatar-small {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid white;
+    margin-bottom: 0.5rem;
+    object-fit: cover;
 }
 
-
-/* ============================================================
-   JOB LIST ITEM (vista empresa)
-   ============================================================ */
-
-.job-list-item {
-    padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid var(--lx-gray-200);
-    cursor: pointer;
-    transition: var(--lx-transition);
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    border-left: 3px solid transparent;
-}
-
-.job-list-item:hover {
-    background: var(--lx-gray-50);
-    color: inherit;
-}
-
-.job-list-item.active {
-    background: var(--lx-primary-light);
-    border-left-color: var(--lx-primary);
-}
-
-.job-list-item-title {
+.profile-name-small {
     font-size: 16px;
     font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--lx-gray-900);
+    margin-bottom: 0.25rem;
 }
 
-.job-list-item-meta {
-    display: flex;
-    gap: 1rem;
+.profile-info-small {
     font-size: 13px;
-    color: var(--lx-gray-500);
-    margin-bottom: 0.5rem;
+    color: var(--lx-gray-600);
+    margin-bottom: 0.75rem;
 }
 
-.job-list-item-stats {
+/* Sección de acciones rápidas en sidebar */
+.sidebar-section {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid var(--lx-gray-200);
+    padding: 1rem;
+}
+
+.sidebar-item {
     display: flex;
-    gap: 1.5rem;
-    font-size: 13px;
-    color: var(--lx-gray-500);
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    color: var(--lx-gray-700);
+    font-weight: 500;
 }
 
+.sidebar-item:hover {
+    background: var(--lx-gray-100);
+    color: var(--lx-primary);
+}
 
-/* ============================================================
-   BANNER PARA PUBLICAR EMPLEO
-   ============================================================ */
+.sidebar-item i {
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+}
 
+/* Banner para publicar empleo */
 .post-job-banner {
-    background: linear-gradient(135deg, var(--lx-primary-light), white);
+    background: linear-gradient(135deg, #E7F3FF, white);
     border: 2px dashed var(--lx-primary);
-    border-radius: var(--lx-radius);
+    border-radius: 8px;
     padding: 1.5rem;
     text-align: center;
 }
@@ -152,22 +125,39 @@
 }
 
 .post-job-banner p {
-    color: var(--lx-gray-500);
+    color: var(--lx-gray-600);
     font-size: 14px;
     margin-bottom: 1rem;
 }
 
+/* Sección de empleos */
+.job-section {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid var(--lx-gray-200);
+    padding: 1.5rem;
+}
 
-/* ============================================================
-   JOB CARD (listado de empleos para profesional)
-   ============================================================ */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
 
+.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--lx-gray-900);
+}
+
+/* Job card */
 .job-card {
     border: 1px solid var(--lx-gray-200);
-    border-radius: var(--lx-radius);
+    border-radius: 8px;
     padding: 1.25rem;
     margin-bottom: 1rem;
-    transition: var(--lx-transition);
+    transition: all 0.2s ease;
     cursor: pointer;
     text-decoration: none;
     color: inherit;
@@ -190,7 +180,7 @@
 .company-logo {
     width: 48px;
     height: 48px;
-    border-radius: var(--lx-radius);
+    border-radius: 8px;
     object-fit: cover;
     flex-shrink: 0;
 }
@@ -208,7 +198,7 @@
 
 .company-name {
     font-size: 14px;
-    color: var(--lx-gray-500);
+    color: var(--lx-gray-600);
     margin-bottom: 0.5rem;
 }
 
@@ -217,7 +207,7 @@
     flex-wrap: wrap;
     gap: 1rem;
     font-size: 13px;
-    color: var(--lx-gray-500);
+    color: var(--lx-gray-600);
 }
 
 .job-meta-item {
@@ -242,9 +232,117 @@
     font-weight: 500;
 }
 
-.job-tag--highlighted {
+.job-tag.highlighted {
     background: var(--lx-primary-light);
     color: var(--lx-primary);
+}
+
+@media (max-width: 991px) {
+    .jobs-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .jobs-sidebar {
+        display: none;
+    }
+}
+
+
+/* ============================================================
+   JOB LIST EMPRESA
+   ============================================================ */
+
+.jobs-layout--empresa {
+    display: grid;
+    grid-template-columns: 40% 1fr;
+    gap: 1.5rem;
+}
+
+.jobs-list-column {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+}
+
+.jobs-list-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+}
+
+.empty-state-card {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.job-list-item {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: block;
+}
+
+.job-list-item:hover {
+    background: #f9fafb;
+}
+
+.job-list-item.active {
+    background: #E7F3FF;
+    border-left: 3px solid #0A66C2;
+}
+
+.job-item-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #111827;
+}
+
+.job-item-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+
+.job-item-stats {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #9ca3af;
+}
+
+.empty-state i {
+    font-size: 64px;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+@media (max-width: 991px) {
+    .jobs-layout--empresa {
+        grid-template-columns: 1fr;
+    }
+
+    .empty-state-card {
+        display: none;
+    }
 }
 
 
@@ -252,27 +350,33 @@
    JOB DETAIL
    ============================================================ */
 
+.job-detail-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+}
+
 .job-detail-layout {
     display: grid;
     grid-template-columns: 35% 1fr;
     gap: 1.5rem;
 }
 
+/* Sidebar empleos similares */
 .similar-jobs-sidebar {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
-/* Tarjeta en la sidebar de empleos similares */
 .sidebar-card {
     background: white;
-    border-radius: var(--lx-radius);
+    border-radius: 8px;
     border: 1px solid var(--lx-gray-200);
     padding: 1.25rem;
 }
 
-.sidebar-card-title {
+.sidebar-title {
     font-size: 16px;
     font-weight: 600;
     color: var(--lx-gray-900);
@@ -281,11 +385,11 @@
 
 .similar-job-item {
     padding: 1rem;
-    border-radius: var(--lx-radius);
+    border-radius: 6px;
     border: 1px solid var(--lx-gray-200);
     margin-bottom: 0.75rem;
     cursor: pointer;
-    transition: var(--lx-transition);
+    transition: all 0.2s ease;
     text-decoration: none;
     color: inherit;
     display: block;
@@ -306,16 +410,22 @@
 
 .similar-job-company {
     font-size: 13px;
-    color: var(--lx-gray-500);
+    color: var(--lx-gray-600);
     margin-bottom: 0.5rem;
 }
 
 .similar-job-meta {
     font-size: 12px;
-    color: var(--lx-gray-400);
+    color: var(--lx-gray-500);
 }
 
-/* Contenido principal del detalle */
+/* Contenido principal */
+.job-detail-main {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid var(--lx-gray-200);
+}
+
 .job-detail-header {
     padding: 2rem;
     border-bottom: 1px solid var(--lx-gray-200);
@@ -327,13 +437,17 @@
     margin-bottom: 1.5rem;
 }
 
-.company-logo--lg {
+.company-logo-large {
     width: 80px;
     height: 80px;
-    border-radius: var(--lx-radius);
+    border-radius: 8px;
     object-fit: cover;
     border: 1px solid var(--lx-gray-200);
     flex-shrink: 0;
+}
+
+.job-header-info {
+    flex: 1;
 }
 
 .job-detail-title {
@@ -345,7 +459,7 @@
 
 .job-detail-company {
     font-size: 18px;
-    color: var(--lx-gray-500);
+    color: var(--lx-gray-600);
     margin-bottom: 1rem;
 }
 
@@ -354,13 +468,54 @@
     flex-wrap: wrap;
     gap: 1.5rem;
     font-size: 14px;
-    color: var(--lx-gray-500);
+    color: var(--lx-gray-600);
 }
 
 .job-detail-meta-item {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+}
+
+.job-detail-meta-item i {
+    color: var(--lx-gray-500);
+}
+
+.job-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-apply {
+    flex: 1;
+    max-width: 200px;
+}
+
+.btn-save {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--lx-gray-300);
+    background: white;
+    color: var(--lx-gray-600);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.btn-save:hover {
+    background: var(--lx-gray-100);
+    color: var(--lx-primary);
+}
+
+.btn-save.saved {
+    background: var(--lx-primary-light);
+    color: var(--lx-primary);
+    border-color: var(--lx-primary);
 }
 
 .job-detail-body {
@@ -415,13 +570,12 @@
     flex-shrink: 0;
 }
 
-/* Stats del empleo */
 .job-stats {
     display: flex;
     gap: 2rem;
     padding: 1.5rem;
     background: var(--lx-gray-50);
-    border-radius: var(--lx-radius);
+    border-radius: 8px;
     margin-top: 1.5rem;
 }
 
@@ -439,74 +593,12 @@
 
 .job-stat-label {
     font-size: 13px;
-    color: var(--lx-gray-500);
-}
-
-/* Botón guardar empleo */
-.btn-save-job {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--lx-gray-300);
-    background: white;
-    color: var(--lx-gray-500);
-    cursor: pointer;
-    transition: var(--lx-transition);
-    flex-shrink: 0;
-}
-
-.btn-save-job:hover {
-    background: var(--lx-gray-100);
-    color: var(--lx-primary);
-}
-
-.btn-save-job.saved {
-    background: var(--lx-primary-light);
-    color: var(--lx-primary);
-    border-color: var(--lx-primary);
-}
-
-/* Banner de oferta pausada */
-.job-paused-banner {
-    padding: 1rem 2rem;
-    background: #FEF3C7;
-    border-bottom: 1px solid #FDE68A;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-}
-
-.job-paused-banner-info {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.job-paused-banner i {
-    font-size: 24px;
-    color: #92400E;
-}
-
-.job-paused-banner h4 {
-    font-size: 14px;
-    font-weight: 600;
-    color: #92400E;
-    margin: 0 0 0.25rem;
-}
-
-.job-paused-banner p {
-    font-size: 13px;
-    color: #78350F;
-    margin: 0;
+    color: var(--lx-gray-600);
 }
 
 
 /* ============================================================
-   MODAL DE APLICACIÓN A EMPLEO
+   MODAL DE APLICACIÓN
    ============================================================ */
 
 .application-modal {
@@ -537,7 +629,7 @@
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
-.application-modal-header {
+.modal-header {
     padding: 1.5rem 2rem;
     border-bottom: 1px solid var(--lx-gray-200);
     display: flex;
@@ -545,18 +637,37 @@
     justify-content: space-between;
 }
 
-.application-modal-title {
+.modal-title {
     font-size: 22px;
     font-weight: 700;
     color: var(--lx-gray-900);
 }
 
-/* Barra de progreso */
-.modal-progress {
-    padding: 1rem 2rem 0;
+.modal-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--lx-gray-500);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
 }
 
-.progress-bar-track {
+.modal-close:hover {
+    background: var(--lx-gray-100);
+    color: var(--lx-gray-900);
+}
+
+.modal-progress {
+    padding: 0 2rem;
+    margin-top: 1rem;
+}
+
+.progress-bar-container {
     width: 100%;
     height: 8px;
     background: var(--lx-gray-200);
@@ -576,7 +687,7 @@
     justify-content: space-between;
     margin-top: 0.75rem;
     font-size: 13px;
-    color: var(--lx-gray-500);
+    color: var(--lx-gray-600);
 }
 
 .progress-step {
@@ -588,11 +699,10 @@
     font-weight: 600;
 }
 
-.application-modal-body {
+.modal-body {
     padding: 2rem;
 }
 
-/* Pasos del formulario */
 .application-step {
     display: none;
 }
@@ -601,7 +711,6 @@
     display: block;
 }
 
-/* Inputs del modal de aplicación */
 .form-group-modal {
     margin-bottom: 1.5rem;
 }
@@ -618,9 +727,9 @@
     width: 100%;
     padding: 12px 16px;
     border: 1px solid var(--lx-gray-300);
-    border-radius: var(--lx-radius);
+    border-radius: 8px;
     font-size: 15px;
-    transition: var(--lx-transition);
+    transition: all 0.2s ease;
     background: white;
 }
 
@@ -630,14 +739,13 @@
     box-shadow: 0 0 0 3px var(--lx-primary-light);
 }
 
-/* Zona de subida de CV */
 .upload-area {
     border: 2px dashed var(--lx-gray-300);
-    border-radius: var(--lx-radius);
+    border-radius: 8px;
     padding: 3rem 2rem;
     text-align: center;
     cursor: pointer;
-    transition: var(--lx-transition);
+    transition: all 0.2s ease;
 }
 
 .upload-area:hover,
@@ -668,14 +776,14 @@
 
 .upload-subtext {
     font-size: 14px;
-    color: var(--lx-gray-500);
+    color: var(--lx-gray-600);
 }
 
 .file-name-display {
     margin-top: 1rem;
     padding: 1rem;
     background: white;
-    border-radius: var(--lx-radius);
+    border-radius: 6px;
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -686,61 +794,12 @@
     font-size: 24px;
 }
 
-.application-modal-footer {
+.modal-footer {
     padding: 1.5rem 2rem;
     border-top: 1px solid var(--lx-gray-200);
     display: flex;
     justify-content: space-between;
     gap: 1rem;
-}
-
-
-/* ============================================================
-   MODAL CREAR OFERTA (empresa)
-   ============================================================ */
-
-.job-form-group {
-    margin-bottom: 1.5rem;
-}
-
-.job-form-label {
-    display: block;
-    font-weight: 600;
-    font-size: 14px;
-    margin-bottom: 0.5rem;
-    color: var(--lx-gray-700);
-}
-
-.job-form-control,
-.job-form-select {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--lx-gray-300);
-    border-radius: var(--lx-radius);
-    font-size: 15px;
-    transition: var(--lx-transition);
-    background: white;
-}
-
-.job-form-control:focus,
-.job-form-select:focus {
-    outline: none;
-    border-color: var(--lx-primary);
-    box-shadow: 0 0 0 3px var(--lx-primary-light);
-}
-
-textarea.job-form-control {
-    min-height: 100px;
-    resize: vertical;
-}
-
-.job-form-check {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem;
-    background: var(--lx-gray-50);
-    border-radius: var(--lx-radius);
 }
 
 
@@ -756,10 +815,25 @@ textarea.job-form-control {
     .similar-jobs-sidebar {
         display: none;
     }
+
+    .job-detail-title {
+        font-size: 22px;
+    }
+
+    .job-actions {
+        flex-direction: column;
+    }
+
+    .btn-apply {
+        max-width: 100%;
+    }
 }
 
 @media (max-width: 576px) {
-    .job-detail-header,
+    .job-detail-header {
+        padding: 1.5rem;
+    }
+
     .job-detail-body {
         padding: 1.5rem;
     }
@@ -770,11 +844,12 @@ textarea.job-form-control {
         text-align: center;
     }
 
-    .job-detail-title {
-        font-size: 22px;
+    .company-logo-large {
+        width: 64px;
+        height: 64px;
     }
 
-    .application-modal-body {
+    .modal-body {
         padding: 1.5rem;
     }
 }

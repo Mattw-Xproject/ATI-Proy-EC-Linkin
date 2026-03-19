@@ -9,10 +9,9 @@
 {% endblock %}
 
 {% block content %}
-<div class="page-container--narrow">
-
-    <!-- Cabecera del perfil -->
-    <div class="card card--mb">
+<div class="profile-container">
+    
+    <div class="profile-header-card">
         <div class="cover-photo"></div>
         <div class="profile-header-content">
             <div class="profile-avatar-section">
@@ -20,7 +19,7 @@
             </div>
             <h1 class="profile-name">{{ profile_user.get_full_name }}</h1>
             {% if profesional.titulo_actual %}
-            <p class="profile-headline">{{ profesional.titulo_actual }}</p>
+            <p class="profile-title">{{ profesional.titulo_actual }}</p>
             {% endif %}
             {% if profile_user.ubicacion %}
             <p class="profile-location">
@@ -29,51 +28,44 @@
             {% endif %}
             <div class="profile-actions">
                 {% if is_own_profile %}
-                    <a href="{% url 'profile_edit' user.id %}" class="btn-pill btn-pill--secondary">
+                    <a href="{% url 'profile_edit' user.id %}" class="btn btn-secondary">
                         <i class="bi bi-pencil"></i> {% trans "Editar perfil" %}
                     </a>
                 {% else %}
-                    <button type="button"
-                        class="btn-pill btn-pill--primary follow-btn {% if esta_siguiendo %}following{% endif %}"
+                    <button type="button" class="btn btn-primary follow-btn {% if esta_siguiendo %}following{% endif %}"
                         onclick="toggleFollow('{{ profile_user.id }}', this)">
                         <i class="bi bi-person-plus-fill"></i>
                         <span class="follow-text">
                             {% if esta_siguiendo %}{% trans "Siguiendo" %}{% else %}{% trans "Seguir" %}{% endif %}
                         </span>
                     </button>
-                    <a href="{% url 'create_conversation' profile_user.id %}" class="btn-pill btn-pill--secondary">
+                    <a href="{% url 'create_conversation' profile_user.id %}" class="btn btn-secondary">
                         <i class="bi bi-chat-dots"></i> {% trans "Mensaje" %}
                     </a>
                 {% endif %}
             </div>
         </div>
     </div>
-
-    <!-- Estadísticas -->
-    <div class="card card--padded profile-stats-card card--mb">
-        <div class="stats-row">
-            <div class="stat-item">
-                <div class="stat-value" id="seguidoresCount">{{ total_seguidores }}</div>
-                <div class="stat-label">{% trans "Seguidores" %}</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">{{ total_siguiendo }}</div>
-                <div class="stat-label">{% trans "Siguiendo" %}</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">{{ total_conexiones }}</div>
-                <div class="stat-label">{% trans "Conexiones" %}</div>
-            </div>
+    
+    <div class="profile-stats-card">
+        <div class="stat-item">
+            <div class="stat-value" id="seguidoresCount">{{ total_seguidores }}</div>
+            <div class="stat-label">{% trans "Seguidores" %}</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">{{ total_siguiendo }}</div>
+            <div class="stat-label">{% trans "Siguiendo" %}</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">{{ total_conexiones }}</div>
+            <div class="stat-label">{% trans "Conexiones" %}</div>
         </div>
     </div>
-
-    <!-- Layout dos columnas -->
+    
     <div class="profile-layout">
-
-        <!-- Columna principal -->
-        <div>
+        <div class="main-content">
             {% if profesional.descripcion_personal %}
-            <div class="card card--padded card--mb">
+            <div class="section-card">
                 <div class="section-header">
                     <h2 class="section-title">{% trans "Acerca de" %}</h2>
                     {% if is_own_profile %}
@@ -85,9 +77,9 @@
                 <div class="about-text">{{ profesional.descripcion_personal }}</div>
             </div>
             {% endif %}
-
+            
             {% if experiencias %}
-            <div class="card card--padded card--mb">
+            <div class="section-card">
                 <div class="section-header">
                     <h2 class="section-title">{% trans "Experiencia" %}</h2>
                     {% if is_own_profile %}
@@ -103,7 +95,7 @@
                         <div class="timeline-title">{{ exp.cargo }}</div>
                         <div class="timeline-subtitle">{{ exp.empresa }}</div>
                         <div class="timeline-date">
-                            {{ exp.fecha_inicio|date:"M Y" }} -
+                            {{ exp.fecha_inicio|date:"M Y" }} - 
                             {% if exp.actualmente_trabaja %}{% trans "Actualidad" %}{% else %}{{ exp.fecha_fin|date:"M Y" }}{% endif %}
                         </div>
                         {% if exp.descripcion %}<div class="timeline-description">{{ exp.descripcion }}</div>{% endif %}
@@ -112,9 +104,9 @@
                 {% endfor %}
             </div>
             {% endif %}
-
+            
             {% if educaciones %}
-            <div class="card card--padded card--mb">
+            <div class="section-card">
                 <div class="section-header">
                     <h2 class="section-title">{% trans "Educación" %}</h2>
                     {% if is_own_profile %}
@@ -130,7 +122,7 @@
                         <div class="timeline-title">{{ edu.titulo }}</div>
                         <div class="timeline-subtitle">{{ edu.institucion }}</div>
                         <div class="timeline-date">
-                            {{ edu.fecha_inicio|date:"Y" }} -
+                            {{ edu.fecha_inicio|date:"Y" }} - 
                             {% if edu.actualmente_cursando %}{% trans "Actualidad" %}{% else %}{{ edu.fecha_fin|date:"Y" }}{% endif %}
                         </div>
                         {% if edu.descripcion %}<div class="timeline-description">{{ edu.descripcion }}</div>{% endif %}
@@ -139,9 +131,9 @@
                 {% endfor %}
             </div>
             {% endif %}
-
+            
             {% if habilidades %}
-            <div class="card card--padded card--mb">
+            <div class="section-card">
                 <div class="section-header">
                     <h2 class="section-title">{% trans "Habilidades" %}</h2>
                     {% if is_own_profile %}
@@ -158,10 +150,9 @@
             </div>
             {% endif %}
         </div>
-
-        <!-- Sidebar derecho -->
-        <aside>
-            <div class="card card--padded card--mb">
+        
+        <aside class="sidebar-content">
+            <div class="section-card">
                 <div class="section-header">
                     <h2 class="section-title">{% trans "Información de contacto" %}</h2>
                 </div>
@@ -202,15 +193,16 @@
                 </div>
                 {% endif %}
             </div>
-
-            <div class="card ad-card hide-mobile">
+            
+            <section class="ad-card hide-mobile">
                 <div class="ad-label">{% trans "Publicidad" %}</div>
-                <div class="ad-placeholder"><span>LOGO</span></div>
-                <p class="ad-text">{% trans "Promociona tu empresa en Linking X" %}</p>
-                <button class="btn-pill btn-pill--secondary">{% trans "Más información" %}</button>
-            </div>
+                <div class="ad-content">
+                    <div class="ad-placeholder"><span>LOGO</span></div>
+                    <p class="ad-text">{% trans "Promociona tu empresa en Linking X" %}</p>
+                    <button class="btn btn-secondary btn-block btn-sm">{% trans "Más información" %}</button>
+                </div>
+            </section>
         </aside>
-
     </div>
 </div>
 {% endblock %}

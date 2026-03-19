@@ -5,237 +5,7 @@
 {% block title %}{% trans "Empleos - Linking X" %}{% endblock %}
 
 {% block extra_css %}
-<style>
-    .jobs-container {
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: 1.5rem 1rem;
-    }
-    
-    .jobs-layout {
-        display: grid;
-        grid-template-columns: 30% 1fr;
-        gap: 1.5rem;
-    }
-    
-    /* Left Sidebar */
-    .jobs-sidebar {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-    
-    .sidebar-profile-card {
-        background: white;
-        border-radius: 8px;
-        border: 1px solid var(--lx-gray-200);
-        overflow: hidden;
-    }
-    
-    .profile-header {
-        background: linear-gradient(135deg, var(--lx-primary), #0077B5);
-        height: 50px;
-    }
-    
-    .profile-content {
-        padding: 1rem;
-        text-align: center;
-        margin-top: -30px;
-    }
-    
-    .profile-avatar-small {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        border: 3px solid white;
-        margin-bottom: 0.5rem;
-    }
-    
-    .profile-name-small {
-        font-size: 16px;
-        font-weight: 600;
-        margin-bottom: 0.25rem;
-    }
-    
-    .profile-info-small {
-        font-size: 13px;
-        color: var(--lx-gray-600);
-        margin-bottom: 0.75rem;
-    }
-    
-    .sidebar-section {
-        background: white;
-        border-radius: 8px;
-        border: 1px solid var(--lx-gray-200);
-        padding: 1rem;
-    }
-    
-    .sidebar-item {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        padding: 0.75rem;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        text-decoration: none;
-        color: var(--lx-gray-700);
-        font-weight: 500;
-    }
-    
-    .sidebar-item:hover {
-        background: var(--lx-gray-100);
-        color: var(--lx-primary);
-    }
-    
-    .sidebar-item i {
-        font-size: 18px;
-        width: 24px;
-        text-align: center;
-    }
-    
-    /* Main Content */
-    .jobs-main {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-    
-    .post-job-banner {
-        background: linear-gradient(135deg, #E7F3FF, white);
-        border: 2px dashed var(--lx-primary);
-        border-radius: 8px;
-        padding: 1.5rem;
-        text-align: center;
-    }
-    
-    .post-job-banner h3 {
-        color: var(--lx-primary);
-        font-size: 18px;
-        margin-bottom: 0.5rem;
-    }
-    
-    .post-job-banner p {
-        color: var(--lx-gray-600);
-        font-size: 14px;
-        margin-bottom: 1rem;
-    }
-    
-    .job-section {
-        background: white;
-        border-radius: 8px;
-        border: 1px solid var(--lx-gray-200);
-        padding: 1.5rem;
-    }
-    
-    .section-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1.5rem;
-    }
-    
-    .section-title {
-        font-size: 18px;
-        font-weight: 600;
-        color: var(--lx-gray-900);
-    }
-    
-    .job-card {
-        border: 1px solid var(--lx-gray-200);
-        border-radius: 8px;
-        padding: 1.25rem;
-        margin-bottom: 1rem;
-        transition: all 0.2s ease;
-        cursor: pointer;
-        text-decoration: none;
-        color: inherit;
-        display: block;
-    }
-    
-    .job-card:hover {
-        border-color: var(--lx-primary);
-        box-shadow: 0 4px 12px rgba(10, 102, 194, 0.15);
-        transform: translateY(-2px);
-    }
-    
-    .job-card-header {
-        display: flex;
-        gap: 1rem;
-        margin-bottom: 1rem;
-    }
-    
-    .company-logo {
-        width: 48px;
-        height: 48px;
-        border-radius: 8px;
-        object-fit: cover;
-        flex-shrink: 0;
-    }
-    
-    .job-info {
-        flex: 1;
-    }
-    
-    .job-title {
-        font-size: 16px;
-        font-weight: 600;
-        color: var(--lx-gray-900);
-        margin-bottom: 0.25rem;
-    }
-    
-    .company-name {
-        font-size: 14px;
-        color: var(--lx-gray-600);
-        margin-bottom: 0.5rem;
-    }
-    
-    .job-meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        font-size: 13px;
-        color: var(--lx-gray-600);
-    }
-    
-    .job-meta-item {
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-    }
-    
-    .job-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-top: 0.75rem;
-    }
-    
-    .job-tag {
-        background: var(--lx-gray-100);
-        color: var(--lx-gray-700);
-        padding: 0.25rem 0.75rem;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 500;
-    }
-    
-    .job-tag.highlighted {
-        background: var(--lx-primary-light);
-        color: var(--lx-primary);
-    }
-    
-    /* Responsive */
-    @media (max-width: 991px) {
-        .jobs-layout {
-            grid-template-columns: 1fr;
-        }
-        
-        .jobs-sidebar {
-            display: none;
-        }
-    }
-</style>
+<link rel="stylesheet" href="{% static 'css/jobs.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -244,7 +14,6 @@
         
         <!-- Left Sidebar -->
         <aside class="jobs-sidebar">
-            <!-- Mini Profile -->
             <div class="sidebar-profile-card">
                 <div class="profile-header"></div>
                 <div class="profile-content">
@@ -265,24 +34,20 @@
                 </div>
             </div>
             
-            <!-- Quick Actions -->
             <div class="sidebar-section">
                 <a href="#" class="sidebar-item">
                     <i class="bi bi-bookmark"></i>
                     <span>{% trans "Empleos guardados" %}</span>
                     <span class="ms-auto badge bg-primary">{{ ofertas_guardadas.count }}</span>
                 </a>
-                
                 <a href="#" class="sidebar-item">
                     <i class="bi bi-list-task"></i>
                     <span>{% trans "Job Tracker" %}</span>
                 </a>
-                
                 <a href="#" class="sidebar-item">
                     <i class="bi bi-sliders"></i>
                     <span>{% trans "Preferencias" %}</span>
                 </a>
-                
                 <a href="#" class="sidebar-item">
                     <i class="bi bi-pencil-square"></i>
                     <span>{% trans "Crear publicación" %}</span>
@@ -293,19 +58,16 @@
         <!-- Main Content -->
         <main class="jobs-main">
             
-            <!-- Post Job Banner (only for companies) -->
             {% if user.tipo_usuario == 'empresa' %}
             <div class="post-job-banner">
                 <h3><i class="bi bi-megaphone me-2"></i>{% trans "Publica un empleo gratis" %}</h3>
                 <p>{% trans "Encuentra al candidato perfecto para tu equipo" %}</p>
                 <button class="btn btn-primary">
-                    <i class="bi bi-plus-circle me-2"></i>
-                    {% trans "Publicar empleo" %}
+                    <i class="bi bi-plus-circle me-2"></i>{% trans "Publicar empleo" %}
                 </button>
             </div>
             {% endif %}
             
-            <!-- Top Job Picks -->
             {% if ofertas_destacadas %}
             <div class="job-section">
                 <div class="section-header">
@@ -314,7 +76,6 @@
                         {% trans "Top job picks for you" %}
                     </h2>
                 </div>
-                
                 {% for oferta in ofertas_destacadas %}
                 <a href="{% url 'job_detail' oferta.id %}" class="job-card">
                     <div class="job-card-header">
@@ -323,15 +84,9 @@
                             <h3 class="job-title">{{ oferta.titulo }}</h3>
                             <div class="company-name">{{ oferta.empresa.nombre_empresa }}</div>
                             <div class="job-meta">
-                                <span class="job-meta-item">
-                                    <i class="bi bi-geo-alt"></i> {{ oferta.ubicacion }}
-                                </span>
-                                <span class="job-meta-item">
-                                    <i class="bi bi-briefcase"></i> {{ oferta.get_tipo_empleo_display }}
-                                </span>
-                                <span class="job-meta-item">
-                                    <i class="bi bi-laptop"></i> {{ oferta.get_modalidad_display }}
-                                </span>
+                                <span class="job-meta-item"><i class="bi bi-geo-alt"></i> {{ oferta.ubicacion }}</span>
+                                <span class="job-meta-item"><i class="bi bi-briefcase"></i> {{ oferta.get_tipo_empleo_display }}</span>
+                                <span class="job-meta-item"><i class="bi bi-laptop"></i> {{ oferta.get_modalidad_display }}</span>
                             </div>
                             <div class="job-tags">
                                 <span class="job-tag highlighted">{{ oferta.get_nivel_display }}</span>
@@ -346,12 +101,10 @@
             </div>
             {% endif %}
             
-            <!-- More Jobs -->
             <div class="job-section">
                 <div class="section-header">
                     <h2 class="section-title">{% trans "More jobs for you" %}</h2>
                 </div>
-                
                 {% for oferta in ofertas_recomendadas %}
                 <a href="{% url 'job_detail' oferta.id %}" class="job-card">
                     <div class="job-card-header">
@@ -360,15 +113,9 @@
                             <h3 class="job-title">{{ oferta.titulo }}</h3>
                             <div class="company-name">{{ oferta.empresa.nombre_empresa }}</div>
                             <div class="job-meta">
-                                <span class="job-meta-item">
-                                    <i class="bi bi-geo-alt"></i> {{ oferta.ubicacion }}
-                                </span>
-                                <span class="job-meta-item">
-                                    <i class="bi bi-briefcase"></i> {{ oferta.get_tipo_empleo_display }}
-                                </span>
-                                <span class="job-meta-item">
-                                    <i class="bi bi-clock"></i> {{ oferta.fecha_publicacion|timesince }} {% trans "atrás" %}
-                                </span>
+                                <span class="job-meta-item"><i class="bi bi-geo-alt"></i> {{ oferta.ubicacion }}</span>
+                                <span class="job-meta-item"><i class="bi bi-briefcase"></i> {{ oferta.get_tipo_empleo_display }}</span>
+                                <span class="job-meta-item"><i class="bi bi-clock"></i> {{ oferta.fecha_publicacion|timesince }} {% trans "atrás" %}</span>
                             </div>
                             <div class="job-tags">
                                 <span class="job-tag">{{ oferta.get_nivel_display }}</span>
