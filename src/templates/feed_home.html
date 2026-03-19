@@ -9,17 +9,17 @@
 {% endblock %}
 
 {% block content %}
-<div class="page-container">
+<div class="feed-container">
     <div class="feed-layout">
-
+        
         <!-- ========== SIDEBAR IZQUIERDO ========== -->
-        <aside class="feed-left-sidebar">
-            <div class="card card--mb">
-                <div class="sidebar-profile-header"></div>
-                <div class="sidebar-profile-body">
-                    <img src="{{ user.get_avatar_url }}" alt="Avatar" class="profile-avatar--sm">
-                    <div class="profile-name--sm mt-2">{{ user.get_full_name }}</div>
-                    <div class="profile-headline--sm">
+        <aside class="left-sidebar">
+            <div class="profile-card">
+                <div class="profile-card-header"></div>
+                <div class="profile-card-body">
+                    <img src="{{ user.get_avatar_url }}" alt="Avatar" class="avatar-lg">
+                    <div class="profile-name">{{ user.get_full_name }}</div>
+                    <div class="profile-title">
                         {% if user.tipo_usuario == 'profesional' and user.profesional.titulo_actual %}
                             {{ user.profesional.titulo_actual }}
                         {% elif user.tipo_usuario == 'empresa' and user.empresa.nombre_empresa %}
@@ -28,64 +28,74 @@
                     </div>
                 </div>
             </div>
-
-            <div class="card card--padded-sm card--mb">
-                <a href="{% url 'profile_detail' user.id %}" class="sidebar-item">
-                    <i class="bi bi-person"></i><span>{% trans "Mi perfil" %}</span>
+            
+            <div class="sidebar-menu">
+                <a href="{% url 'profile_detail' user.id %}" class="menu-item">
+                    <i class="bi bi-person"></i>
+                    <span>{% trans "Mi perfil" %}</span>
                 </a>
-                <a href="{% url 'job_list' %}" class="sidebar-item">
-                    <i class="bi bi-briefcase"></i><span>{% trans "Empleos" %}</span>
+                <a href="{% url 'job_list' %}" class="menu-item">
+                    <i class="bi bi-briefcase"></i>
+                    <span>{% trans "Empleos" %}</span>
                 </a>
-                <a href="{% url 'message_list' %}" class="sidebar-item">
-                    <i class="bi bi-chat"></i><span>{% trans "Mensajes" %}</span>
+                <a href="{% url 'message_list' %}" class="menu-item">
+                    <i class="bi bi-chat"></i>
+                    <span>{% trans "Mensajes" %}</span>
                 </a>
-                <a href="#" class="sidebar-item">
-                    <i class="bi bi-bookmark"></i><span>{% trans "Guardados" %}</span>
+                <a href="#" class="menu-item">
+                    <i class="bi bi-bookmark"></i>
+                    <span>{% trans "Guardados" %}</span>
                 </a>
             </div>
-
-            <div class="card card--padded-sm">
+            
+            <div class="settings-card">
                 <div class="settings-title">{% trans "Configuración" %}</div>
-                <div class="settings-item"><i class="bi bi-gear"></i><span>{% trans "Preferencias" %}</span></div>
-                <div class="settings-item"><i class="bi bi-globe"></i><span>{% trans "Idioma" %}</span></div>
-                <div class="settings-item"><i class="bi bi-shield-check"></i><span>{% trans "Privacidad" %}</span></div>
+                <div class="settings-item">
+                    <i class="bi bi-gear"></i>
+                    <span>{% trans "Preferencias" %}</span>
+                </div>
+                <div class="settings-item">
+                    <i class="bi bi-globe"></i>
+                    <span>{% trans "Idioma" %}</span>
+                </div>
+                <div class="settings-item">
+                    <i class="bi bi-shield-check"></i>
+                    <span>{% trans "Privacidad" %}</span>
+                </div>
             </div>
         </aside>
-
+        
         <!-- ========== FEED CENTRAL ========== -->
         <main class="feed-main">
-
-            <!-- Crear Publicación -->
-            <div class="card card--padded-sm">
+            
+            <div class="create-post-card">
                 <div class="create-post-input">
-                    <img src="{{ user.get_avatar_url }}" alt="Avatar" class="avatar avatar-md">
-                    <button type="button" class="create-post-button"
-                        data-bs-toggle="modal" data-bs-target="#createPostModal">
+                    <img src="{{ user.get_avatar_url }}" alt="Avatar" class="avatar-md">
+                    <button type="button" class="create-post-button" data-bs-toggle="modal" data-bs-target="#createPostModal">
                         {% trans "¿Qué quieres compartir?" %}
                     </button>
                 </div>
                 <div class="create-post-actions">
-                    <button type="button" class="post-action-btn"
-                        data-bs-toggle="modal" data-bs-target="#createPostModal">
-                        <i class="bi bi-image text-success"></i><span>{% trans "Foto" %}</span>
+                    <button type="button" class="post-action-btn" data-bs-toggle="modal" data-bs-target="#createPostModal">
+                        <i class="bi bi-image text-success"></i>
+                        <span>{% trans "Foto" %}</span>
                     </button>
-                    <button type="button" class="post-action-btn"
-                        data-bs-toggle="modal" data-bs-target="#createPostModal">
-                        <i class="bi bi-play-btn text-danger"></i><span>{% trans "Video" %}</span>
+                    <button type="button" class="post-action-btn" data-bs-toggle="modal" data-bs-target="#createPostModal">
+                        <i class="bi bi-play-btn text-danger"></i>
+                        <span>{% trans "Video" %}</span>
                     </button>
-                    <button type="button" class="post-action-btn"
-                        data-bs-toggle="modal" data-bs-target="#createPostModal">
-                        <i class="bi bi-pencil text-primary"></i><span>{% trans "Artículo" %}</span>
+                    <button type="button" class="post-action-btn" data-bs-toggle="modal" data-bs-target="#createPostModal">
+                        <i class="bi bi-pencil text-primary"></i>
+                        <span>{% trans "Artículo" %}</span>
                     </button>
                 </div>
             </div>
-
-            <!-- Publicaciones -->
+            
             {% for pub in publicaciones %}
-            <article class="card" data-post-id="{{ pub.id }}">
+            <article class="post-card" data-post-id="{{ pub.id }}">
                 <div class="post-header">
                     <div class="post-author">
-                        <img src="{{ pub.autor.get_avatar_url }}" alt="Avatar" class="avatar avatar-md">
+                        <img src="{{ pub.autor.get_avatar_url }}" alt="Avatar" class="avatar-md">
                         <div class="post-author-info">
                             <a href="{% url 'profile_detail' pub.autor.id %}" class="post-author-name">
                                 {{ pub.autor.get_full_name }}
@@ -100,10 +110,8 @@
                             <div class="post-time">{{ pub.fecha_creacion|timesince }}</div>
                         </div>
                     </div>
-
                     {% if pub.autor != user %}
-                    <button type="button"
-                        class="follow-btn {% if pub.usuario_sigue_autor %}following{% endif %}"
+                    <button type="button" class="follow-btn {% if pub.usuario_sigue_autor %}following{% endif %}"
                         onclick="toggleFollow('{{ pub.autor.id }}', this)">
                         <span class="follow-text">
                             {% if pub.usuario_sigue_autor %}{% trans "Siguiendo" %}{% else %}{% trans "Seguir" %}{% endif %}
@@ -111,30 +119,19 @@
                     </button>
                     {% endif %}
                 </div>
-
-                {% if pub.contenido %}
-                <div class="post-content">{{ pub.contenido }}</div>
-                {% endif %}
-
-                {% if pub.imagen %}
-                <img src="{{ pub.imagen.url }}" alt="Imagen" class="post-media">
-                {% elif pub.video %}
-                <video src="{{ pub.video.url }}" controls class="post-media"></video>
-                {% endif %}
-
+                
+                {% if pub.contenido %}<div class="post-content">{{ pub.contenido }}</div>{% endif %}
+                {% if pub.imagen %}<img src="{{ pub.imagen.url }}" alt="Imagen" class="post-media">
+                {% elif pub.video %}<video src="{{ pub.video.url }}" controls class="post-media"></video>{% endif %}
+                
                 <div class="post-stats">
-                    <span>
-                        <i class="bi bi-hand-thumbs-up-fill text-primary"></i>
-                        <span data-likes="{{ pub.id }}">{{ pub.total_likes }}</span>
-                    </span>
-                    <span>
-                        <span data-comments="{{ pub.id }}">{{ pub.total_comentarios }}</span> {% trans "comentarios" %}
-                    </span>
+                    <span><i class="bi bi-hand-thumbs-up-fill text-primary"></i>
+                        <span data-likes="{{ pub.id }}">{{ pub.total_likes }}</span></span>
+                    <span><span data-comments="{{ pub.id }}">{{ pub.total_comentarios }}</span> {% trans "comentarios" %}</span>
                 </div>
-
+                
                 <div class="post-actions">
-                    <button type="button"
-                        class="post-action {% if pub.usuario_dio_like %}liked{% endif %}"
+                    <button type="button" class="post-action {% if pub.usuario_dio_like %}liked{% endif %}"
                         onclick="toggleLike('{{ pub.id }}', this)">
                         <i class="bi {% if pub.usuario_dio_like %}bi-hand-thumbs-up-fill{% else %}bi-hand-thumbs-up{% endif %}"></i>
                         <span>{% trans "Me gusta" %}</span>
@@ -146,33 +143,26 @@
                         <i class="bi bi-share"></i><span>{% trans "Compartir" %}</span>
                     </button>
                 </div>
-
-                <!-- Comentarios -->
+                
                 <div class="comments-section" id="comments-{{ pub.id }}">
                     <form class="comment-form" onsubmit="submitComment(event, '{{ pub.id }}')"
                         enctype="multipart/form-data" id="comment-form-{{ pub.id }}">
-                        <img src="{{ user.get_avatar_url }}" alt="Avatar" class="avatar avatar-sm">
+                        <img src="{{ user.get_avatar_url }}" alt="Avatar" class="avatar-sm">
                         <div class="comment-input-wrapper">
                             <textarea class="comment-input" name="contenido"
                                 placeholder="{% trans 'Escribe un comentario...' %}" rows="1"
                                 oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';toggleCommentSubmit(this)"></textarea>
-
                             <div class="comment-media-preview" id="comment-preview-{{ pub.id }}" style="display:none;">
-                                <button type="button" class="remove-comment-media"
-                                    onclick="removeCommentMedia('{{ pub.id }}')">
+                                <button type="button" class="remove-comment-media" onclick="removeCommentMedia('{{ pub.id }}')">
                                     <i class="bi bi-x"></i>
                                 </button>
                                 <img id="comment-img-{{ pub.id }}" style="display:none;">
                                 <video id="comment-video-{{ pub.id }}" controls style="display:none;"></video>
                             </div>
-
-                            <input type="file" name="imagen" id="comment-img-input-{{ pub.id }}"
-                                accept="image/*" style="display:none;"
+                            <input type="file" name="imagen" id="comment-img-input-{{ pub.id }}" accept="image/*" style="display:none;"
                                 onchange="previewCommentMedia('{{ pub.id }}', 'image')">
-                            <input type="file" name="video" id="comment-video-input-{{ pub.id }}"
-                                accept="video/*" style="display:none;"
+                            <input type="file" name="video" id="comment-video-input-{{ pub.id }}" accept="video/*" style="display:none;"
                                 onchange="previewCommentMedia('{{ pub.id }}', 'video')">
-
                             <div class="comment-actions">
                                 <div class="comment-media-btns">
                                     <button type="button" class="comment-media-btn"
@@ -184,45 +174,38 @@
                                         <i class="bi bi-camera-video"></i>
                                     </button>
                                 </div>
-                                <button type="submit" class="comment-submit" disabled>
-                                    {% trans "Comentar" %}
-                                </button>
+                                <button type="submit" class="comment-submit" disabled>{% trans "Comentar" %}</button>
                             </div>
                         </div>
                     </form>
-
                     <div class="comments-list" id="comments-list-{{ pub.id }}"></div>
-
                     <div class="load-more-comments" id="load-more-{{ pub.id }}" style="display:none;">
-                        <button type="button" class="load-more-btn"
-                            onclick="loadMoreComments('{{ pub.id }}')">
+                        <button type="button" class="load-more-btn" onclick="loadMoreComments('{{ pub.id }}')">
                             {% trans "Ver más comentarios" %}
                         </button>
                     </div>
                 </div>
             </article>
-
             {% empty %}
-            <div class="card empty-state">
+            <div class="empty-state-feed">
                 <i class="bi bi-file-post"></i>
                 <h3>{% trans "No hay publicaciones aún" %}</h3>
                 <p>{% trans "Sé el primero en compartir algo" %}</p>
             </div>
             {% endfor %}
-
         </main>
-
+        
         <!-- ========== SIDEBAR DERECHO ========== -->
-        <aside class="feed-right-sidebar">
-            <div class="card card--padded-sm">
-                <h3 class="section-title mb-3">{% trans "Personas que quizás conozcas" %}</h3>
-                <div class="empty-state">
+        <aside class="right-sidebar">
+            <div class="suggestions-card">
+                <h3 class="suggestions-title">{% trans "Personas que quizás conozcas" %}</h3>
+                <div class="empty-state-feed">
                     <i class="bi bi-people"></i>
                     <p>{% trans "No hay sugerencias" %}</p>
                 </div>
             </div>
         </aside>
-
+        
     </div>
 </div>
 
@@ -238,27 +221,25 @@
                 </div>
                 <div class="modal-body">
                     <div class="d-flex align-items-center mb-3">
-                        <img src="{{ user.get_avatar_url }}" alt="Avatar" class="avatar avatar-md me-2">
+                        <img src="{{ user.get_avatar_url }}" alt="Avatar" class="avatar-md me-2">
                         <div>
                             <h6 class="mb-0 fw-bold">{{ user.get_full_name }}</h6>
                             <small class="text-muted"><i class="bi bi-globe"></i> {% trans "Cualquiera" %}</small>
                         </div>
                     </div>
-                    <textarea name="contenido" id="postContent" class="form-control border-0 px-0"
-                        rows="4" placeholder="{% trans '¿Sobre qué quieres hablar?' %}"
+                    <textarea name="contenido" id="postContent" class="form-control border-0 px-0" rows="4"
+                        placeholder="{% trans '¿Sobre qué quieres hablar?' %}"
                         style="box-shadow:none;resize:none;font-size:1.1rem;"></textarea>
                     <div id="mediaPreviewContainer" class="position-relative mt-3" style="display:none;">
                         <button type="button" class="btn btn-dark btn-sm position-absolute top-0 end-0 m-2 rounded-circle"
-                            onclick="removeMedia()" style="z-index:10;">
-                            <i class="bi bi-x-lg"></i>
-                        </button>
+                            onclick="removeMedia()" style="z-index:10;"><i class="bi bi-x-lg"></i></button>
                         <img id="previewImage" class="img-fluid rounded border" style="display:none;width:100%;">
                         <video id="previewVideo" controls class="w-100 rounded border" style="display:none;"></video>
                     </div>
-                    <input type="file" name="imagen" id="imageInput" accept="image/*"
-                        style="display:none;" onchange="previewMedia(this, 'image')">
-                    <input type="file" name="video" id="videoInput" accept="video/*"
-                        style="display:none;" onchange="previewMedia(this, 'video')">
+                    <input type="file" name="imagen" id="imageInput" accept="image/*" style="display:none;"
+                        onchange="previewMedia(this, 'image')">
+                    <input type="file" name="video" id="videoInput" accept="video/*" style="display:none;"
+                        onchange="previewMedia(this, 'video')">
                 </div>
                 <div class="modal-footer justify-content-between border-top-0">
                     <div class="d-flex gap-2">
@@ -285,7 +266,7 @@
     <div class="reply-dialog">
         <div class="reply-header">
             <h3 class="reply-title">{% trans "Responder comentario" %}</h3>
-            <button type="button" class="btn-icon-round" onclick="closeReplyModal()">
+            <button type="button" class="reply-close" onclick="closeReplyModal()">
                 <i class="bi bi-x-lg"></i>
             </button>
         </div>
@@ -293,8 +274,7 @@
             <div class="reply-to-comment" id="replyToComment"></div>
             <form id="replyForm" enctype="multipart/form-data">
                 <textarea id="replyContent" class="comment-input w-100" rows="3"
-                    placeholder="{% trans 'Escribe tu respuesta...' %}"
-                    oninput="toggleReplySubmit()"></textarea>
+                    placeholder="{% trans 'Escribe tu respuesta...' %}" oninput="toggleReplySubmit()"></textarea>
                 <div class="comment-media-preview" id="replyPreview" style="display:none;">
                     <button type="button" class="remove-comment-media" onclick="removeReplyMedia()">
                         <i class="bi bi-x"></i>
@@ -317,8 +297,7 @@
                             <i class="bi bi-camera-video"></i>
                         </button>
                     </div>
-                    <button type="button" class="comment-submit" id="replySubmitBtn"
-                        onclick="submitReply()" disabled>
+                    <button type="button" class="comment-submit" id="replySubmitBtn" onclick="submitReply()" disabled>
                         {% trans "Responder" %}
                     </button>
                 </div>
@@ -329,7 +308,6 @@
 {% endblock %}
 
 {% block extra_js %}
-{# El JS del feed no tenía CSS inline así que se conserva intacto #}
 <script>
 const csrftoken = '{{ csrf_token }}';
 let currentReplyData = { publicacionId: null, comentarioPadreId: null };
@@ -346,8 +324,7 @@ function validatePostForm() {
 postContent.addEventListener('input', validatePostForm);
 
 function previewMedia(input, type) {
-    const file = input.files[0];
-    if (!file) return;
+    const file = input.files[0]; if (!file) return;
     const container = document.getElementById('mediaPreviewContainer');
     const img = document.getElementById('previewImage');
     const video = document.getElementById('previewVideo');
@@ -370,8 +347,7 @@ function removeMedia() {
 }
 
 document.getElementById('createPostModal').addEventListener('hidden.bs.modal', () => {
-    document.getElementById('createPostForm').reset();
-    removeMedia();
+    document.getElementById('createPostForm').reset(); removeMedia();
 });
 
 function previewCommentMedia(pubId, type) {
@@ -403,9 +379,8 @@ function toggleLike(publicacionId, button) {
     fetch(`/feed/post/${publicacionId}/like/`, { method: 'POST', headers: { 'X-CSRFToken': csrftoken, 'Content-Type': 'application/json' } })
         .then(r => r.json()).then(data => {
             if (data.success) {
-                const icon = button.querySelector('i');
                 button.classList.toggle('liked', data.liked);
-                icon.className = data.liked ? 'bi bi-hand-thumbs-up-fill' : 'bi bi-hand-thumbs-up';
+                button.querySelector('i').className = data.liked ? 'bi bi-hand-thumbs-up-fill' : 'bi bi-hand-thumbs-up';
                 const span = document.querySelector(`[data-likes="${publicacionId}"]`);
                 if (span) span.textContent = data.total_likes;
             }
@@ -416,9 +391,8 @@ function toggleFollow(usuarioId, button) {
     fetch(`/feed/user/${usuarioId}/follow/`, { method: 'POST', headers: { 'X-CSRFToken': csrftoken, 'Content-Type': 'application/json' } })
         .then(r => r.json()).then(data => {
             if (data.success) {
-                const text = button.querySelector('.follow-text');
                 button.classList.toggle('following', data.siguiendo);
-                text.textContent = data.siguiendo ? '{% trans "Siguiendo" %}' : '{% trans "Seguir" %}';
+                button.querySelector('.follow-text').textContent = data.siguiendo ? '{% trans "Siguiendo" %}' : '{% trans "Seguir" %}';
             }
         });
 }
@@ -457,7 +431,7 @@ function renderComments(comentarios, container) {
         const media = c.imagen ? `<img src="${c.imagen}" class="comment-media-img">` : c.video ? `<video src="${c.video}" controls class="comment-media-img"></video>` : '';
         const contenido = c.is_active ? c.contenido : '<em style="color:#9ca3af;">{% trans "[Comentario bloqueado por el Administrador]" %}</em>';
         div.innerHTML = `
-            <img src="${c.autor_avatar}" alt="Avatar" class="avatar avatar-sm">
+            <img src="${c.autor_avatar}" alt="Avatar" class="avatar-sm">
             <div class="comment-body">
                 <div class="comment-author">${c.autor}</div>
                 <div class="comment-text">${contenido}</div>

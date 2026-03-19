@@ -10,16 +10,14 @@
 
 {% block content %}
 <div class="messenger-container">
-    <div class="messenger-layout" id="messengerLayout">
-
-        <!-- Columna izquierda — lista de conversaciones -->
+    <div class="messenger-layout messenger-layout--list" id="messengerLayout">
+        
         <div class="conversations-column">
             <div class="conversations-header">
                 <div class="conversations-title-row">
                     <h1 class="conversations-title">{% trans "Mensajes" %}</h1>
                     <div class="header-actions">
-                        <button type="button" class="header-btn"
-                            onclick="openNewMessageModal()" title="{% trans 'Nuevo mensaje' %}">
+                        <button type="button" class="header-btn" onclick="openNewMessageModal()" title="{% trans 'Nuevo mensaje' %}">
                             <i class="bi bi-pencil-square"></i>
                         </button>
                         <button type="button" class="header-btn" title="{% trans 'Opciones' %}">
@@ -32,7 +30,7 @@
                     <input type="text" placeholder="{% trans 'Buscar en Mensajes' %}" id="searchInput">
                 </div>
             </div>
-
+            
             <div class="conversations-list" id="conversationsList">
                 {% for conv_data in conversaciones_data %}
                 <a href="{% url 'message_detail' conv_data.conversacion.id %}" class="conversation-item">
@@ -67,20 +65,18 @@
                 {% endfor %}
             </div>
         </div>
-
-        <!-- Columna central — empty state -->
+        
         <div class="empty-chat">
             <i class="bi bi-chat-left-text"></i>
             <h3>{% trans "Selecciona un mensaje" %}</h3>
             <p>{% trans "Elige una conversación para comenzar a chatear" %}</p>
         </div>
-
-        <!-- Columna derecha — empty state -->
+        
         <div class="empty-chat">
             <i class="bi bi-person-circle"></i>
             <h3>{% trans "Información del contacto" %}</h3>
         </div>
-
+        
     </div>
 </div>
 
@@ -96,13 +92,12 @@
         <div class="new-message-search">
             <div class="search-input-wrapper">
                 <i class="bi bi-search"></i>
-                <input type="text" id="userSearchInput"
-                    placeholder="{% trans 'Buscar contacto...' %}" oninput="searchUsers()">
+                <input type="text" id="userSearchInput" placeholder="{% trans 'Buscar contacto...' %}" oninput="searchUsers()">
             </div>
         </div>
         <div class="users-list" id="usersList">
             <div class="empty-search">
-                <i class="bi bi-people" style="font-size:48px;display:block;margin-bottom:1rem;"></i>
+                <i class="bi bi-people" style="font-size: 48px; margin-bottom: 1rem;"></i>
                 <p>{% trans "Busca un contacto para enviar un mensaje" %}</p>
             </div>
         </div>
@@ -112,12 +107,12 @@
 
 {% block extra_js %}
 <script>
-document.getElementById('searchInput').addEventListener('input', function() {
-    const term = this.value.toLowerCase();
-    document.querySelectorAll('.conversation-item').forEach(item => {
-        const name = item.querySelector('.conversation-name').textContent.toLowerCase();
-        const preview = item.querySelector('.conversation-preview').textContent.toLowerCase();
-        item.style.display = (name.includes(term) || preview.includes(term)) ? 'flex' : 'none';
+document.getElementById('searchInput').addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    document.querySelectorAll('.conversation-item').forEach(conv => {
+        const name = conv.querySelector('.conversation-name').textContent.toLowerCase();
+        const preview = conv.querySelector('.conversation-preview').textContent.toLowerCase();
+        conv.style.display = (name.includes(searchTerm) || preview.includes(searchTerm)) ? 'flex' : 'none';
     });
 });
 
@@ -133,7 +128,7 @@ function closeNewMessageModal() {
     document.getElementById('userSearchInput').value = '';
     document.getElementById('usersList').innerHTML = `
         <div class="empty-search">
-            <i class="bi bi-people" style="font-size:48px;display:block;margin-bottom:1rem;"></i>
+            <i class="bi bi-people" style="font-size: 48px; margin-bottom: 1rem;"></i>
             <p>{% trans "Busca un contacto para enviar un mensaje" %}</p>
         </div>`;
 }
@@ -141,38 +136,34 @@ function closeNewMessageModal() {
 let searchTimeout;
 function searchUsers() {
     const query = document.getElementById('userSearchInput').value.trim();
-    if (query.length < 2) {
-        closeNewMessageModal();
-        openNewMessageModal();
-        return;
-    }
+    if (query.length < 2) { closeNewMessageModal(); openNewMessageModal(); return; }
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(() => {
         fetch(`/api/search-users/?q=${encodeURIComponent(query)}`)
             .then(r => r.json())
             .then(data => {
                 const list = document.getElementById('usersList');
-                if (data.users?.length) {
-                    list.innerHTML = data.users.map(u => `
-                        <a href="/messages/create/${u.id}/" class="user-item">
-                            <img src="${u.avatar}" alt="Avatar" class="user-avatar">
+                if (data.users && data.users.length > 0) {
+                    list.innerHTML = data.users.map(user => `
+                        <a href="/messages/create/${user.id}/" class="user-item">
+                            <img src="${user.avatar}" alt="Avatar" class="user-avatar">
                             <div class="user-info">
-                                <div class="user-name">${u.name}</div>
-                                <div class="user-title">${u.title || ''}</div>
+                                <div class="user-name">${user.name}</div>
+                                <div class="user-title">${user.title || ''}</div>
                             </div>
                         </a>`).join('');
                 } else {
                     list.innerHTML = `<div class="empty-search">
-                        <i class="bi bi-search" style="font-size:48px;display:block;margin-bottom:1rem;"></i>
+                        <i class="bi bi-search" style="font-size: 48px; margin-bottom: 1rem;"></i>
                         <p>{% trans "No se encontraron usuarios" %}</p>
                     </div>`;
                 }
             })
-            .catch(console.error);
+            .catch(error => console.error('Error searching users:', error));
     }, 300);
 }
 
-document.addEventListener('keydown', e => {
+document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && document.getElementById('newMessageModal').classList.contains('active')) {
         closeNewMessageModal();
     }

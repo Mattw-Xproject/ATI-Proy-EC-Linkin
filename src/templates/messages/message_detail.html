@@ -10,9 +10,9 @@
 
 {% block content %}
 <div class="messenger-container">
-    <div class="messenger-layout" id="messengerLayout">
-
-        <!-- Columna izquierda — lista de conversaciones -->
+    <div class="messenger-layout messenger-layout--detail" id="messengerLayout">
+        
+        <!-- Columna izquierda — lista conversaciones -->
         <div class="conversations-column">
             <div class="conversations-header">
                 <div class="conversations-title-row">
@@ -31,18 +31,15 @@
                     <input type="text" placeholder="{% trans 'Buscar' %}" id="searchInput">
                 </div>
             </div>
-
+            
             <div class="conversations-list">
                 {% for conv_data in conversaciones_data %}
                 <a href="{% url 'message_detail' conv_data.conversacion.id %}"
                     class="conversation-item {% if conv_data.conversacion.id == conversacion.id %}active{% endif %}">
-                    <img src="{{ conv_data.otro_usuario.get_avatar_url }}" alt="Avatar"
-                        class="conversation-avatar--sm">
+                    <img src="{{ conv_data.otro_usuario.get_avatar_url }}" alt="Avatar" class="conversation-avatar-small">
                     <div class="conversation-info">
-                        <div class="conversation-name conversation-name--sm">
-                            {{ conv_data.otro_usuario.get_full_name }}
-                        </div>
-                        <div class="conversation-preview conversation-preview--sm">
+                        <div class="conversation-name">{{ conv_data.otro_usuario.get_full_name }}</div>
+                        <div class="conversation-preview">
                             {% if conv_data.ultimo_mensaje %}
                                 {{ conv_data.ultimo_mensaje.contenido|truncatewords:6 }}
                             {% else %}
@@ -52,22 +49,20 @@
                     </div>
                     <div class="conversation-meta">
                         {% if conv_data.ultimo_mensaje %}
-                        <span class="conversation-time conversation-time--sm">
-                            {{ conv_data.ultimo_mensaje.fecha_envio|timesince }}
-                        </span>
+                        <span class="conversation-time">{{ conv_data.ultimo_mensaje.fecha_envio|timesince }}</span>
                         {% endif %}
                         {% if conv_data.no_leidos > 0 %}
-                        <span class="unread-badge unread-badge--sm">{{ conv_data.no_leidos }}</span>
+                        <span class="unread-badge">{{ conv_data.no_leidos }}</span>
                         {% endif %}
                     </div>
                 </a>
                 {% endfor %}
             </div>
         </div>
-
-        <!-- Columna central — área de chat -->
+        
+        <!-- Columna central — chat -->
         <div class="chat-column">
-
+            
             <div class="chat-header">
                 <div class="chat-header-avatar">
                     <img src="{{ otro_usuario.get_avatar_url }}" alt="Avatar">
@@ -90,7 +85,7 @@
                     </button>
                 </div>
             </div>
-
+            
             {% if es_solicitud_pendiente %}
             <div class="request-banner">
                 <div class="request-banner-info">
@@ -101,13 +96,13 @@
                     </div>
                 </div>
                 <div class="request-banner-actions">
-                    <form method="post" action="{% url 'accept_conversation' conversacion.id %}">
+                    <form method="post" action="{% url 'accept_conversation' conversacion.id %}" style="display: inline;">
                         {% csrf_token %}
                         <button type="submit" class="btn-accept-request">
                             <i class="bi bi-check-lg me-1"></i> {% trans "Aceptar" %}
                         </button>
                     </form>
-                    <form method="post" action="{% url 'reject_conversation' conversacion.id %}">
+                    <form method="post" action="{% url 'reject_conversation' conversacion.id %}" style="display: inline;">
                         {% csrf_token %}
                         <button type="submit" class="btn-reject-request">
                             <i class="bi bi-x-lg me-1"></i> {% trans "Rechazar" %}
@@ -116,7 +111,7 @@
                 </div>
             </div>
             {% endif %}
-
+            
             {% if es_bloqueada %}
             <div class="blocked-banner">
                 <h4><i class="bi bi-slash-circle me-2"></i>{% trans "Conversación bloqueada" %}</h4>
@@ -126,7 +121,7 @@
                 </p>
             </div>
             {% endif %}
-
+            
             <div class="chat-messages" id="chatMessages">
                 {% regroup mensajes by fecha_envio.date as mensajes_por_dia %}
                 {% for dia in mensajes_por_dia %}
@@ -143,13 +138,13 @@
                     </div>
                     {% endfor %}
                 {% empty %}
-                <div style="text-align:center;padding:2rem;color:var(--lx-gray-400);">
-                    <i class="bi bi-chat-dots" style="font-size:48px;display:block;margin-bottom:1rem;"></i>
-                    <p>{% trans "No hay mensajes aún" %}</p>
-                </div>
+                    <div style="text-align: center; padding: 2rem; color: #9ca3af;">
+                        <i class="bi bi-chat-dots" style="font-size: 48px; margin-bottom: 1rem; display: block;"></i>
+                        <p>{% trans "No hay mensajes aún" %}</p>
+                    </div>
                 {% endfor %}
             </div>
-
+            
             {% if not es_bloqueada and conversacion.estado == 'aceptada' or conversacion.participante_1 == request.user %}
             <div class="chat-input-area">
                 <form id="messageForm" method="post" action="{% url 'send_message' conversacion.id %}">
@@ -168,19 +163,19 @@
                 </form>
             </div>
             {% endif %}
-
+            
         </div>
-
-        <!-- Columna derecha — panel de perfil -->
+        
+        <!-- Columna derecha — panel perfil -->
         <div class="profile-column">
             <button type="button" class="profile-close-btn" onclick="toggleProfileMobile()">
                 <i class="bi bi-x-lg"></i>
             </button>
-
-            <div class="profile-panel-header">
-                <img src="{{ otro_usuario.get_avatar_url }}" alt="Avatar" class="profile-panel-avatar">
-                <div class="profile-panel-name">{{ otro_usuario.get_full_name }}</div>
-                <div class="profile-panel-status">
+            
+            <div class="profile-header">
+                <img src="{{ otro_usuario.get_avatar_url }}" alt="Avatar" class="profile-header-avatar">
+                <div class="profile-header-name">{{ otro_usuario.get_full_name }}</div>
+                <div class="profile-header-status">
                     {% if otro_usuario.tipo_usuario == 'profesional' %}
                         {{ otro_usuario.profesional.titulo_actual|default:"Profesional" }}
                     {% elif otro_usuario.tipo_usuario == 'empresa' %}
@@ -188,45 +183,44 @@
                     {% endif %}
                 </div>
             </div>
-
-            <div class="profile-panel-actions">
-                <a href="{% url 'profile_detail' otro_usuario.id %}" class="profile-panel-btn">
+            
+            <div class="profile-actions">
+                <a href="{% url 'profile_detail' otro_usuario.id %}" class="profile-action-btn">
                     <i class="bi bi-person"></i><span>{% trans "Ver perfil" %}</span>
                 </a>
-                <button type="button" class="profile-panel-btn">
+                <button type="button" class="profile-action-btn">
                     <i class="bi bi-bell"></i><span>{% trans "Silenciar" %}</span>
                 </button>
-                <button type="button" class="profile-panel-btn">
+                <button type="button" class="profile-action-btn">
                     <i class="bi bi-search"></i><span>{% trans "Buscar" %}</span>
                 </button>
                 {% if bloqueada_por_mi %}
-                <form method="post" action="{% url 'unblock_conversation' conversacion.id %}"
-                    style="grid-column:span 2;">
+                <form method="post" action="{% url 'unblock_conversation' conversacion.id %}" style="grid-column: span 2;">
                     {% csrf_token %}
-                    <button type="submit" class="profile-panel-btn" style="width:100%;">
+                    <button type="submit" class="profile-action-btn" style="width: 100%;">
                         <i class="bi bi-unlock"></i><span>{% trans "Desbloquear" %}</span>
                     </button>
                 </form>
                 {% else %}
                 <form method="post" action="{% url 'block_conversation' conversacion.id %}">
                     {% csrf_token %}
-                    <button type="submit" class="profile-panel-btn profile-panel-btn--danger">
+                    <button type="submit" class="profile-action-btn danger">
                         <i class="bi bi-slash-circle"></i><span>{% trans "Bloquear" %}</span>
                     </button>
                 </form>
                 {% endif %}
             </div>
-
-            {% if otro_usuario.ubicacion %}
-            <div class="profile-panel-section">
-                <div class="profile-panel-section-title">{% trans "Información" %}</div>
-                <p style="font-size:14px;color:var(--lx-gray-500);">
-                    <i class="bi bi-geo-alt me-2"></i>{{ otro_usuario.ubicacion }}
+            
+            <div class="profile-section">
+                <div class="profile-section-title">{% trans "Información" %}</div>
+                <p style="font-size: 14px; color: #6b7280;">
+                    {% if otro_usuario.ubicacion %}
+                        <i class="bi bi-geo-alt me-2"></i>{{ otro_usuario.ubicacion }}
+                    {% endif %}
                 </p>
             </div>
-            {% endif %}
         </div>
-
+        
     </div>
 </div>
 {% endblock %}
@@ -234,8 +228,8 @@
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const chat = document.getElementById('chatMessages');
-    if (chat) chat.scrollTop = chat.scrollHeight;
+    const chatMessages = document.getElementById('chatMessages');
+    if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
 });
 
 document.getElementById('messageForm')?.addEventListener('submit', function(e) {
@@ -256,7 +250,8 @@ document.getElementById('messageInput')?.addEventListener('input', function() {
 
 function toggleProfileMobile() {
     if (window.innerWidth < 992) {
-        document.getElementById('messengerLayout').classList.toggle('show-profile');
+        const layout = document.getElementById('messengerLayout');
+        layout.classList.toggle('show-profile');
     }
 }
 </script>
