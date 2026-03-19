@@ -33,7 +33,7 @@ class Command(BaseCommand):
         # Crear contenido
         self.crear_publicaciones_con_media()
         self.crear_ofertas_laborales()
-        self.crear_conversaciones()
+        
         
         self.stdout.write(self.style.SUCCESS('✅ Datos de demostración creados exitosamente!'))
         self.mostrar_credenciales()
