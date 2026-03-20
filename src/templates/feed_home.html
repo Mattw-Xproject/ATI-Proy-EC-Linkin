@@ -273,10 +273,10 @@
                 </div>
             </article>
             {% empty %}
-            <div class="empty-state" style="background: white; border-radius: 8px; border: 1px solid #e5e7eb; padding: 3rem;">
-                <i class="bi bi-file-post" style="font-size: 64px; color: #d1d5db;"></i>
-                <h3 style="margin-top: 1rem; color: #6b7280;">{% trans "No hay publicaciones aún" %}</h3>
-                <p style="color: #9ca3af;">{% trans "Sé el primero en compartir algo" %}</p>
+            <div class="empty-state-feed" style="border-radius: 8px; padding: 3rem;">
+                <i class="bi bi-file-post"></i>
+                <h3>{% trans "No hay publicaciones aún" %}</h3>
+                <p>{% trans "Sé el primero en compartir algo" %}</p>
             </div>
             {% endfor %}
             
@@ -341,12 +341,12 @@
                     <input type="file" name="video" id="videoInput" accept="video/*" style="display: none;" onchange="previewMedia(this, 'video')">
                 </div>
                 
-                <div class="modal-footer justify-content-between border-top-0">
+                <div class="modal-footer justify-content-between border-top-0" style="border-top: 1px solid var(--border-color) !important; background-color: var(--bg-card);">
                     <div class="d-flex gap-2">
-                        <button type="button" class="btn btn-light rounded-circle p-2" onclick="document.getElementById('imageInput').click()" title="{% trans 'Añadir foto' %}">
+                        <button type="button" class="btn rounded-circle p-2" style="background-color: var(--bg-body); color: var(--text-secondary);" onclick="document.getElementById('imageInput').click()" title="{% trans 'Añadir foto' %}">
                             <i class="bi bi-image fs-5 text-success"></i>
                         </button>
-                        <button type="button" class="btn btn-light rounded-circle p-2" onclick="document.getElementById('videoInput').click()" title="{% trans 'Añadir video' %}">
+                        <button type="button" class="btn rounded-circle p-2" style="background-color: var(--bg-body); color: var(--text-secondary);" onclick="document.getElementById('videoInput').click()" title="{% trans 'Añadir video' %}">
                             <i class="bi bi-camera-video fs-5 text-danger"></i>
                         </button>
                     </div>

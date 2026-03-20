@@ -39,9 +39,9 @@
 
 /* Mini perfil en sidebar */
 .sidebar-profile-card {
-    background: white;
+    background: var(--bg-card, white);
     border-radius: 8px;
-    border: 1px solid var(--lx-gray-200);
+    border: 1px solid var(--border-color, var(--lx-gray-200));
     overflow: hidden;
 }
 
@@ -60,7 +60,7 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    border: 3px solid white;
+    border: 3px solid var(--bg-card, white);
     margin-bottom: 0.5rem;
     object-fit: cover;
 }
@@ -69,19 +69,20 @@
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 0.25rem;
+    color: var(--text-primary, var(--lx-gray-900));
 }
 
 .profile-info-small {
     font-size: 13px;
-    color: var(--lx-gray-600);
+    color: var(--text-secondary, var(--lx-gray-600));
     margin-bottom: 0.75rem;
 }
 
 /* Sección de acciones rápidas en sidebar */
 .sidebar-section {
-    background: white;
+    background: var(--bg-card, white);
     border-radius: 8px;
-    border: 1px solid var(--lx-gray-200);
+    border: 1px solid var(--border-color, var(--lx-gray-200));
     padding: 1rem;
 }
 
@@ -94,13 +95,13 @@
     cursor: pointer;
     transition: all 0.2s ease;
     text-decoration: none;
-    color: var(--lx-gray-700);
+    color: var(--text-primary, var(--lx-gray-700));
     font-weight: 500;
 }
 
 .sidebar-item:hover {
-    background: var(--lx-gray-100);
-    color: var(--lx-primary);
+    background: var(--bg-body, var(--lx-gray-100));
+    color: var(--link-color, var(--lx-primary));
 }
 
 .sidebar-item i {
@@ -132,9 +133,9 @@
 
 /* Sección de empleos */
 .job-section {
-    background: white;
+    background: var(--bg-card, white);
     border-radius: 8px;
-    border: 1px solid var(--lx-gray-200);
+    border: 1px solid var(--border-color, var(--lx-gray-200));
     padding: 1.5rem;
 }
 
@@ -148,12 +149,12 @@
 .section-title {
     font-size: 18px;
     font-weight: 600;
-    color: var(--lx-gray-900);
+    color: var(--text-primary, var(--lx-gray-900));
 }
 
 /* Job card */
 .job-card {
-    border: 1px solid var(--lx-gray-200);
+    border: 1px solid var(--border-color, var(--lx-gray-200));
     border-radius: 8px;
     padding: 1.25rem;
     margin-bottom: 1rem;
@@ -162,6 +163,7 @@
     text-decoration: none;
     color: inherit;
     display: block;
+    background: var(--bg-card, white);
 }
 
 .job-card:hover {
@@ -192,13 +194,13 @@
 .job-title {
     font-size: 16px;
     font-weight: 600;
-    color: var(--lx-gray-900);
+    color: var(--text-primary, var(--lx-gray-900));
     margin-bottom: 0.25rem;
 }
 
 .company-name {
     font-size: 14px;
-    color: var(--lx-gray-600);
+    color: var(--text-secondary, var(--lx-gray-600));
     margin-bottom: 0.5rem;
 }
 
@@ -207,7 +209,7 @@
     flex-wrap: wrap;
     gap: 1rem;
     font-size: 13px;
-    color: var(--lx-gray-600);
+    color: var(--text-secondary, var(--lx-gray-600));
 }
 
 .job-meta-item {
@@ -224,8 +226,8 @@
 }
 
 .job-tag {
-    background: var(--lx-gray-100);
-    color: var(--lx-gray-700);
+    background: var(--bg-body, var(--lx-gray-100));
+    color: var(--text-primary, var(--lx-gray-700));
     padding: 0.25rem 0.75rem;
     border-radius: 12px;
     font-size: 12px;
@@ -259,26 +261,26 @@
 }
 
 .jobs-list-column {
-    background: white;
+    background: var(--bg-card, white);
     border-radius: 8px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--border-color, #e5e7eb);
     max-height: calc(100vh - 120px);
     overflow-y: auto;
 }
 
 .jobs-list-header {
     padding: 1.5rem;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
     position: sticky;
     top: 0;
-    background: white;
+    background: var(--bg-card, white);
     z-index: 10;
 }
 
 .empty-state-card {
-    background: white;
+    background: var(--bg-card, white);
     border-radius: 8px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--border-color, #e5e7eb);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -286,14 +288,14 @@
 
 .job-list-item {
     padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
     cursor: pointer;
     transition: all 0.2s;
     display: block;
 }
 
 .job-list-item:hover {
-    background: #f9fafb;
+    background: var(--bg-body, #f9fafb);
 }
 
 .job-list-item.active {
@@ -305,14 +307,14 @@
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    color: #111827;
+    color: var(--text-primary, #111827);
 }
 
 .job-item-meta {
     display: flex;
     gap: 1rem;
     font-size: 13px;
-    color: #6b7280;
+    color: var(--text-secondary, #6b7280);
     margin-bottom: 0.5rem;
 }
 
@@ -320,7 +322,7 @@
     display: flex;
     gap: 1.5rem;
     font-size: 13px;
-    color: #6b7280;
+    color: var(--text-secondary, #6b7280);
 }
 
 .empty-state {
@@ -370,65 +372,66 @@
 }
 
 .sidebar-card {
-    background: white;
+    background: var(--bg-card, white);
     border-radius: 8px;
-    border: 1px solid var(--lx-gray-200);
+    border: 1px solid var(--border-color, var(--lx-gray-200));
     padding: 1.25rem;
 }
 
 .sidebar-title {
     font-size: 16px;
     font-weight: 600;
-    color: var(--lx-gray-900);
+    color: var(--text-primary, var(--lx-gray-900));
     margin-bottom: 1rem;
 }
 
 .similar-job-item {
     padding: 1rem;
     border-radius: 6px;
-    border: 1px solid var(--lx-gray-200);
+    border: 1px solid var(--border-color, var(--lx-gray-200));
     margin-bottom: 0.75rem;
     cursor: pointer;
     transition: all 0.2s ease;
     text-decoration: none;
     color: inherit;
     display: block;
+    background: var(--bg-card, white);
 }
 
 .similar-job-item:hover {
-    border-color: var(--lx-primary);
-    background: var(--lx-gray-50);
+    border-color: var(--link-color, var(--lx-primary));
+    background: var(--bg-body, var(--lx-gray-50));
     color: inherit;
 }
 
 .similar-job-title {
     font-size: 14px;
     font-weight: 600;
-    color: var(--lx-gray-900);
+    color: var(--text-primary, var(--lx-gray-900));
     margin-bottom: 0.25rem;
 }
 
 .similar-job-company {
     font-size: 13px;
-    color: var(--lx-gray-600);
+    color: var(--text-secondary, var(--lx-gray-600));
     margin-bottom: 0.5rem;
 }
 
 .similar-job-meta {
     font-size: 12px;
-    color: var(--lx-gray-500);
+    color: var(--text-secondary, var(--lx-gray-500));
 }
 
 /* Contenido principal */
 .job-detail-main {
-    background: white;
+    background: var(--bg-card, white);
     border-radius: 8px;
-    border: 1px solid var(--lx-gray-200);
+    border: 1px solid var(--border-color, var(--lx-gray-200));
 }
 
 .job-detail-header {
     padding: 2rem;
-    border-bottom: 1px solid var(--lx-gray-200);
+    border-bottom: 1px solid var(--border-color, var(--lx-gray-200));
 }
 
 .job-header-content {
@@ -453,13 +456,13 @@
 .job-detail-title {
     font-size: 28px;
     font-weight: 700;
-    color: var(--lx-gray-900);
+    color: var(--text-primary, var(--lx-gray-900));
     margin-bottom: 0.5rem;
 }
 
 .job-detail-company {
     font-size: 18px;
-    color: var(--lx-gray-600);
+    color: var(--text-secondary, var(--lx-gray-600));
     margin-bottom: 1rem;
 }
 
@@ -468,7 +471,7 @@
     flex-wrap: wrap;
     gap: 1.5rem;
     font-size: 14px;
-    color: var(--lx-gray-600);
+    color: var(--text-secondary, var(--lx-gray-600));
 }
 
 .job-detail-meta-item {
@@ -478,7 +481,7 @@
 }
 
 .job-detail-meta-item i {
-    color: var(--lx-gray-500);
+    color: var(--text-secondary, var(--lx-gray-500));
 }
 
 .job-actions {
@@ -499,9 +502,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--lx-gray-300);
-    background: white;
-    color: var(--lx-gray-600);
+    border: 1px solid var(--border-color, var(--lx-gray-300));
+    background: var(--bg-card, white);
+    color: var(--text-secondary, var(--lx-gray-600));
     cursor: pointer;
     transition: all 0.2s ease;
     flex-shrink: 0;
@@ -533,14 +536,14 @@
 .job-section-title {
     font-size: 20px;
     font-weight: 600;
-    color: var(--lx-gray-900);
+    color: var(--text-primary, var(--lx-gray-900));
     margin-bottom: 1rem;
 }
 
 .job-section-content {
     font-size: 15px;
     line-height: 1.7;
-    color: var(--lx-gray-700);
+    color: var(--text-primary, var(--lx-gray-700));
     white-space: pre-wrap;
 }
 
@@ -552,12 +555,12 @@
 
 .job-requirements-list li {
     padding: 0.75rem 0;
-    border-bottom: 1px solid var(--lx-gray-100);
+    border-bottom: 1px solid var(--border-color, var(--lx-gray-100));
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
     font-size: 15px;
-    color: var(--lx-gray-700);
+    color: var(--text-primary, var(--lx-gray-700));
 }
 
 .job-requirements-list li:last-child {
@@ -574,7 +577,7 @@
     display: flex;
     gap: 2rem;
     padding: 1.5rem;
-    background: var(--lx-gray-50);
+    background: var(--bg-body, var(--lx-gray-50));
     border-radius: 8px;
     margin-top: 1.5rem;
 }
@@ -593,7 +596,7 @@
 
 .job-stat-label {
     font-size: 13px;
-    color: var(--lx-gray-600);
+    color: var(--text-secondary, var(--lx-gray-600));
 }
 
 
@@ -620,7 +623,7 @@
 }
 
 .application-modal-content {
-    background: white;
+    background: var(--bg-card, white);
     border-radius: 12px;
     width: 100%;
     max-width: 600px;
@@ -631,16 +634,18 @@
 
 .modal-header {
     padding: 1.5rem 2rem;
-    border-bottom: 1px solid var(--lx-gray-200);
+    border-bottom: 1px solid var(--border-color, var(--lx-gray-200));
     display: flex;
     align-items: center;
     justify-content: space-between;
+    background: var(--bg-card, white);
+    color: var(--text-primary, var(--lx-gray-900));
 }
 
 .modal-title {
     font-size: 22px;
     font-weight: 700;
-    color: var(--lx-gray-900);
+    color: var(--text-primary, var(--lx-gray-900));
 }
 
 .modal-close {
@@ -649,7 +654,7 @@
     border-radius: 50%;
     border: none;
     background: transparent;
-    color: var(--lx-gray-500);
+    color: var(--text-secondary, var(--lx-gray-500));
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -658,8 +663,8 @@
 }
 
 .modal-close:hover {
-    background: var(--lx-gray-100);
-    color: var(--lx-gray-900);
+    background: var(--bg-body, var(--lx-gray-100));
+    color: var(--text-primary, var(--lx-gray-900));
 }
 
 .modal-progress {
@@ -670,7 +675,7 @@
 .progress-bar-container {
     width: 100%;
     height: 8px;
-    background: var(--lx-gray-200);
+    background: var(--border-color, var(--lx-gray-200));
     border-radius: 4px;
     overflow: hidden;
 }
@@ -687,7 +692,7 @@
     justify-content: space-between;
     margin-top: 0.75rem;
     font-size: 13px;
-    color: var(--lx-gray-600);
+    color: var(--text-secondary, var(--lx-gray-600));
 }
 
 .progress-step {
@@ -701,6 +706,8 @@
 
 .modal-body {
     padding: 2rem;
+    background: var(--bg-card, white);
+    color: var(--text-primary, var(--lx-gray-900));
 }
 
 .application-step {
@@ -719,18 +726,19 @@
     display: block;
     font-weight: 600;
     font-size: 14px;
-    color: var(--lx-gray-700);
+    color: var(--text-primary, var(--lx-gray-700));
     margin-bottom: 0.5rem;
 }
 
 .form-control-modal {
     width: 100%;
     padding: 12px 16px;
-    border: 1px solid var(--lx-gray-300);
+    border: 1px solid var(--border-color, var(--lx-gray-300));
     border-radius: 8px;
     font-size: 15px;
     transition: all 0.2s ease;
-    background: white;
+    background: var(--bg-body, white);
+    color: var(--text-primary, black);
 }
 
 .form-control-modal:focus {
@@ -740,12 +748,13 @@
 }
 
 .upload-area {
-    border: 2px dashed var(--lx-gray-300);
+    border: 2px dashed var(--border-color, var(--lx-gray-300));
     border-radius: 8px;
     padding: 3rem 2rem;
     text-align: center;
     cursor: pointer;
     transition: all 0.2s ease;
+    background: var(--bg-card, white);
 }
 
 .upload-area:hover,
@@ -758,31 +767,31 @@
     width: 64px;
     height: 64px;
     margin: 0 auto 1rem;
-    background: white;
+    background: var(--bg-body, white);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--lx-primary);
+    color: var(--link-color, var(--lx-primary));
     font-size: 28px;
 }
 
 .upload-text {
     font-size: 16px;
     font-weight: 600;
-    color: var(--lx-gray-900);
+    color: var(--text-primary, var(--lx-gray-900));
     margin-bottom: 0.5rem;
 }
 
 .upload-subtext {
     font-size: 14px;
-    color: var(--lx-gray-600);
+    color: var(--text-secondary, var(--lx-gray-600));
 }
 
 .file-name-display {
     margin-top: 1rem;
     padding: 1rem;
-    background: white;
+    background: var(--bg-card, white);
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -796,10 +805,11 @@
 
 .modal-footer {
     padding: 1.5rem 2rem;
-    border-top: 1px solid var(--lx-gray-200);
+    border-top: 1px solid var(--border-color, var(--lx-gray-200));
     display: flex;
     justify-content: space-between;
     gap: 1rem;
+    background: var(--bg-card, white);
 }
 
 

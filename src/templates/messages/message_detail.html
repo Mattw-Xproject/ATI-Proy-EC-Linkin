@@ -189,10 +189,10 @@
                 <i class="bi bi-x-lg"></i>
             </button>
             
-            <div class="profile-header">
-                <img src="{{ otro_usuario.get_avatar_url }}" alt="Avatar" class="profile-header-avatar">
-                <div class="profile-header-name">{{ otro_usuario.get_full_name }}</div>
-                <div class="profile-header-status">
+            <div class="profile-panel-header">
+                <img src="{{ otro_usuario.get_avatar_url }}" alt="Avatar" class="profile-panel-avatar">
+                <div class="profile-panel-name">{{ otro_usuario.get_full_name }}</div>
+                <div class="profile-panel-status">
                     {% if otro_usuario.tipo_usuario == 'profesional' %}
                         {{ otro_usuario.profesional.titulo_actual|default:"Profesional" }}
                     {% elif otro_usuario.tipo_usuario == 'empresa' %}
@@ -236,32 +236,32 @@
                 
                 {% if otro_usuario.email %}
                 <div style="margin-bottom: 1rem;">
-                    <div style="font-size: 13px; color: var(--lx-gray-500); margin-bottom: 0.25rem;">
+                    <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 0.25rem;">
                         {% trans "Email" %}
                     </div>
-                    <div style="font-size: 14px; color: var(--lx-gray-900);">
+                    <div style="font-size: 14px; color: var(--text-primary);">
                         {{ otro_usuario.email }}
                     </div>
                 </div>
                 {% endif %}
-                
+
                 {% if otro_usuario.ubicacion %}
                 <div style="margin-bottom: 1rem;">
-                    <div style="font-size: 13px; color: var(--lx-gray-500); margin-bottom: 0.25rem;">
+                    <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 0.25rem;">
                         {% trans "Ubicación" %}
                     </div>
-                    <div style="font-size: 14px; color: var(--lx-gray-900);">
+                    <div style="font-size: 14px; color: var(--text-primary);">
                         <i class="bi bi-geo-alt me-1"></i>{{ otro_usuario.ubicacion }}
                     </div>
                 </div>
                 {% endif %}
-                
+
                 {% if otro_usuario.telefono %}
                 <div style="margin-bottom: 1rem;">
-                    <div style="font-size: 13px; color: var(--lx-gray-500); margin-bottom: 0.25rem;">
+                    <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 0.25rem;">
                         {% trans "Teléfono" %}
                     </div>
-                    <div style="font-size: 14px; color: var(--lx-gray-900);">
+                    <div style="font-size: 14px; color: var(--text-primary);">
                         {{ otro_usuario.telefono }}
                     </div>
                 </div>
